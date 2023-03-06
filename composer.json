@@ -1,0 +1,18 @@
+{
+  "name": "rsystfip/rsystfip",
+  "description": "Scheduling system for ITFIP Instituto Tolimense de Formación Técnica Profesional",
+  "type": "project",
+  "require": {
+    "aura/router": "^3.2",
+    "laminas/laminas-diactoros": "^2.17"
+  },
+  "authors": [{
+    "name": "Ricardo Rojas",
+    "email": "rojasricor@gmail.com"
+  }],
+  "autoload": {
+    "psr-4": {
+      "RSystfip\\": "RSystfip/"
+    }
+  }
+}
