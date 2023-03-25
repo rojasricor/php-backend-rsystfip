@@ -1,21 +1,54 @@
+-- phpMyAdmin SQL Dump
+-- version 5.0.4deb2+deb11u1
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:3306
+-- Generation Time: Mar 25, 2023 at 05:21 PM
+-- Server version: 10.5.18-MariaDB-0+deb11u1
+-- PHP Version: 7.4.33
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+--
+-- Database: `rsystfip_db`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `decanos_itfip`
+--
+
 CREATE TABLE `decanos_itfip` (
-  `cc` varchar(12) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `facultie` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+  `cc` varchar(12) NOT NULL COMMENT 'Campo que guarda el numero de cedula del de decano del ITFIP, (unique).',
+  `name` varchar(50) NOT NULL COMMENT 'Campo que guarda el nombre de decano del ITFIP.',
+  `facultie` tinyint(1) NOT NULL COMMENT 'Campo que guarda el id de facultad a la que pertenece el decano del ITFIP.'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci COMMENT='Tabla que almacena los datos de decanos del ITFIP, que seran utilizados para el agendamiento de personas mas rapidamente, haciendo un autocompletado.';
+
+--
+-- Dumping data for table `decanos_itfip`
+--
 
 INSERT INTO `decanos_itfip` (`cc`, `name`, `facultie`) VALUES
-('3333333332', 'Ella Porter', 3);
+('1111122448', 'Holman Reyes', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `document`
+--
 
 CREATE TABLE `document` (
   `id` tinyint(1) NOT NULL COMMENT 'Campo que guarda el id del tipo de documento, (autoincremental).',
   `document` varchar(3) NOT NULL COMMENT 'Campo que guarda una abreviacion corta del tipo de documento.',
   `description` varchar(40) NOT NULL COMMENT 'Campo que guarda el nombre detallado del tipo de documento.'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci COMMENT='Tabla que almacena los tipos de documentos, que seran utilizados para el agendamiento de personas.';
+
+--
+-- Dumping data for table `document`
+--
 
 INSERT INTO `document` (`id`, `document`, `description`) VALUES
 (1, 'CC', 'Cédula Ciudadanía CC'),
@@ -24,16 +57,32 @@ INSERT INTO `document` (`id`, `document`, `description`) VALUES
 (4, 'PA', 'Pasaporte PA'),
 (5, 'NIT', 'Número de identificación tributaria NIT');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `faculties`
+--
+
 CREATE TABLE `faculties` (
   `id` tinyint(1) NOT NULL COMMENT 'Campo que guarda el id de la facultad, (autoincremental).',
   `name` varchar(60) NOT NULL COMMENT 'Campo que guarda el nombre de la facultad.'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci COMMENT='Tabla que almacena las facultades actuales de los programas academicos del ITFIP.';
+
+--
+-- Dumping data for table `faculties`
+--
 
 INSERT INTO `faculties` (`id`, `name`) VALUES
 (1, 'Facultad de Economía, Administración y Contaduría Pública'),
 (2, 'Facultad de Ingeniería y Ciencias Agroindustriales'),
 (3, 'Facultad de Ciencias Sociales, Salud y Educación'),
 (4, 'No aplica');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `people_schedule`
+--
 
 CREATE TABLE `people_schedule` (
   `person_id` int(11) UNSIGNED NOT NULL COMMENT 'Campo que almacena el id de la persona agendada, llave foranea del campo id de la tabla registered people.',
@@ -44,6 +93,10 @@ CREATE TABLE `people_schedule` (
   `status` enum('presence','absence') NOT NULL COMMENT 'Campo que guarda el tipo de agendamiento realizado, puede ser de dos tipos,agendamiento programado o agendamiento al dia.',
   `color` char(7) NOT NULL DEFAULT '#388cdc' COMMENT 'Campo que guarda un valor de texto correspondiente al color que tendra el registro al ser agendado.'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci COMMENT='Tabla que almacena todos los agendamientos en fecha del aplicativo.';
+
+--
+-- Dumping data for table `people_schedule`
+--
 
 INSERT INTO `people_schedule` (`person_id`, `date_filter`, `start_date`, `end_date`, `modification`, `status`, `color`) VALUES
 (1, '2022-12-05', '2022-12-05 06:00:00', '2022-12-05 07:30:00', '08:08:25', 'presence', '#5ec4fc'),
@@ -82,7 +135,7 @@ INSERT INTO `people_schedule` (`person_id`, `date_filter`, `start_date`, `end_da
 (34, '2023-01-04', '2023-01-04 13:37:13', '2023-01-04 13:37:13', '01:37:14', 'absence', '#388cdc'),
 (35, '2023-01-04', '2023-01-04 21:56:29', '2023-01-04 21:56:29', '09:56:30', 'absence', '#388cdc'),
 (36, '2023-01-05', '2023-01-05 08:00:00', '2023-01-05 08:30:00', '10:21:58', 'absence', '#21b81e'),
-(37, '2023-01-06', '2023-01-06 08:00:00', '2023-01-06 08:30:00', '10:23:39', 'presence', '#91e4f7'),
+(37, '2023-01-06', '2023-01-06 08:00:00', '2023-01-06 08:30:00', '10:23:39', 'absence', '#91e4f7'),
 (38, '2023-01-06', '2023-01-06 19:33:13', '2023-01-06 19:33:13', '07:33:13', 'absence', '#388cdc'),
 (39, '2023-01-06', '2023-01-06 19:33:33', '2023-01-06 19:33:33', '07:33:33', 'absence', '#388cdc'),
 (40, '2023-01-08', '2023-01-08 13:12:38', '2023-01-08 13:12:38', '01:12:38', 'absence', '#388cdc'),
@@ -326,10 +379,20 @@ INSERT INTO `people_schedule` (`person_id`, `date_filter`, `start_date`, `end_da
 (291, '2023-02-08', '2023-02-08 01:30:00', '2023-02-08 02:00:00', '11:11:29', 'presence', '#1d5202'),
 (292, '2023-02-12', '2023-02-12 11:51:12', '2023-02-12 11:51:12', '11:51:12', 'absence', '#388cdc');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `person_type`
+--
+
 CREATE TABLE `person_type` (
   `id` tinyint(1) NOT NULL COMMENT 'Campo que guarda el id del tipo de persona (autoincremental).',
   `person` varchar(15) NOT NULL COMMENT 'Campo que guarda el nombre del tipo de persona, clasificado por categoria.'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci COMMENT='Tabla que almacena los diferentes tipos de persona clasificada por categoria, usada para los agendamientos.';
+
+--
+-- Dumping data for table `person_type`
+--
 
 INSERT INTO `person_type` (`id`, `person`) VALUES
 (1, 'Docente'),
@@ -337,6 +400,12 @@ INSERT INTO `person_type` (`id`, `person`) VALUES
 (3, 'Coordinador'),
 (4, 'Decano'),
 (5, 'Otro (externo)');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `registered_people`
+--
 
 CREATE TABLE `registered_people` (
   `id` int(11) NOT NULL COMMENT 'Campo que guarda el id de las personas agendadas (autoincremental).',
@@ -348,299 +417,255 @@ CREATE TABLE `registered_people` (
   `text_asunt` varchar(150) NOT NULL COMMENT 'Campo que guarda el asunto, motivo o razon de la visita a la rectoria, para su posterior agendamiento.'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci COMMENT='Tabla que almacena todos los datos personales de las personas que han sido agendadas.';
 
+--
+-- Dumping data for table `registered_people`
+--
+
 INSERT INTO `registered_people` (`id`, `name`, `id_doc`, `num_doc`, `person_type`, `facultad`, `text_asunt`) VALUES
-(1, 'Idona Grimes', 3, '7555555555', 4, 2, 'Ipsum sit praesentiu'),
-(2, 'Dale Baldwin', 5, '374955005', 3, 4, 'Non vero quis proide'),
-(3, 'Arthur Fitzgerald', 4, '633334444', 5, 4, 'Consequatur anim voluptatem sit unde officiis qui'),
-(4, 'Glenna Walton', 2, '339483944', 2, 3, 'Sint lorem quasi qu'),
-(5, 'Ella Francis', 3, '22333444', 3, 3, 'Irure ullamco ut dol'),
-(6, 'Aurora Welch', 1, '5555555555', 2, 2, 'Perspiciatis elit '),
-(7, 'jose manuel', 2, '172167312', 4, 3, 'persmisos de citas'),
-(8, 'Ricardo Andres Rojas Rico', 1, '1111122448', 2, 2, 'Crear software para ustedes.'),
-(9, 'jorge leonardo castro arana', 1, '1105679460', 1, 2, 'revision de notas de primero B'),
-(10, 'Holman reyes', 1, '658557677', 4, 2, 'Nombramiento  docent'),
-(11, 'Holman reyes', 1, '658557677', 4, 2, 'Nombramiento  coordinador'),
-(12, 'jorge leonardo castro arana', 1, '1105679460', 1, 2, 'Nombramiento coordinador a planta'),
-(13, 'HOLMAN REYES', 1, '36768855', 4, 2, 'HFEUHEW'),
-(14, 'Ricardo Rojas', 1, '1111122448', 2, 2, 'Hola'),
-(15, 'Holman reyes ', 4, '1883838838', 2, 4, 'Ksskd'),
-(16, 'carlo enrique lara meneces', 1, '100588732', 3, 2, 'aumento de saliario'),
-(17, 'Darrel Yates', 1, '4445555555', 1, 3, 'Modi qui adipisicing alias earum eius incidunt minima id rerum ad illum pariatur'),
-(18, 'Karina Rosales', 5, '4444444444', 5, 4, 'Ut qui natus labore eiusmod saepe incidunt a'),
-(19, 'Meghan Fleming', 1, '6766666666', 5, 4, 'Tempora vel porro non cum eum reiciendis odit ad sapiente eos voluptate culpa'),
-(20, 'Hayes Guzman', 4, '5554444444', 3, 4, 'Ea aut ut quis qui commodi consectetur sint rerum aperiam et blanditiis dolorum nemo est qui do vel'),
-(21, 'Patricia Long', 1, '6666666664', 5, 4, 'Dolorem voluptatem q'),
-(22, 'Jamal Foley', 3, '6666444555', 5, 4, 'Quisquam nisi quis pariatur Ipsa tenetur dolores eius repudiandae velit perferendis'),
-(23, 'Brent Booker', 4, '6666666444', 1, 1, 'Numquam quidem moles'),
-(24, 'Kelly Atkinson', 5, '9949959555', 5, 4, 'Et ut anim consequun'),
-(25, 'Blair Mcdonald', 4, '895556666', 5, 4, 'Ea omnis porro quia Nam a minim minima voluptatem temporibus minus commodo duis ex in do nihil'),
-(26, 'Yuli Armstrong', 2, '5585866666', 4, 1, 'Nihil ex itaque nisi in doloremque ex et suscipit velit esse illo ea est eu incididunt ipsum dolor'),
-(27, 'Clio Gallagher', 2, '8449595995', 3, 2, 'Qui sunt Nam omnis Nam laboris pariatur Natus sunt labore ratione vitae ea minima hic assumenda con'),
-(28, 'Lucas Moy', 3, '448958533', 5, 4, 'Programmer'),
-(29, 'Asdaasdsa', 2, '33333333', 3, 2, 'Asdadsadasad'),
-(30, 'Thomas Herring', 3, '4444444444', 4, 3, 'Et asperiores ut repellendus et nemo ad'),
-(31, 'Illiana Sharpe', 5, '555555544', 4, 3, 'Ipsum rem eveniet '),
-(32, 'Asadsadsa', 1, '6627627267', 1, 4, 'Dasdasaadsadad'),
-(33, 'Asadasad', 1, '333664748', 2, 1, 'Sssssssasaadsd'),
-(34, 'F', 1, '45555555', 2, 2, '4'),
-(35, 'Sss', 1, '33353355', 2, 1, 'Rr'),
-(36, 'Nichole Sanford', 3, '3333333333', 1, 4, 'Corrupti dolore nem'),
-(37, 'Glenna Bradford', 1, '7384884494', 4, 3, 'Et quia dolorem sapi'),
-(38, 'Harper Langley', 2, '88484949', 2, 3, 'Eiusmod illo esse quia nisi officia lorem animi in omnis sint et id libero quae'),
-(39, 'Hilary Shepherd', 3, '88895995', 2, 1, 'Dicta dolore neque voluptate qui ut esse minim ut incidunt corrupti quibusdam esse veniam omnis '),
-(40, 'Fff', 1, '3399999999', 2, 4, 'Dddd'),
-(41, 'Lucius Knowles', 3, '8884444455', 3, 4, 'Id ut aut dolore quae corrupti vitae commodi reiciendis incidunt dolores asperiores consequat con'),
-(42, 'Prescott Rush', 3, '55555555', 3, 4, 'Est accusamus tenetur pariatur ullam nesciunt corporis'),
-(43, 'Damian Medina', 2, '949955555', 1, 4, 'Porro doloribus molestiae ea omnis eu vel sint vel fugiat at sed magnam ratione fuga'),
-(44, 'Fletcher Cotton', 1, '9999999999', 5, 4, 'Ipsa qui quibusdam in sint voluptatum necessitatibus laborum rerum dolore ullamco unde commodo nes'),
-(45, 'Irma Frederick', 3, '2345678900', 5, 4, 'Ipsum dolore sed odit ad explicabo blanditiis consequat corporis ut quas quaerat sit in fuga ape'),
-(46, 'Silas Coffey', 3, '222222222', 1, 1, 'Maiores repellendus voluptates voluptatem similique'),
-(47, 'Rebekah Valdez', 3, '33333334', 2, 1, 'Sed porro aut labore consequuntur non quasi aliquid qui aut anim sunt iusto consequat nostrud et q'),
-(48, 'Yolanda Moss', 5, '4444444444', 1, 1, 'Consequatur aut esse explicabo veniam totam ex qui saepe deserunt aut quo cumque'),
-(49, 'Casey Norton', 1, '2222222222', 2, 1, 'Dolorem laborum eveniet inventore eiusmod natus ut modi in sit repellendus esse ducimus consectet'),
-(50, 'Lunea Morris', 5, '1222223444', 1, 1, 'Est ad minima eos e'),
-(51, 'Jesse Walker', 5, '5444444434', 4, 4, 'Enim cupidatat porro'),
-(52, 'Florence Graham', 3, '5555555555', 2, 1, 'Ducimus nemo alias '),
-(53, 'Casey Serrano', 3, '2222222220', 5, 4, 'Ipsam odio provident'),
-(54, 'Ann Stokes', 4, '1234567666', 5, 4, 'Illo labore ipsam veritatis esse id quod in consectetur quia'),
-(55, 'Carlos Solomon', 2, '9976532222', 5, 4, 'Officia laborum ad saepe velit'),
-(56, 'Kasper Spencer', 1, '8444444455', 1, 2, 'Accusantium eos bea'),
-(57, 'Beatrice Holloway', 5, '4885555555', 2, 1, 'Aut pariatur perspi'),
-(58, 'Cailin Mercado', 4, '2396666666', 5, 4, 'Doloremque temporibus aut sunt tenetur ducimus sunt'),
-(59, 'Brennan Mclean', 2, '1237888888', 5, 4, 'Veniam quidem vel e'),
-(60, 'Ssssssss', 3, '3333333', 2, 4, '3333333333'),
-(61, 'Ciara Todd', 4, '44444444', 3, 1, 'Delectus non sed proident illum proident sint officiis quo rerum velit rem ipsam qui'),
-(62, 'Adrian Walsh', 3, '2345678000', 5, 4, 'Magni do quibusdam a'),
-(63, 'Ainsley Vega', 2, '2345678908', 5, 4, 'Et eveniet excepteur eaque voluptatem est sunt enim sint sit'),
-(64, 'Karleigh Blackwell', 2, '8444444444', 1, 3, 'Delectus quos dignissimos voluptas est dolores ut error molestiae'),
-(65, 'Stone Griffin', 1, '4444444453', 1, 4, 'Occaecat obcaecati r'),
-(66, 'Stone Griffin', 1, '4444444453', 1, 4, 'Occaecat obcaecati r'),
-(67, 'Kuame Hanson', 3, '1111111111', 4, 3, 'Sint eius in blandi'),
-(68, 'Kuame Hanson', 3, '1111111111', 4, 3, 'Sint eius in blandi'),
-(69, 'Xantha Bass', 4, '5555555555', 4, 3, 'Et maxime dolore qui'),
-(70, 'Xantha Bass', 4, '5555555555', 4, 3, 'Et maxime dolore qui'),
-(71, 'Kyla Rosales', 1, '66666666', 2, 1, 'Eum qui voluptatum t'),
-(72, 'Hedley Adkins', 3, '2222222222', 4, 4, 'Magni rerum aut impe'),
-(73, 'Hedley Adkins', 3, '2222222222', 4, 4, 'Magni rerum aut impe'),
-(74, 'Hashim Savage', 4, '5555555555', 2, 2, 'Qui qui dolore fugit'),
-(75, 'Hashim Savage', 4, '5555555555', 2, 2, 'Qui qui dolore fugit'),
-(76, 'Hashim Savage', 4, '5555555555', 2, 2, 'Qui qui dolore fugit'),
-(77, 'Colby Haley', 5, '1111122222', 5, 4, 'Laboriosam odio eli'),
-(78, 'Colby Haley', 5, '1111122222', 5, 4, 'Laboriosam odio eli'),
-(79, 'Colby Haley', 5, '1111122222', 5, 4, 'Laboriosam odio eli'),
-(80, 'Colby Haley', 5, '1111122222', 5, 4, 'Laboriosam odio eli'),
-(81, 'Inez Mills', 3, '4444444444', 5, 2, 'Nisi adipisci lorem '),
-(82, 'Colleen Mcpherson', 1, '2222222222', 2, 4, 'Est accusamus volupt'),
-(83, 'Gavin Foreman', 2, '4444444444', 2, 1, 'Ratione ut dolorem n'),
-(84, 'Piper Atkins', 2, '4444444444', 5, 3, 'Eos aliquid qui aut'),
-(85, 'Latifah Richmond', 2, '2333333333', 1, 4, 'Amet magni incidunt'),
-(86, 'Latifah Richmond', 2, '2333333333', 1, 4, 'Amet magni incidunt'),
-(87, 'Latifah Richmond', 2, '2333333333', 1, 4, 'Amet magni incidunt'),
-(88, 'Latifah Richmond', 2, '2333333333', 1, 4, 'Amet magni incidunt'),
-(89, 'Clio Valdez', 3, '4444444444', 3, 2, 'Nihil modi est duis veritatis deserunt cum est eaque velit ipsa quibusdam laudantium illo consequ'),
-(90, 'Dalton Mejia', 2, '8888888888', 5, 4, 'Voluptas quos et nostrum nulla eos non ut cumque nemo aute temporibus'),
-(91, 'Fletcher Hartman', 2, '3333333333', 5, 4, 'Culpa vitae nihil magni qui incididunt labore sed harum totam nam in culpa nihil'),
-(92, 'Madison Mccoy', 2, '2222222222', 5, 4, 'Fugiat dolores qui vitae qui ut do rerum dignissimos assumenda sit quam nam'),
-(93, 'Hiroko Downs', 1, '5555555555', 2, 3, 'Mollitia dolorem dolorem voluptatem quam quis dolore rerum'),
-(94, 'Aiko Avila', 5, '123456789', 5, 2, 'Sit in alias irure '),
-(95, 'Beverly Hahn', 5, '7777444444', 3, 2, 'Consectetur amet error fugiat lorem inventore'),
-(96, 'Cyrus Wilkinson', 5, '7777777777', 4, 3, 'Mollit consequatur in eum praesentium officia elit itaque'),
-(97, 'Penelope Taylor', 1, '5555555555', 3, 1, 'Nostrud qui ipsum qu'),
-(98, 'Penelope Taylor', 1, '5555555555', 3, 1, 'Nostrud qui ipsum qu'),
-(99, 'Penelope Taylor', 1, '5555555555', 3, 1, 'Nostrud qui ipsum qu'),
-(100, 'Penelope Taylor', 1, '5555555555', 3, 1, 'Nostrud qui ipsum qu'),
-(101, 'Penelope Taylor', 1, '5555555555', 3, 1, 'Nostrud qui ipsum qu'),
-(102, 'Kaitlin Floyd', 3, '7445555555', 2, 2, 'Aspernatur aperiam c'),
-(103, 'Kenneth Day', 5, '3445556666', 1, 2, 'Nulla culpa qui a odit repudiandae cumque consequat in alias magni'),
-(104, 'Ciara Gilmore', 2, '3333333333', 1, 2, 'Quia omnis iusto et '),
-(105, 'Ciara Gilmore', 2, '3333333333', 1, 2, 'Quia omnis iusto et '),
-(106, 'Ciara Gilmore', 2, '3333333333', 1, 2, 'Quia omnis iusto et '),
-(107, 'Ciara Gilmore', 2, '3333333333', 1, 2, 'Quia omnis iusto et '),
-(108, 'Ciara Gilmore', 2, '3333333333', 1, 2, 'Quia omnis iusto et '),
-(109, 'Ciara Gilmore', 2, '3333333333', 1, 2, 'Quia omnis iusto et '),
-(110, 'Ciara Gilmore', 2, '3333333333', 1, 2, 'Quia omnis iusto et '),
-(111, 'Ciara Gilmore', 2, '3333333333', 1, 2, 'Quia omnis iusto et '),
-(112, 'Ciara Gilmore', 2, '3333333333', 1, 2, 'Quia omnis iusto et '),
-(113, 'Eaton Guerra', 5, '3334444444', 3, 3, 'Incididunt sit est '),
-(114, 'Ignacia Higgins', 5, '3333333344', 2, 2, 'Id porro facere cill'),
-(115, 'Dora Perez', 5, '3844444455', 4, 3, 'Exercitationem assum'),
-(116, 'Lani Blanchard', 3, '3333333333', 4, 1, 'Duis in rerum nisi fugiat sed in ducimus pariatur necessitatibus beatae aspernatur hic totam earum'),
-(117, 'Louis Willis', 1, '9999999999', 4, 1, 'Mollit amet enim pe'),
-(118, 'Abbot Holmes', 1, '9559595555', 2, 3, 'Reprehenderit except'),
-(119, 'Jade Ratliff', 2, '3333333333', 3, 4, 'Modi totam commodi t'),
-(120, 'Galena Brooks', 2, '3352222222', 1, 4, 'Repellendus at dese'),
-(121, 'Damian Bennett', 2, '1111111188', 5, 2, 'Qui est officiis et'),
-(122, 'Cheyenne Berry', 3, '3444444444', 1, 4, 'Unde adipisci dolore'),
-(123, 'Armand Pollard', 2, '5555555555', 2, 1, 'Debitis et dolores ut est distinctio nobis qui accusamus cumque ducimus dolorem illo veniam volu'),
-(124, 'Derek Saunders', 4, '3333333333', 2, 3, 'Corrupti reiciendis consequatur doloremque autem ut dolore praesentium cillum adipisicing facilis q'),
-(125, 'Allen Roberts', 2, '9999999999', 5, 4, 'Alias quia aspernatur commodo aliqua mollit sint quos laboris facere cillum dolores aut qui in'),
-(126, 'Raphael Mcconnell', 5, '9777777775', 5, 4, 'Odit quia nostrud facilis ut duis et qui tempor et provident ea veniam aut ipsa ipsa adipisci'),
-(127, 'Xena Bass', 1, '2222222222', 3, 4, 'Atque ullamco earum qui vel ex dolor'),
-(128, 'Brady Payne', 1, '5555555555', 4, 4, 'Et ut dolore dolor ex pariatur ullam commodo nemo commodi nobis neque culpa vel eaque'),
-(129, 'Kirk Yates', 3, '8888888888', 5, 4, 'Asperiores sint et et voluptatem quaerat dolores nam et cillum alias'),
-(130, 'Hermione Holloway', 3, '4444444444', 1, 3, 'Laboriosam magna quia enim cupidatat pariatur officia rerum quos nihil quidem est corporis aute du'),
-(131, 'Caldwell Knight', 3, '4444444444', 4, 3, 'Consequatur aut aut rerum corrupti expedita quia mollitia ut perferendis est'),
-(132, 'Peter Mckinney', 2, '6789000000', 5, 4, 'A voluptatem rerum laborum magni quis recusandae sit ut necessitatibus minus'),
-(133, 'Melodie Ware', 4, '9559893955', 4, 4, 'Officia optio doloribus vitae et autem ipsa nisi'),
-(134, 'Ffffffffffff', 2, '55555555', 2, 2, '55555555555'),
-(135, 'Carlos Enrique Lara Meneses', 1, '4890444994', 1, 2, 'Prestamo del auditorio del itfip'),
-(136, 'Ciara Roy', 3, '4444444444', 4, 4, 'Consequuntur facilis laboris omnis pariatur perspiciatis voluptatem ad voluptatem earum numquam q'),
-(137, 'Maia Cherry', 2, '3333333333', 1, 4, 'Facere id rerum asperiores eiusmod iusto deserunt veniam quia'),
-(138, 'Jermaine Barnes', 4, '5555555555', 5, 3, 'In ducimus elit perspiciatis exercitation laborum'),
-(139, 'Jessica Buchanan', 3, '4444444444', 4, 4, 'Magni reprehenderit ab sint id earum iste'),
-(140, 'Richard Beasley', 4, '7777777777', 3, 3, 'Laborum ut placeat omnis sunt voluptas et provident error officia illo aliquid'),
-(141, 'Isabella Mcfarland', 3, '4444444444', 5, 4, 'Dolores voluptas beatae aut exercitation laboris nemo sapiente quae'),
-(142, 'Ssssssssssssssssssss', 1, '3333333333', 2, 1, 'Eeee'),
-(143, 'Aidan Valencia', 4, 'Culpa con', 5, 4, 'Autem excepteur nostrud in fugiat consequat do eum error explicabo atque quas'),
-(144, 'Madeline Randall', 3, '5555555555', 1, 4, 'Repudiandae inventore alias ipsum elit quos libero ea'),
-(145, 'Kaseem Bernard', 1, '5555555555', 5, 4, 'Animi corrupti rerum nemo minus quis sit numquam nostrum est proident voluptatum voluptates ipsu'),
-(146, 'Ursa Herrera', 3, '4444444444', 1, 2, 'Voluptas sunt distinctio quia harum repellendus commodo in irure rerum duis dolores aut vero ut i'),
-(147, 'Hayden William', 4, '4444444444', 5, 4, 'Alias anim cillum ab sint nobis quia repudiandae dolorem veniam aliquam animi quod id'),
-(148, 'Yael Knight', 4, '4444444444', 4, 3, 'Deserunt et illum incididunt et esse beatae voluptates quis qui ut ipsum dolore similique consequa'),
-(149, 'Trevor Frazier', 1, '8888888888', 4, 1, 'Qui voluptatum in aute corporis autem commodi dolore quia a eum est irure iusto aliquam nesciunt il'),
-(150, 'Abdul Vaughan', 5, '8888888888', 4, 1, 'Eu quas sit sunt in odio dolor repellendus a velit quae nemo vitae dolore aspernatur anim volupta'),
-(151, 'Isadora Romero', 2, '2222222222', 2, 4, 'Fugit autem eligendi fugit voluptas at reprehenderit rerum'),
-(152, 'Maryam Francis', 3, '5555555555', 2, 2, 'Sed qui exercitation at earum qui aute nesciunt alias architecto'),
-(153, 'Audra Hale', 4, '2222222222', 3, 1, 'Qui quo veritatis et sunt reiciendis possimus reprehenderit quia quia voluptas commodi'),
-(154, 'Derek Hull', 3, '8888888888', 3, 1, 'Laborum dicta quis nostrud nulla consequatur praesentium accusantium earum sequi ut'),
-(155, 'Rebekah Hernandez', 5, '3400000000', 5, 4, 'Esse vero adipisci consequatur nostrud quos ratione quod ut'),
-(156, 'Odysseus Kemp', 3, '2222222222', 4, 4, 'Autem fugiat consequatur eligendi commodo exercitationem vero non accusantium rerum molestiae id qu'),
-(157, 'Abra Randolph', 5, '3333333333', 5, 4, 'Doloremque illo magni excepteur sunt'),
-(158, 'Xerxes Becker', 4, '2222222222', 4, 2, 'Sunt et dolores possimus ut omnis obcaecati quo sed sint suscipit in'),
-(159, 'Shea Vaughan', 2, '2666666666', 3, 4, 'Ea quo dicta aut consequuntur quibusdam doloremque occaecat anim'),
-(160, 'Aristotle Miranda', 2, '1111111111', 2, 2, 'Repellendus aliquid nesciunt eum et dolores eligendi quis sit sequi aut'),
-(161, 'Jackson Weaver', 5, '8888888888', 3, 3, 'Porro veritatis aliquip quia sunt tenetur doloribus voluptatem quis'),
-(162, 'Avram Berg', 5, '7777777777', 1, 3, 'Qui ad consequatur id quisquam atque ut nostrud sit sequi labore dolore nisi sunt et nesciunt mol'),
-(163, 'Maggie Mack', 2, '9999999999', 2, 4, 'Possimus rerum exercitation eaque nam minima animi voluptatem laboriosam aut ipsa veniam eiusm'),
-(164, 'Maya Price', 1, '1111111111', 1, 4, 'Ab ab duis eos labore sit vitae odit qui quia molestias reprehenderit atque suscipit magna hic est'),
-(165, 'Vanna Mccall', 5, '5888888888', 1, 2, 'Voluptatem neque et molestiae cum ullam commodo vel in expedita velit laboriosam tenetur'),
-(166, 'Brenda Daniels', 3, '4666666666', 4, 2, 'Tenetur sed ea dignissimos iure excepteur voluptates suscipit ut est consequuntur nam sequi deserunt'),
-(167, 'Raven Shaffer', 4, '6444444444', 4, 1, 'Eaque voluptatem explicabo vel quis odio provident consequatur quo nisi'),
-(168, 'Emi Lewis', 2, '9999999999', 2, 1, 'Velit in ipsum accusamus est proident dolor autem mollit incidunt incidunt lorem quibusdam quia '),
-(169, 'Gay Stark', 1, '7777777777', 1, 2, 'Consequat incididunt fugiat facilis expedita eum soluta sed libero id ut fuga ut voluptate veniam'),
-(170, 'Scott Blair', 1, '6444444444', 3, 4, 'Sed in dolores eum aut incididunt in aut fugit ex totam iusto alias dolore'),
-(171, 'Piper Patterson', 4, '4666644444', 1, 1, 'Commodo qui sit consequat eu eaque omnis proident dolore'),
-(172, 'Brenna Gonzalez', 4, '6444444444', 3, 3, 'Modi repellendus et numquam aut fuga amet cumque'),
-(173, 'Cedric Reilly', 5, '5333333333', 5, 4, 'Consequatur consequatur voluptas sit sed'),
-(174, 'Britanni Clements', 3, '6333333333', 4, 1, 'Incididunt quibusdam rem tenetur labore cillum'),
-(175, 'Carly Garrett', 2, '8555555555', 1, 2, 'Officiis nostrum qui est sit quidem nostrum dolorem ipsum cum est natus eu rerum quam quia velit '),
-(176, 'Walter Osborne', 1, '7775555555', 2, 4, 'Iure quia iusto impedit ut laborum dolore corporis quas sit sed adipisicing architecto ut qui'),
-(177, 'Dominic Vega', 5, '5888888888', 3, 2, 'Quia perferendis ipsam quia autem qui fugiat in sit deserunt fugit officia omnis sit quas volupt'),
-(178, 'Karly Noel', 5, '9999999999', 3, 1, 'Eum culpa et at et eligendi deserunt eiusmod quaerat eum'),
-(179, 'Selma White', 2, '3333333333', 3, 1, 'Aut numquam voluptas tempore eaque'),
-(180, 'Asher Ellis', 4, '4888888888', 3, 1, 'Sint et quis et molestias eos praesentium deleniti commodo'),
-(181, 'Jameson Sanchez', 1, '8888888888', 5, 4, 'Quia qui quo sunt rerum sit nisi labore nostrum aperiam ut nostrum explicabo pariatur'),
-(182, 'Tashya Fisher', 4, '9999999999', 2, 1, 'Totam beatae expedita velit eum rerum culpa dolorum non ea consequuntur nemo'),
-(183, 'Harriet Hunter', 1, '6333333333', 4, 3, 'Quibusdam in saepe distinctio eiusmod voluptate aut mollitia ea qui qui nostrum quos provident ut '),
-(184, 'Audrey Boone', 5, '7222222222', 4, 1, 'Corrupti modi voluptas natus sint quod quis esse itaque et consectetur distinctio veritatis eius '),
-(185, 'Oleg Blackwell', 4, '9555555555', 2, 2, 'Optio quisquam dolorem molestias facere quis inventore'),
-(186, 'Diana Salinas', 4, '6333333333', 1, 3, 'Voluptas irure irure error et irure pariatur soluta culpa'),
-(187, 'Andrew Valencia', 5, '9555555555', 2, 4, 'Et est reiciendis officia ipsam facere pariatur obcaecati nam pariatur qui vel eos'),
-(188, 'Candace Andrews', 1, '3663333333', 4, 3, 'Qui est quos adipisicing ut proident'),
-(189, 'Raya Gomez', 1, '2555555555', 3, 2, 'Non corporis molestiae et magnam sit nihil itaque nobis nam vero dolore iure'),
-(190, 'Felicia Flynn', 1, '999999995', 2, 1, 'Ut laboriosam architecto similique eligendi veniam aut dolor quidem officia soluta veniam elit h'),
-(191, 'Sheila Wise', 3, '5222222222', 5, 3, 'Architecto repellendus perspiciatis mollit repellendus in rerum qui vel omnis fuga ipsam archite'),
-(192, 'Cassandra Stark', 1, '9444444444', 2, 2, 'Est cumque ab quia voluptatem qui perferendis qui'),
-(193, 'Rinah Cooper', 5, '4444225555', 4, 2, 'Quo vitae sint provident excepturi reiciendis natus eos voluptatem enim aut aut voluptatem porro '),
-(194, 'Imani Leonard', 1, '7333333333', 2, 4, 'Odio odit voluptas sed eum expedita assumenda fugiat repellendus ratione aut quod officiis cupidat'),
-(195, 'Isabella Duffy', 5, '4888888888', 1, 3, 'Maiores omnis cillum quia cillum omnis autem non fugiat'),
-(196, 'Kerry Sloan', 5, '633333333', 5, 4, 'Temporibus ut sunt incidunt ex provident sunt tenetur aut aliquip rerum aut minima vel voluptatem '),
-(197, 'Adam Salas', 4, '4477777777', 4, 4, 'Expedita sint ut quisquam et nostrum dolores qui nihil alias ipsum deleniti sed error non cupidatat'),
-(198, 'Laurel Alvarado', 4, '8444444444', 3, 4, 'Assumenda odio recusandae tenetur voluptatem cum animi est nulla ullamco'),
-(199, 'Jonas Mcneil', 5, '7333333333', 1, 2, 'Voluptatem voluptatem sequi magna hic quis in minima dolor et eum laboriosam'),
-(200, 'Lavinia Castro', 5, '6111111111', 2, 2, 'Adipisci tempora dignissimos soluta accusantium'),
-(201, 'Elton Wilkins', 2, '3777777777', 4, 4, 'Maiores et modi et perferendis unde quia velit aliquam quisquam'),
-(202, 'Susan Bray', 2, '7333333333', 5, 3, 'Deserunt odio nisi facilis est soluta reprehenderit voluptatem provident'),
-(203, 'Regan Holmes', 4, '3333333338', 2, 2, 'Velit voluptas molestias deserunt officia dolorem ut omnis deleniti quisquam sed'),
-(204, 'Flavia Mcmillan', 2, '4499999999', 3, 2, 'Necessitatibus ut eu ea magna voluptatem'),
-(205, 'Quintessa Rogers', 3, '3333333333', 4, 4, 'Laborum voluptas vero omnis ea'),
-(206, 'Ynn Ellis', 3, '3333333333', 3, 3, 'Pariatur nihil sed illum perspiciatis nesciunt dolorem perferendis'),
-(207, 'Kelly Owen', 4, 'Neque repr', 5, 4, 'Quo sit et laborum ex quia dolor rerum consequuntur molestiae'),
-(208, 'Lester Weewks', 5, '4444444444', 2, 2, 'Nobis vel dolore aut minim ut molestias ex maxime qui hic minus sit atque incididunt qui velit adipi'),
-(209, 'Connor Tucker', 2, '3333333333', 4, 3, 'Quo ipsum enim anim dolor repudiandae hic quibusdam eum quidem animi minim tempora et commodo est'),
-(210, 'April Shelton', 4, '4444444444', 1, 1, 'Facere quidem anim sed hic blanditiis ipsum ex dolor et quis et quis dolore optio sit amet id'),
-(211, 'Kiara Duke', 3, '4444444444', 1, 4, 'Nihil aliquam qui ipsa est duis amet iusto nemo ex tempora architecto veniam earum'),
-(212, 'Wylie Pope', 4, '3333333333', 1, 4, 'Consequatur veritatis in est voluptatum officia reiciendis rem dolorem aut ex maxime in mollit obc'),
+(1, 'Aadsadasada', 1, '4777777777', 1, 1, 'Id velit est magni et'),
+(2, 'Abbot Holmes', 1, '9559595555', 2, 3, 'Reprehenderit except'),
+(3, 'Abdul Vaughan', 5, '8888888888', 4, 1, 'Eu quas sit sunt in odio dolor repellendus a velit quae nemo vitae dolore aspernatur anim volupta'),
+(4, 'Abra Randolph', 5, '3333333333', 5, 4, 'Doloremque illo magni excepteur sunt'),
+(5, 'Adam Salas', 4, '4477777777', 4, 4, 'Expedita sint ut quisquam et nostrum dolores qui nihil alias ipsum deleniti sed error non cupidatat'),
+(6, 'Adrian Cline', 2, '4444444444', 5, 2, 'Dignissimos quo elit ab dolore'),
+(7, 'Adrian Walsh', 3, '2345678000', 5, 4, 'Magni do quibusdam a'),
+(8, 'Aidan Valencia', 4, 'Culpa con', 5, 4, 'Autem excepteur nostrud in fugiat consequat do eum error explicabo atque quas'),
+(9, 'Aiko Avila', 5, '123456789', 5, 2, 'Sit in alias irure '),
+(10, 'Ainsley Vega', 2, '2345678908', 5, 4, 'Et eveniet excepteur eaque voluptatem est sunt enim sint sit'),
+(11, 'Allen Roberts', 2, '9999999999', 5, 4, 'Alias quia aspernatur commodo aliqua mollit sint quos laboris facere cillum dolores aut qui in'),
+(12, 'Andrew Valencia', 5, '9555555555', 2, 4, 'Et est reiciendis officia ipsam facere pariatur obcaecati nam pariatur qui vel eos'),
+(13, 'Ann Stokes', 4, '1234567666', 5, 4, 'Illo labore ipsam veritatis esse id quod in consectetur quia'),
+(14, 'Anthony Leach', 1, '6555555555', 4, 4, 'Quos excepturi sunt numquam iusto quae non maxime doloribus obcaecati veniam minus sit rem'),
+(15, 'April Shelton', 4, '4444444444', 1, 1, 'Facere quidem anim sed hic blanditiis ipsum ex dolor et quis et quis dolore optio sit amet id'),
+(16, 'Aristotle Miranda', 2, '1111111111', 2, 2, 'Repellendus aliquid nesciunt eum et dolores eligendi quis sit sequi aut'),
+(17, 'Armand Pollard', 2, '5555555555', 2, 1, 'Debitis et dolores ut est distinctio nobis qui accusamus cumque ducimus dolorem illo veniam volu'),
+(18, 'Arthur Fitzgerald', 4, '633334444', 5, 4, 'Consequatur anim voluptatem sit unde officiis qui'),
+(19, 'Asadasad', 1, '333664748', 2, 1, 'Sssssssasaadsd'),
+(20, 'Asadsadsa', 1, '6627627267', 1, 4, 'Dasdasaadsadad'),
+(21, 'Asasasasasaaaasas', 1, '1234567890', 4, 2, 'Voluptatum tempor excepturi aspernatur obcaecati dolore eveniet rerum quo porro non laborum quis v'),
+(22, 'Asdaasdsa', 2, '33333333', 3, 2, 'Asdadsadasad'),
+(23, 'Asher Ellis', 4, '4888888888', 3, 1, 'Sint et quis et molestias eos praesentium deleniti commodo'),
+(24, 'Assadasasda', 3, '123456789', 4, 1, 'Ipsum ipsa minima culpa est suscipit architecto quis minim consequat cum cillum omnis nulla neque'),
+(25, 'Assdasada', 5, '4444444444', 4, 1, 'Autem ullam ratione aliqua velit duis velit officia veniam voluptate ipsa aliquam vero hic nihil '),
+(26, 'Audra Hale', 4, '2222222222', 3, 1, 'Qui quo veritatis et sunt reiciendis possimus reprehenderit quia quia voluptas commodi'),
+(27, 'Audrey Boone', 5, '7222222222', 4, 1, 'Corrupti modi voluptas natus sint quod quis esse itaque et consectetur distinctio veritatis eius '),
+(28, 'Aurora Welch', 1, '5555555555', 2, 2, 'Perspiciatis elit '),
+(29, 'Avram Berg', 5, '7777777777', 1, 3, 'Qui ad consequatur id quisquam atque ut nostrud sit sequi labore dolore nisi sunt et nesciunt mol'),
+(30, 'Beatrice Holloway', 5, '4885555555', 2, 1, 'Aut pariatur perspi'),
+(31, 'Bernard Dyer', 1, '4444444444', 3, 1, 'Hic molestiae dolores commodi obcaecati'),
+(32, 'Beverly Hahn', 5, '7777444444', 3, 2, 'Consectetur amet error fugiat lorem inventore'),
+(33, 'Blair Mcdonald', 4, '895556666', 5, 4, 'Ea omnis porro quia Nam a minim minima voluptatem temporibus minus commodo duis ex in do nihil'),
+(34, 'Brady Payne', 1, '5555555555', 4, 4, 'Et ut dolore dolor ex pariatur ullam commodo nemo commodi nobis neque culpa vel eaque'),
+(35, 'Brenda Daniels', 3, '4666666666', 4, 2, 'Tenetur sed ea dignissimos iure excepteur voluptates suscipit ut est consequuntur nam sequi deserunt'),
+(36, 'Brenna Gonzalez', 4, '6444444444', 3, 3, 'Modi repellendus et numquam aut fuga amet cumque'),
+(37, 'Brennan Mclean', 2, '1237888888', 5, 4, 'Veniam quidem vel e'),
+(38, 'Brent Booker', 4, '6666666444', 1, 1, 'Numquam quidem moles'),
+(39, 'Britanni Clements', 3, '6333333333', 4, 1, 'Incididunt quibusdam rem tenetur labore cillum'),
+(40, 'Cailin Mercado', 4, '2396666666', 5, 4, 'Doloremque temporibus aut sunt tenetur ducimus sunt'),
+(41, 'Cain Alexander Satanas', 5, '4888888888', 1, 4, 'Aperiam et sit illum mollit deserunt facilis et assumenda qui quis illo accusamus soluta commodi d'),
+(42, 'Caldwell Knight', 3, '4444444444', 4, 3, 'Consequatur aut aut rerum corrupti expedita quia mollitia ut perferendis est'),
+(43, 'Cameron Wyatt', 1, '2222222222', 1, 2, 'Repudiandae sunt sunt excepturi earum rerum corrupti harum reprehenderit sint id'),
+(44, 'Candace Andrews', 1, '3663333333', 4, 3, 'Qui est quos adipisicing ut proident'),
+(45, 'Carl Ruiz', 2, '5666666666', 5, 4, 'A deserunt molestiae autem ea omnis ab corporis nemo quos totam praesentium nostrud impedit qui'),
+(46, 'carlo enrique lara meneces', 1, '100588732', 3, 2, 'aumento de saliario'),
+(47, 'Carlos Enrique Lara Meneses', 1, '4890444994', 1, 2, 'Prestamo del auditorio del itfip'),
+(48, 'Carlos Solomon', 2, '9976532222', 5, 4, 'Officia laborum ad saepe velit'),
+(49, 'Carly Garrett', 2, '8555555555', 1, 2, 'Officiis nostrum qui est sit quidem nostrum dolorem ipsum cum est natus eu rerum quam quia velit '),
+(50, 'Casey Norton', 1, '2222222222', 2, 1, 'Dolorem laborum eveniet inventore eiusmod natus ut modi in sit repellendus esse ducimus consectet'),
+(51, 'Casey Serrano', 3, '2222222220', 5, 4, 'Ipsam odio provident'),
+(52, 'Cassandra Stark', 1, '9444444444', 2, 2, 'Est cumque ab quia voluptatem qui perferendis qui'),
+(53, 'Cedric Reilly', 5, '5333333333', 5, 4, 'Consequatur consequatur voluptas sit sed'),
+(54, 'Ciara Gilmore', 2, '3333333333', 1, 2, 'Quia omnis iusto et '),
+(55, 'Ciara Roy', 3, '4444444444', 4, 4, 'Consequuntur facilis laboris omnis pariatur perspiciatis voluptatem ad voluptatem earum numquam q'),
+(56, 'Ciara Todd', 4, '44444444', 3, 1, 'Delectus non sed proident illum proident sint officiis quo rerum velit rem ipsam qui'),
+(57, 'Clio Gallagher', 2, '8449595995', 3, 2, 'Qui sunt Nam omnis Nam laboris pariatur Natus sunt labore ratione vitae ea minima hic assumenda con'),
+(58, 'Clio Valdez', 3, '4444444444', 3, 2, 'Nihil modi est duis veritatis deserunt cum est eaque velit ipsa quibusdam laudantium illo consequ'),
+(59, 'Colby Haley', 5, '1111122222', 5, 4, 'Laboriosam odio eli'),
+(60, 'Colette Charles', 1, '6666666666', 2, 1, 'Ea provident elit molestiae alias et et dolor quibusdam voluptatibus ut ipsum voluptatem quod'),
+(61, 'Colton Wolfe', 3, '4444444444', 3, 4, 'Ea molestiae porro quis ducimus est'),
+(62, 'Colleen Mcpherson', 1, '2222222222', 2, 4, 'Est accusamus volupt'),
+(63, 'Connor Tucker', 2, '3333333333', 4, 3, 'Quo ipsum enim anim dolor repudiandae hic quibusdam eum quidem animi minim tempora et commodo est'),
+(64, 'Cyrus Wilkinson', 5, '7777777777', 4, 3, 'Mollit consequatur in eum praesentium officia elit itaque'),
+(65, 'Charissa Wright', 1, '4444444444', 3, 3, 'Aut sunt autem ad anim corporis pariatur in sint nulla sint ipsam enim sit omnis consectetur exc'),
+(66, 'Charles Kline', 1, '4444444444', 5, 4, 'Rem dolor molestias quia maiores voluptas nobis ea voluptas laborum atque'),
+(67, 'Cheyenne Berry', 3, '3444444444', 1, 4, 'Unde adipisci dolore'),
+(68, 'Dale Baldwin', 5, '374955005', 3, 4, 'Non vero quis proide'),
+(69, 'Dale Collier', 3, '3333337555', 1, 1, 'Eum unde ad non eveniet consectetur dolor sequi atque quisquam sit voluptas autem ea magnam earum'),
+(70, 'Dalton Mejia', 2, '8888888888', 5, 4, 'Voluptas quos et nostrum nulla eos non ut cumque nemo aute temporibus'),
+(71, 'Damian Bennett', 2, '1111111188', 5, 2, 'Qui est officiis et'),
+(72, 'Damian Medina', 2, '949955555', 1, 4, 'Porro doloribus molestiae ea omnis eu vel sint vel fugiat at sed magnam ratione fuga'),
+(73, 'Daria Love', 4, '6666666666', 5, 2, 'Dolorem illo numquam molestiae voluptatibus blanditiis explicabo et a nisi consequat nulla'),
+(74, 'Darrel Garza', 1, '4444444444', 5, 3, 'Do sunt non id excepteur consectetur asperiores repudiandae et dolor enim ipsum maiores'),
+(75, 'Darrel Yates', 1, '4445555555', 1, 3, 'Modi qui adipisicing alias earum eius incidunt minima id rerum ad illum pariatur'),
+(76, 'David Larry', 3, '8444444444', 4, 2, 'In beatae repellendus nostrud recusandae qui voluptas nobis voluptas odio irure in quidem error mo'),
+(77, 'Derek Hull', 3, '8888888888', 3, 1, 'Laborum dicta quis nostrud nulla consequatur praesentium accusantium earum sequi ut'),
+(78, 'Derek Saunders', 4, '3333333333', 2, 3, 'Corrupti reiciendis consequatur doloremque autem ut dolore praesentium cillum adipisicing facilis q'),
+(79, 'Diana Salinas', 4, '6333333333', 1, 3, 'Voluptas irure irure error et irure pariatur soluta culpa'),
+(80, 'Dominic Vega', 5, '5888888888', 3, 2, 'Quia perferendis ipsam quia autem qui fugiat in sit deserunt fugit officia omnis sit quas volupt'),
+(81, 'Dominique Miles', 1, '4444444444', 2, 4, 'Sit non sit aut inventore deserunt aut distinctio voluptas accusantium expedita'),
+(82, 'Dora Perez', 5, '3844444455', 4, 3, 'Exercitationem assum'),
+(83, 'Drew Mcfadden', 1, '5555555555', 1, 1, 'Est eaque ad ex maxime suscipit aliquip totam fugit voluptas autem culpa eos quod impedit quis'),
+(84, 'Eaton Guerra', 5, '3334444444', 3, 3, 'Incididunt sit est '),
+(85, 'Elizabeth Daniel', 3, '3333333333', 3, 4, 'Aut quidem exercitationem porro assumenda obcaecati optio enim ex fugit pariatur vel explicabo i'),
+(86, 'Elton Wilkins', 2, '3777777777', 4, 4, 'Maiores et modi et perferendis unde quia velit aliquam quisquam'),
+(87, 'Ella Francis', 3, '22333444', 3, 3, 'Irure ullamco ut dol'),
+(88, 'Ella Porter', 5, '3333333332', 4, 3, 'Quis nisi voluptate eaque ex earum ipsum ducimus in veniam do nihil autem'),
+(89, 'Emi Lewis', 2, '9999999999', 2, 1, 'Velit in ipsum accusamus est proident dolor autem mollit incidunt incidunt lorem quibusdam quia '),
+(90, 'F', 1, '45555555', 2, 2, '4'),
+(91, 'Felicia Flynn', 1, '999999995', 2, 1, 'Ut laboriosam architecto similique eligendi veniam aut dolor quidem officia soluta veniam elit h'),
+(92, 'Ferdinand Simmons', 5, '4444444444', 1, 1, 'Ex quidem eius perferendis omnis autem enim magna do odio occaecat amet consectetur eius provident'),
+(93, 'Fff', 1, '3399999999', 2, 4, 'Dddd'),
+(94, 'Ffffffffffff', 2, '55555555', 2, 2, '55555555555'),
+(95, 'Fiona Moon', 4, '4444444444', 2, 1, 'A ut veritatis laudantium nemo ut occaecat'),
+(96, 'Flavia Mcmillan', 2, '4499999999', 3, 2, 'Necessitatibus ut eu ea magna voluptatem'),
+(97, 'Fletcher Cotton', 1, '9999999999', 5, 4, 'Ipsa qui quibusdam in sint voluptatum necessitatibus laborum rerum dolore ullamco unde commodo nes'),
+(98, 'Fletcher Hartman', 2, '3333333333', 5, 4, 'Culpa vitae nihil magni qui incididunt labore sed harum totam nam in culpa nihil'),
+(99, 'Florence Graham', 3, '5555555555', 2, 1, 'Ducimus nemo alias '),
+(100, 'Galena Brooks', 2, '3352222222', 1, 4, 'Repellendus at dese'),
+(101, 'Gavin Foreman', 2, '4444444444', 2, 1, 'Ratione ut dolorem n'),
+(102, 'Gay Stark', 1, '7777777777', 1, 2, 'Consequat incididunt fugiat facilis expedita eum soluta sed libero id ut fuga ut voluptate veniam'),
+(103, 'Gillian Floyd', 3, '6666666666', 2, 4, 'Neque atque eius blanditiis nihil minim recusandae distinctio aut quidem dolor corporis ea nisi qu'),
+(104, 'Glenna Bradford', 1, '7384884494', 4, 3, 'Et quia dolorem sapi'),
+(105, 'Glenna Walton', 2, '339483944', 2, 3, 'Sint lorem quasi qu'),
+(106, 'Gloria Gamble', 5, '5555555555', 1, 3, 'Quas voluptatem voluptatibus incididunt voluptas molestias velit molestiae adipisci aliquam delectu'),
+(107, 'Griffin Pruitt', 3, '1111111119', 3, 3, 'Explicabo anim est ea eveniet esse ducimus veniam nobis hic vel dolor consequatur reprehenderi'),
+(108, 'Harper Langley', 2, '88484949', 2, 3, 'Eiusmod illo esse quia nisi officia lorem animi in omnis sint et id libero quae'),
+(109, 'Harriet Hunter', 1, '6333333333', 4, 3, 'Quibusdam in saepe distinctio eiusmod voluptate aut mollitia ea qui qui nostrum quos provident ut '),
+(110, 'Hashim Savage', 4, '5555555555', 2, 2, 'Qui qui dolore fugit'),
+(111, 'Hayden William', 4, '4444444444', 5, 4, 'Alias anim cillum ab sint nobis quia repudiandae dolorem veniam aliquam animi quod id'),
+(112, 'Hayes Guzman', 4, '5554444444', 3, 4, 'Ea aut ut quis qui commodi consectetur sint rerum aperiam et blanditiis dolorum nemo est qui do vel'),
+(113, 'Hedley Adkins', 3, '2222222222', 4, 4, 'Magni rerum aut impe'),
+(114, 'Hermione Holloway', 3, '4444444444', 1, 3, 'Laboriosam magna quia enim cupidatat pariatur officia rerum quos nihil quidem est corporis aute du'),
+(115, 'Hilary Shepherd', 3, '88895995', 2, 1, 'Dicta dolore neque voluptate qui ut esse minim ut incidunt corrupti quibusdam esse veniam omnis '),
+(116, 'Hiroko Downs', 1, '5555555555', 2, 3, 'Mollitia dolorem dolorem voluptatem quam quis dolore rerum'),
+(117, 'Holman reyes', 1, '658557677', 4, 2, 'Nombramiento  docent'),
+(118, 'Idona Grimes', 3, '7555555555', 4, 2, 'Ipsum sit praesentiu'),
+(119, 'Ignacia Higgins', 5, '3333333344', 2, 2, 'Id porro facere cill'),
+(120, 'Illiana Sharpe', 5, '555555544', 4, 3, 'Ipsum rem eveniet '),
+(121, 'Imani Leonard', 1, '7333333333', 2, 4, 'Odio odit voluptas sed eum expedita assumenda fugiat repellendus ratione aut quod officiis cupidat'),
+(122, 'Inez Mills', 3, '4444444444', 5, 2, 'Nisi adipisci lorem '),
+(123, 'Irma Frederick', 3, '2345678900', 5, 4, 'Ipsum dolore sed odit ad explicabo blanditiis consequat corporis ut quas quaerat sit in fuga ape'),
+(124, 'Isabella Duffy', 5, '4888888888', 1, 3, 'Maiores omnis cillum quia cillum omnis autem non fugiat'),
+(125, 'Isabella Mcfarland', 3, '4444444444', 5, 4, 'Dolores voluptas beatae aut exercitation laboris nemo sapiente quae'),
+(126, 'Isadora Romero', 2, '2222222222', 2, 4, 'Fugit autem eligendi fugit voluptas at reprehenderit rerum'),
+(127, 'Jackson Weaver', 5, '8888888888', 3, 3, 'Porro veritatis aliquip quia sunt tenetur doloribus voluptatem quis'),
+(128, 'Jade Ratliff', 2, '3333333333', 3, 4, 'Modi totam commodi t'),
+(129, 'Jamal Foley', 3, '6666444555', 5, 4, 'Quisquam nisi quis pariatur Ipsa tenetur dolores eius repudiandae velit perferendis'),
+(130, 'Jamal Yates Creampie', 2, '5555555555', 5, 3, 'Ea est itaque duis id voluptas duis cumque ut suscipit corrupti deserunt alias earum quis'),
+(131, 'Jameson Sanchez', 1, '8888888888', 5, 4, 'Quia qui quo sunt rerum sit nisi labore nostrum aperiam ut nostrum explicabo pariatur'),
+(132, 'Jermaine Barnes', 4, '5555555555', 5, 3, 'In ducimus elit perspiciatis exercitation laborum'),
+(133, 'Jesse Walker', 5, '5444444434', 4, 4, 'Enim cupidatat porro'),
+(134, 'Jessica Buchanan', 3, '4444444444', 4, 4, 'Magni reprehenderit ab sint id earum iste'),
+(135, 'Jocelyn Phelps', 1, '4444444444', 1, 3, 'Aliquid asperiores qui consectetur officiis aliqua voluptatem eaque natus ut hic'),
+(136, 'Jonas Mcneil', 5, '7333333333', 1, 2, 'Voluptatem voluptatem sequi magna hic quis in minima dolor et eum laboriosam'),
+(137, 'jorge leonardo castro arana', 1, '1105679460', 1, 2, 'revision de notas de primero B'),
+(138, 'Jose Carlos Figeroa', 4, '4444444444', 2, 4, 'Quia magni id voluptas accusantium nihil maiores'),
+(139, 'Jose Julio', 4, '5555555555', 2, 2, 'Culpa eum iste aut maxime et labore rem numquam suscipit'),
+(140, 'Jose Lucas', 4, '6444444444', 5, 4, 'Reprehenderit laborum atque fugit nulla aut impedit'),
+(141, 'jose manuel', 2, '172167312', 4, 3, 'persmisos de citas'),
+(142, 'Juan Jose', 4, '6666666666', 3, 2, 'Enim inventore est dolor quasi sint voluptatibus'),
+(143, 'Juanka', 4, '5555555555', 1, 1, 'Laudantium magni voluptatem iusto consectetur perferendis neque perspiciatis dolores voluptas ex '),
+(144, 'Kaitlin Floyd', 3, '7445555555', 2, 2, 'Aspernatur aperiam c'),
+(145, 'Kamal Byers', 4, '5555555555', 1, 2, 'Proident aliquid explicabo ullamco et mollitia nihil tenetur'),
+(146, 'Karina Rosales', 5, '4444444444', 5, 4, 'Ut qui natus labore eiusmod saepe incidunt a'),
+(147, 'Karleigh Blackwell', 2, '8444444444', 1, 3, 'Delectus quos dignissimos voluptas est dolores ut error molestiae'),
+(148, 'Karly Noel', 5, '9999999999', 3, 1, 'Eum culpa et at et eligendi deserunt eiusmod quaerat eum'),
+(149, 'Kaseem Bernard', 1, '5555555555', 5, 4, 'Animi corrupti rerum nemo minus quis sit numquam nostrum est proident voluptatum voluptates ipsu'),
+(150, 'Kasper Spencer', 1, '8444444455', 1, 2, 'Accusantium eos bea'),
+(151, 'Kelly Atkinson', 5, '9949959555', 5, 4, 'Et ut anim consequun'),
+(152, 'Kelly Owen', 4, 'Neque repr', 5, 4, 'Quo sit et laborum ex quia dolor rerum consequuntur molestiae'),
+(153, 'Kennedy Crosby', 1, '6666666666', 3, 4, 'Ut consectetur aut officiis sapiente consequatur omnis sunt consequatur voluptatum lorem et omnis'),
+(154, 'Kenneth Day', 5, '3445556666', 1, 2, 'Nulla culpa qui a odit repudiandae cumque consequat in alias magni'),
+(155, 'Kerry Sloan', 5, '633333333', 5, 4, 'Temporibus ut sunt incidunt ex provident sunt tenetur aut aliquip rerum aut minima vel voluptatem '),
+(156, 'Kiara Duke', 3, '4444444444', 1, 4, 'Nihil aliquam qui ipsa est duis amet iusto nemo ex tempora architecto veniam earum'),
+(157, 'Kirk Yates', 3, '8888888888', 5, 4, 'Asperiores sint et et voluptatem quaerat dolores nam et cillum alias'),
+(158, 'Kuame Hanson', 3, '1111111111', 4, 3, 'Sint eius in blandi'),
+(159, 'Kyla Fleming', 3, '4789333333', 2, 3, 'Aut qui ea voluptas est aut velit esse quia sunt repudiandae numquam consequatur ad eum'),
+(160, 'Kyla Rosales', 1, '66666666', 2, 1, 'Eum qui voluptatum t'),
+(161, 'Kylee Mason', 4, '5555555555', 5, 3, 'Tempore explicabo ullamco quaerat aliquam rem nulla magni sed exercitation veniam reprehenderit '),
+(162, 'Lani Blanchard', 3, '3333333333', 4, 1, 'Duis in rerum nisi fugiat sed in ducimus pariatur necessitatibus beatae aspernatur hic totam earum'),
+(163, 'Latifah Richmond', 2, '2333333333', 1, 4, 'Amet magni incidunt'),
+(164, 'Laurel Alvarado', 4, '8444444444', 3, 4, 'Assumenda odio recusandae tenetur voluptatem cum animi est nulla ullamco'),
+(165, 'Lavinia Castro', 5, '6111111111', 2, 2, 'Adipisci tempora dignissimos soluta accusantium'),
+(166, 'Lester Weewks', 5, '4444444444', 2, 2, 'Nobis vel dolore aut minim ut molestias ex maxime qui hic minus sit atque incididunt qui velit adipi'),
+(167, 'Louis Willis', 1, '9999999999', 4, 1, 'Mollit amet enim pe'),
+(168, 'Lucas Moy', 3, '448958533', 5, 4, 'Programmer'),
+(169, 'Lucius Knowles', 3, '8884444455', 3, 4, 'Id ut aut dolore quae corrupti vitae commodi reiciendis incidunt dolores asperiores consequat con'),
+(170, 'Lunea Morris', 5, '1222223444', 1, 1, 'Est ad minima eos e'),
+(171, 'Madeline Randall', 3, '5555555555', 1, 4, 'Repudiandae inventore alias ipsum elit quos libero ea'),
+(172, 'Madison Mccoy', 2, '2222222222', 5, 4, 'Fugiat dolores qui vitae qui ut do rerum dignissimos assumenda sit quam nam'),
+(173, 'Maggie Mack', 2, '9999999999', 2, 4, 'Possimus rerum exercitation eaque nam minima animi voluptatem laboriosam aut ipsa veniam eiusm'),
+(174, 'Maia Cherry', 2, '3333333333', 1, 4, 'Facere id rerum asperiores eiusmod iusto deserunt veniam quia'),
+(175, 'Malcolm Hopkins', 2, '6666666666', 2, 4, 'Sunt tempore doloremque aliquip expedita cupiditate dolore et'),
+(176, 'Maryam Francis', 3, '5555555555', 2, 2, 'Sed qui exercitation at earum qui aute nesciunt alias architecto'),
+(177, 'Maya Price', 1, '1111111111', 1, 4, 'Ab ab duis eos labore sit vitae odit qui quia molestias reprehenderit atque suscipit magna hic est'),
+(178, 'Meghan Fleming', 1, '6766666666', 5, 4, 'Tempora vel porro non cum eum reiciendis odit ad sapiente eos voluptate culpa'),
+(179, 'Melodie Ware', 4, '9559893955', 4, 4, 'Officia optio doloribus vitae et autem ipsa nisi'),
+(180, 'Merrill Cardenas', 5, '6666666666', 3, 1, 'Hic quaerat sunt et nam amet ad dolorem sed itaque modi'),
+(181, 'Nichole Sanford', 3, '3333333333', 1, 4, 'Corrupti dolore nem'),
+(182, 'Odysseus Kemp', 3, '2222222222', 4, 4, 'Autem fugiat consequatur eligendi commodo exercitationem vero non accusantium rerum molestiae id qu'),
+(183, 'Oleg Blackwell', 4, '9555555555', 2, 2, 'Optio quisquam dolorem molestias facere quis inventore'),
+(184, 'Patricia Long', 1, '6666666664', 5, 4, 'Dolorem voluptatem q'),
+(185, 'Penelope Taylor', 1, '5555555555', 3, 1, 'Nostrud qui ipsum qu'),
+(186, 'Peter Mckinney', 2, '6789000000', 5, 4, 'A voluptatem rerum laborum magni quis recusandae sit ut necessitatibus minus'),
+(187, 'Piper Atkins', 2, '4444444444', 5, 3, 'Eos aliquid qui aut'),
+(188, 'Piper Patterson', 4, '4666644444', 1, 1, 'Commodo qui sit consequat eu eaque omnis proident dolore'),
+(189, 'Prescott Rush', 3, '55555555', 3, 4, 'Est accusamus tenetur pariatur ullam nesciunt corporis'),
+(190, 'Quintessa Rogers', 3, '3333333333', 4, 4, 'Laborum voluptas vero omnis ea'),
+(191, 'Raphael Mcconnell', 5, '9777777775', 5, 4, 'Odit quia nostrud facilis ut duis et qui tempor et provident ea veniam aut ipsa ipsa adipisci'),
+(192, 'Raven Shaffer', 4, '6444444444', 4, 1, 'Eaque voluptatem explicabo vel quis odio provident consequatur quo nisi'),
+(193, 'Raya Gomez', 1, '2555555555', 3, 2, 'Non corporis molestiae et magnam sit nihil itaque nobis nam vero dolore iure'),
+(194, 'Rebekah Hernandez', 5, '3400000000', 5, 4, 'Esse vero adipisci consequatur nostrud quos ratione quod ut'),
+(195, 'Rebekah Valdez', 3, '33333334', 2, 1, 'Sed porro aut labore consequuntur non quasi aliquid qui aut anim sunt iusto consequat nostrud et q'),
+(196, 'Regan Holmes', 4, '3333333338', 2, 2, 'Velit voluptas molestias deserunt officia dolorem ut omnis deleniti quisquam sed'),
+(197, 'Ricardo Andres Rojas Rico', 1, '1111122448', 2, 2, 'Crear software para ustedes.'),
+(198, 'Ricardo Rojas', 1, '1111122448', 2, 2, 'Hola'),
+(199, 'Ricardo Rojas Rico', 1, '7333333333', 4, 2, 'Sasaasadasas'),
+(200, 'Richard', 1, '1111122448', 4, 2, 'Ut dolorem consequuntur eaque omnis non modi repellendus minima'),
+(201, 'Richard Beasley', 4, '7777777777', 3, 3, 'Laborum ut placeat omnis sunt voluptas et provident error officia illo aliquid'),
+(202, 'Riley Little', 3, '5555555555', 1, 1, 'Sit sit nisi corporis harum qui doloribus dolore culpa est aliquam occaecat blanditiis sed qui dol'),
+(203, 'Rinah Cooper', 5, '4444225555', 4, 2, 'Quo vitae sint provident excepturi reiciendis natus eos voluptatem enim aut aut voluptatem porro '),
+(204, 'Rowan Salinas', 5, '3333333333', 5, 4, 'Exercitationem cupiditate consequat labore autem qui'),
+(205, 'Savannah Spence', 1, '2222222222', 5, 3, 'Aut autem omnis dignissimos temporibus lorem qui et enim placeat odio ea'),
+(206, 'Scott Blair', 1, '6444444444', 3, 4, 'Sed in dolores eum aut incididunt in aut fugit ex totam iusto alias dolore'),
+(207, 'Selma White', 2, '3333333333', 3, 1, 'Aut numquam voluptas tempore eaque'),
+(208, 'Setmaick', 5, '7494995995', 5, 4, 'Odit repudiandae quis quia eveniet laboriosam non et id mollit qui eum et incididunt'),
+(209, 'Sharon Rice', 4, '3333333333', 1, 4, 'Consectetur ipsum minim obcaecati sint ex dignissimos molestias quia ut deleniti eaque odit corrupt'),
+(210, 'Shea Vaughan', 2, '2666666666', 3, 4, 'Ea quo dicta aut consequuntur quibusdam doloremque occaecat anim'),
+(211, 'Sheila Wise', 3, '5222222222', 5, 3, 'Architecto repellendus perspiciatis mollit repellendus in rerum qui vel omnis fuga ipsam archite'),
+(212, 'Silas Coffey', 3, '222222222', 1, 1, 'Maiores repellendus voluptates voluptatem similique'),
 (213, 'Slade Sutton', 2, '4444444444', 2, 1, 'Vitae cupiditate alias aliquid exercitationem ut deserunt et accusamus laudantium consequatur dolo'),
-(214, 'Fiona Moon', 4, '4444444444', 2, 1, 'A ut veritatis laudantium nemo ut occaecat'),
-(215, 'Sharon Rice', 4, '3333333333', 1, 4, 'Consectetur ipsum minim obcaecati sint ex dignissimos molestias quia ut deleniti eaque odit corrupt'),
-(216, 'Colette Charles', 1, '6666666666', 2, 1, 'Ea provident elit molestiae alias et et dolor quibusdam voluptatibus ut ipsum voluptatem quod'),
-(217, 'Kennedy Crosby', 1, '6666666666', 3, 4, 'Ut consectetur aut officiis sapiente consequatur omnis sunt consequatur voluptatum lorem et omnis'),
-(218, 'Anthony Leach', 1, '6555555555', 4, 4, 'Quos excepturi sunt numquam iusto quae non maxime doloribus obcaecati veniam minus sit rem'),
-(219, 'Holman Reyes', 1, '1111122448', 4, 2, 'Certificado electiva'),
-(220, 'Colton Wolfe', 3, '4444444444', 3, 4, 'Ea molestiae porro quis ducimus est'),
-(221, 'Asasasasasaaaasas', 1, '1234567890', 4, 2, 'Voluptatum tempor excepturi aspernatur obcaecati dolore eveniet rerum quo porro non laborum quis v'),
-(222, 'Assadasasda', 3, '123456789', 4, 1, 'Ipsum ipsa minima culpa est suscipit architecto quis minim consequat cum cillum omnis nulla neque'),
-(223, 'Riley Little', 3, '5555555555', 1, 1, 'Sit sit nisi corporis harum qui doloribus dolore culpa est aliquam occaecat blanditiis sed qui dol'),
-(224, 'Trevor Bender', 5, '3333333333', 1, 1, 'Minus pariatur nihil et illo ut velit enim laborum reprehenderit'),
-(225, 'Griffin Pruitt', 3, '1111111119', 3, 3, 'Explicabo anim est ea eveniet esse ducimus veniam nobis hic vel dolor consequatur reprehenderi'),
-(226, 'Ricardo Andres Rojas Rico', 1, '1111122448', 4, 2, 'Dasadsasadsadas'),
-(227, 'Savannah Spence', 1, '2222222222', 5, 3, 'Aut autem omnis dignissimos temporibus lorem qui et enim placeat odio ea'),
-(228, 'David Larry', 3, '8444444444', 4, 2, 'In beatae repellendus nostrud recusandae qui voluptas nobis voluptas odio irure in quidem error mo'),
-(229, 'Darrel Garza', 1, '4444444444', 5, 3, 'Do sunt non id excepteur consectetur asperiores repudiandae et dolor enim ipsum maiores'),
-(230, 'Elizabeth Daniel', 3, '3333333333', 3, 4, 'Aut quidem exercitationem porro assumenda obcaecati optio enim ex fugit pariatur vel explicabo i'),
-(231, 'Gillian Floyd', 3, '6666666666', 2, 4, 'Neque atque eius blanditiis nihil minim recusandae distinctio aut quidem dolor corporis ea nisi qu'),
-(232, 'Gloria Gamble', 5, '5555555555', 1, 3, 'Quas voluptatem voluptatibus incididunt voluptas molestias velit molestiae adipisci aliquam delectu'),
-(233, 'Aadsadasada', 1, '4777777777', 1, 1, 'Id velit est magni et'),
-(234, 'Ferdinand Simmons', 5, '4444444444', 1, 1, 'Ex quidem eius perferendis omnis autem enim magna do odio occaecat amet consectetur eius provident'),
-(235, 'Bernard Dyer', 1, '4444444444', 3, 1, 'Hic molestiae dolores commodi obcaecati'),
-(236, 'Charissa Wright', 1, '4444444444', 3, 3, 'Aut sunt autem ad anim corporis pariatur in sint nulla sint ipsam enim sit omnis consectetur exc'),
-(237, 'Daria Love', 4, '6666666666', 5, 2, 'Dolorem illo numquam molestiae voluptatibus blanditiis explicabo et a nisi consequat nulla'),
-(238, 'Xander Scott', 1, '4458888888', 2, 4, 'Quae qui doloremque hic enim similique enim modi quis perferendis animi consequat similique animi'),
-(239, 'Adrian Cline', 2, '4444444444', 5, 2, 'Dignissimos quo elit ab dolore'),
-(240, 'Vance Spencer', 4, '5555555555', 2, 4, 'Lorem totam ullamco delectus deleniti officiis ut enim voluptates qui impedit'),
-(241, 'Cain Alexander Satanas', 5, '4888888888', 1, 4, 'Aperiam et sit illum mollit deserunt facilis et assumenda qui quis illo accusamus soluta commodi d'),
-(242, 'Tamekah Cooper', 3, '7333333333', 4, 4, 'Voluptate amet rem delectus aspernatur pariatur qui omnis maiores quasi elit explicabo sed sit '),
-(243, 'Ricardo Rojas Rico', 1, '7333333333', 4, 2, 'Sasaasadasas'),
-(244, 'Jamal Yates Creampie', 2, '5555555555', 5, 3, 'Ea est itaque duis id voluptas duis cumque ut suscipit corrupti deserunt alias earum quis'),
-(245, 'Jose Lucas', 4, '6444444444', 5, 4, 'Reprehenderit laborum atque fugit nulla aut impedit'),
-(246, 'Malcolm Hopkins', 2, '6666666666', 2, 4, 'Sunt tempore doloremque aliquip expedita cupiditate dolore et'),
-(247, 'Juanka', 4, '5555555555', 1, 1, 'Laudantium magni voluptatem iusto consectetur perferendis neque perspiciatis dolores voluptas ex '),
-(248, 'Jose Carlos Figeroa', 4, '4444444444', 2, 4, 'Quia magni id voluptas accusantium nihil maiores'),
-(249, 'Setmaick', 5, '7494995995', 5, 4, 'Odit repudiandae quis quia eveniet laboriosam non et id mollit qui eum et incididunt'),
-(250, 'Cameron Wyatt', 1, '2222222222', 1, 2, 'Repudiandae sunt sunt excepturi earum rerum corrupti harum reprehenderit sint id'),
-(251, 'Rowan Salinas', 5, '3333333333', 5, 4, 'Exercitationem cupiditate consequat labore autem qui'),
-(252, 'Dale Collier', 3, '3333337555', 1, 1, 'Eum unde ad non eveniet consectetur dolor sequi atque quisquam sit voluptas autem ea magnam earum'),
-(253, 'Jose Julio', 4, '5555555555', 2, 2, 'Culpa eum iste aut maxime et labore rem numquam suscipit'),
-(254, 'Assdasada', 5, '4444444444', 4, 1, 'Autem ullam ratione aliqua velit duis velit officia veniam voluptate ipsa aliquam vero hic nihil '),
-(255, 'Assdasada', 5, '4444444444', 4, 1, 'Autem ullam ratione aliqua velit duis velit officia veniam voluptate ipsa aliquam vero hic nihil '),
-(256, 'Assdasada', 5, '4444444444', 4, 1, 'Autem ullam ratione aliqua velit duis velit officia veniam voluptate ipsa aliquam vero hic nihil '),
-(257, 'Assdasada', 5, '4444444444', 4, 1, 'Autem ullam ratione aliqua velit duis velit officia veniam voluptate ipsa aliquam vero hic nihil '),
-(258, 'Assdasada', 5, '4444444444', 4, 1, 'Autem ullam ratione aliqua velit duis velit officia veniam voluptate ipsa aliquam vero hic nihil '),
-(259, 'Kylee Mason', 4, '5555555555', 5, 3, 'Tempore explicabo ullamco quaerat aliquam rem nulla magni sed exercitation veniam reprehenderit '),
-(260, 'Ursula Solis', 2, '4444444444', 5, 2, 'Pariatur in eius quo quia dignissimos'),
-(261, 'Sydney Rutledge', 3, '4444444444', 2, 3, 'Quos corporis assumenda dolor molestiae'),
-(262, 'Richard Vergalarga', 1, '1111122448', 4, 2, 'Voluptatem iusto sit sit ea illum reiciendis ut quae eligendi enim ipsum aliqua consequatur qui'),
-(263, 'Richard Vergalarga', 1, '1111122448', 4, 2, 'Voluptatem iusto sit sit ea illum reiciendis ut quae eligendi enim ipsum aliqua consequatur qui'),
-(264, 'Richard Vergalarga', 1, '1111122448', 4, 2, 'Voluptatem iusto sit sit ea illum reiciendis ut quae eligendi enim ipsum aliqua consequatur qui'),
-(265, 'Richard Vergalarga', 1, '1111122448', 4, 2, 'Voluptatem iusto sit sit ea illum reiciendis ut quae eligendi enim ipsum aliqua consequatur qui'),
-(266, 'Richard Vergalarga', 1, '1111122448', 4, 2, 'Voluptatem iusto sit sit ea illum reiciendis ut quae eligendi enim ipsum aliqua consequatur qui'),
-(267, 'Richard Vergalarga', 1, '1111122448', 4, 2, 'Voluptatem iusto sit sit ea illum reiciendis ut quae eligendi enim ipsum aliqua consequatur qui'),
-(268, 'Richard Vergalarga', 1, '1111122448', 4, 2, 'Voluptatem iusto sit sit ea illum reiciendis ut quae eligendi enim ipsum aliqua consequatur qui'),
-(269, 'Richard Vergalarga', 1, '1111122448', 4, 2, 'Voluptatem iusto sit sit ea illum reiciendis ut quae eligendi enim ipsum aliqua consequatur qui'),
-(270, 'Richard Vergalarga', 1, '1111122448', 4, 2, 'Voluptatem iusto sit sit ea illum reiciendis ut quae eligendi enim ipsum aliqua consequatur qui'),
-(271, 'Richard Vergalarga', 1, '1111122448', 4, 2, 'Voluptatem iusto sit sit ea illum reiciendis ut quae eligendi enim ipsum aliqua consequatur qui'),
-(272, 'Richard Vergalarga', 1, '1111122448', 4, 2, 'Voluptatem iusto sit sit ea illum reiciendis ut quae eligendi enim ipsum aliqua consequatur qui'),
-(273, 'Richard Vergalarga', 1, '1111122448', 4, 2, 'Voluptatem iusto sit sit ea illum reiciendis ut quae eligendi enim ipsum aliqua consequatur qui'),
-(274, 'Richard Vergalarga', 1, '1111122448', 4, 2, 'Voluptatem iusto sit sit ea illum reiciendis ut quae eligendi enim ipsum aliqua consequatur qui'),
-(275, 'Richard Vergalarga', 1, '1111122448', 4, 2, 'Voluptatem iusto sit sit ea illum reiciendis ut quae eligendi enim ipsum aliqua consequatur qui'),
-(276, 'Richard Vergalarga', 1, '1111122448', 4, 2, 'Voluptatem iusto sit sit ea illum reiciendis ut quae eligendi enim ipsum aliqua consequatur qui'),
-(277, 'Richard Vergalarga', 1, '1111122448', 4, 2, 'Voluptatem iusto sit sit ea illum reiciendis ut quae eligendi enim ipsum aliqua consequatur qui'),
-(278, 'Richard Vergalarga', 1, '1111122448', 4, 2, 'Voluptatem iusto sit sit ea illum reiciendis ut quae eligendi enim ipsum aliqua consequatur qui'),
-(279, 'Richard Vergalarga', 1, '1111122448', 4, 2, 'Voluptatem iusto sit sit ea illum reiciendis ut quae eligendi enim ipsum aliqua consequatur qui'),
-(280, 'Richard Vergalarga', 1, '1111122448', 4, 2, 'Voluptatem iusto sit sit ea illum reiciendis ut quae eligendi enim ipsum aliqua consequatur qui'),
-(281, 'Richard', 1, '1111122448', 4, 2, 'Ut dolorem consequuntur eaque omnis non modi repellendus minima'),
-(282, 'Richard', 1, '1111122448', 4, 2, 'Ut dolorem consequuntur eaque omnis non modi repellendus minima'),
-(283, 'Kyla Fleming', 3, '4789333333', 2, 3, 'Aut qui ea voluptas est aut velit esse quia sunt repudiandae numquam consequatur ad eum'),
-(284, 'Drew Mcfadden', 1, '5555555555', 1, 1, 'Est eaque ad ex maxime suscipit aliquip totam fugit voluptas autem culpa eos quod impedit quis'),
-(285, 'Dominique Miles', 1, '4444444444', 2, 4, 'Sit non sit aut inventore deserunt aut distinctio voluptas accusantium expedita'),
-(286, 'Kamal Byers', 4, '5555555555', 1, 2, 'Proident aliquid explicabo ullamco et mollitia nihil tenetur'),
-(287, 'Charles Kline', 1, '4444444444', 5, 4, 'Rem dolor molestias quia maiores voluptas nobis ea voluptas laborum atque'),
-(288, 'Jocelyn Phelps', 1, '4444444444', 1, 3, 'Aliquid asperiores qui consectetur officiis aliqua voluptatem eaque natus ut hic'),
-(289, 'Ella Porter', 5, '3333333332', 4, 3, 'Quis nisi voluptate eaque ex earum ipsum ducimus in veniam do nihil autem'),
-(290, 'Merrill Cardenas', 5, '6666666666', 3, 1, 'Hic quaerat sunt et nam amet ad dolorem sed itaque modi'),
-(291, 'Carl Ruiz', 2, '5666666666', 5, 4, 'A deserunt molestiae autem ea omnis ab corporis nemo quos totam praesentium nostrud impedit qui'),
-(292, 'Juan Jose', 4, '6666666666', 3, 2, 'Enim inventore est dolor quasi sint voluptatibus');
+(214, 'Sss', 1, '33353355', 2, 1, 'Rr'),
+(215, 'Ssssssss', 3, '3333333', 2, 4, '3333333333'),
+(216, 'Ssssssssssssssssssss', 1, '3333333333', 2, 1, 'Eeee'),
+(217, 'Stone Griffin', 1, '4444444453', 1, 4, 'Occaecat obcaecati r'),
+(218, 'Susan Bray', 2, '7333333333', 5, 3, 'Deserunt odio nisi facilis est soluta reprehenderit voluptatem provident'),
+(219, 'Sydney Rutledge', 3, '4444444444', 2, 3, 'Quos corporis assumenda dolor molestiae'),
+(220, 'Tamekah Cooper', 3, '7333333333', 4, 4, 'Voluptate amet rem delectus aspernatur pariatur qui omnis maiores quasi elit explicabo sed sit '),
+(221, 'Tashya Fisher', 4, '9999999999', 2, 1, 'Totam beatae expedita velit eum rerum culpa dolorum non ea consequuntur nemo'),
+(222, 'Thomas Herring', 3, '4444444444', 4, 3, 'Et asperiores ut repellendus et nemo ad'),
+(223, 'Trevor Bender', 5, '3333333333', 1, 1, 'Minus pariatur nihil et illo ut velit enim laborum reprehenderit'),
+(224, 'Trevor Frazier', 1, '8888888888', 4, 1, 'Qui voluptatum in aute corporis autem commodi dolore quia a eum est irure iusto aliquam nesciunt il'),
+(225, 'Ursa Herrera', 3, '4444444444', 1, 2, 'Voluptas sunt distinctio quia harum repellendus commodo in irure rerum duis dolores aut vero ut i'),
+(226, 'Ursula Solis', 2, '4444444444', 5, 2, 'Pariatur in eius quo quia dignissimos'),
+(227, 'Vance Spencer', 4, '5555555555', 2, 4, 'Lorem totam ullamco delectus deleniti officiis ut enim voluptates qui impedit'),
+(228, 'Vanna Mccall', 5, '5888888888', 1, 2, 'Voluptatem neque et molestiae cum ullam commodo vel in expedita velit laboriosam tenetur'),
+(229, 'Walter Osborne', 1, '7775555555', 2, 4, 'Iure quia iusto impedit ut laborum dolore corporis quas sit sed adipisicing architecto ut qui'),
+(230, 'Wylie Pope', 4, '3333333333', 1, 4, 'Consequatur veritatis in est voluptatum officia reiciendis rem dolorem aut ex maxime in mollit obc'),
+(231, 'Xander Scott', 1, '4458888888', 2, 4, 'Quae qui doloremque hic enim similique enim modi quis perferendis animi consequat similique animi'),
+(232, 'Xantha Bass', 4, '5555555555', 4, 3, 'Et maxime dolore qui'),
+(233, 'Xena Bass', 1, '2222222222', 3, 4, 'Atque ullamco earum qui vel ex dolor'),
+(234, 'Xerxes Becker', 4, '2222222222', 4, 2, 'Sunt et dolores possimus ut omnis obcaecati quo sed sint suscipit in'),
+(235, 'Yael Knight', 4, '4444444444', 4, 3, 'Deserunt et illum incididunt et esse beatae voluptates quis qui ut ipsum dolore similique consequa'),
+(236, 'Ynn Ellis', 3, '3333333333', 3, 3, 'Pariatur nihil sed illum perspiciatis nesciunt dolorem perferendis'),
+(237, 'Yolanda Moss', 5, '4444444444', 1, 1, 'Consequatur aut esse explicabo veniam totam ex qui saepe deserunt aut quo cumque'),
+(238, 'Yuli Armstrong', 2, '5585866666', 4, 1, 'Nihil ex itaque nisi in doloremque ex et suscipit velit esse illo ea est eu incididunt ipsum dolor');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rsystfip_users`
+--
 
 CREATE TABLE `rsystfip_users` (
   `id` tinyint(1) NOT NULL COMMENT 'Campo que guarda el id de los usuarios del aplicativo, con acceso permitido (unique).',
@@ -655,47 +680,90 @@ CREATE TABLE `rsystfip_users` (
   `permissions` set('admin','add','schedule','reports','statistics') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci COMMENT='Tabla que almacena los usuarios del aplicativo, y sus respectivos usuarios y password de acceso al aplicativo.';
 
+--
+-- Dumping data for table `rsystfip_users`
+--
+
 INSERT INTO `rsystfip_users` (`id`, `name`, `lastname`, `id_doc`, `num_doc`, `tel`, `email`, `password`, `role`, `permissions`) VALUES
 (1, 'Mario Fernando', 'Díaz Pava', 0, '7223309043', '3100000000', 'rectoria@itfip.edu.co', '$2y$10$ulcGJ5S/NodjeQmPo1wTL.rISkGNJ5th9ejXf6kJqdwlm/8yAZxYm', 'rector', 'schedule'),
 (2, 'Luz Elena', 'Avila', 1, '11111111111', '3100000000', 'secretaria@itfip.edu.co', '$2y$10$ISfxYUjrGFnjZAup3yeNY./5Vyj3X88LmxudLTN.lKKlMSuApH45W', 'secretaria', 'add,schedule,reports,statistics'),
 (3, 'admin', 'admin', 1, '1111122448', '3173926578', 'admin@itfip.edu.co', '$2y$10$DQArhuEW5Z4GmY9QwmZJzuc4VAnTYPIygOP5MmQburwfqtMSfEk.S', 'admin', 'admin,add,schedule,reports,statistics');
 
+--
+-- Indexes for dumped tables
+--
 
+--
+-- Indexes for table `decanos_itfip`
+--
 ALTER TABLE `decanos_itfip`
   ADD PRIMARY KEY (`cc`);
 
+--
+-- Indexes for table `document`
+--
 ALTER TABLE `document`
   ADD PRIMARY KEY (`id`);
 
+--
+-- Indexes for table `faculties`
+--
 ALTER TABLE `faculties`
   ADD PRIMARY KEY (`id`);
 
+--
+-- Indexes for table `people_schedule`
+--
 ALTER TABLE `people_schedule`
   ADD KEY `people_id` (`person_id`) USING BTREE;
 
+--
+-- Indexes for table `person_type`
+--
 ALTER TABLE `person_type`
   ADD PRIMARY KEY (`id`);
 
+--
+-- Indexes for table `registered_people`
+--
 ALTER TABLE `registered_people`
   ADD PRIMARY KEY (`id`),
   ADD KEY `document` (`id_doc`),
   ADD KEY `id_facultied` (`facultad`) USING BTREE,
   ADD KEY `person_type` (`person_type`) USING BTREE;
 
+--
+-- Indexes for table `rsystfip_users`
+--
 ALTER TABLE `rsystfip_users`
   ADD UNIQUE KEY `id` (`id`),
   ADD KEY `id_doc` (`id_doc`);
 
+--
+-- AUTO_INCREMENT for dumped tables
+--
 
+--
+-- AUTO_INCREMENT for table `document`
+--
 ALTER TABLE `document`
   MODIFY `id` tinyint(1) NOT NULL AUTO_INCREMENT COMMENT 'Campo que guarda el id del tipo de documento, (autoincremental).', AUTO_INCREMENT=6;
 
+--
+-- AUTO_INCREMENT for table `faculties`
+--
 ALTER TABLE `faculties`
   MODIFY `id` tinyint(1) NOT NULL AUTO_INCREMENT COMMENT 'Campo que guarda el id de la facultad, (autoincremental).', AUTO_INCREMENT=5;
 
+--
+-- AUTO_INCREMENT for table `person_type`
+--
 ALTER TABLE `person_type`
   MODIFY `id` tinyint(1) NOT NULL AUTO_INCREMENT COMMENT 'Campo que guarda el id del tipo de persona (autoincremental).', AUTO_INCREMENT=6;
 
+--
+-- AUTO_INCREMENT for table `registered_people`
+--
 ALTER TABLE `registered_people`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Campo que guarda el id de las personas agendadas (autoincremental).', AUTO_INCREMENT=293;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Campo que guarda el id de las personas agendadas (autoincremental).', AUTO_INCREMENT=256;
 COMMIT;

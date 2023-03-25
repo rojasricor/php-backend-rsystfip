@@ -19,7 +19,7 @@ if ($newPassword !== $confirmNewPassword) {
 }
 
 include_once 'session_check.php';
-use RSystfip\UserController as uc;
+use app\controllers\UserController as uc;
 
 if (!uc::authById($id, $currentPassword)) {
   echo json_encode([

@@ -6,4 +6,4 @@ if (!isset($_GET['role'])) {
 }
 
 include_once 'session_check.php';
-echo json_encode(RSystfip\UserController::delete($_GET['role']));
+echo json_encode(app\controllers\UserController::delete($_GET['role']));

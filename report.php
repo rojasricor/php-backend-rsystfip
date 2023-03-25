@@ -6,7 +6,7 @@ if (!isset($_GET['start']) || !isset($_GET['end']) || !isset($_GET['category']))
 }
 
 include_once 'session_check.php';
-use RSystfip\{PeopleController as pc, StatisticsController as stc, TimeController as tc, PdfController as pdf};
+use app\controllers\{PeopleController as pc, StatisticsController as stc, TimeController as tc, PdfController as pdf};
 
 $pdf = new pdf();
 $pdf->AddPage();

@@ -1,4 +1,4 @@
 <?php
 
 include_once 'vendor/autoload.php';
-// RSystfip\SessionController::redirectIfNotLoggedIn();
+// app\controllers\SessionController::redirectIfNotLoggedIn();

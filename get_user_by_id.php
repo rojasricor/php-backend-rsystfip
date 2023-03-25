@@ -6,7 +6,7 @@ if (!isset($_GET['role'])) {
 }
 
 include_once 'session_check.php';
-$user = RSystfip\UserController::getOneById($_GET['role']);
+$user = app\controllers\UserController::getOneById($_GET['role']);
 
 if (!$user) {
   http_response_code(404);

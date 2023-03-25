@@ -7,4 +7,4 @@ if (!$payload) {
 }
 
 include_once 'session_check.php';
-echo json_encode(RSystfip\PeopleDataController::save($payload->date, $payload->time, $payload->people));
+echo json_encode(app\controllers\PeopleDataController::save($payload->date, $payload->time, $payload->people));

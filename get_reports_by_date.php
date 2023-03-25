@@ -7,6 +7,6 @@ if (!isset($_GET['start']) || !isset($_GET['end'])) {
 
 include_once 'session_check.php';
 echo json_encode([
-  'reports' => RSystfip\StatisticsController::getPeopleWithPeopleCount($_GET['start'], $_GET['end']),
+  'reports' => app\controllers\StatisticsController::getPeopleWithPeopleCount($_GET['start'], $_GET['end']),
   'linkReport' => $url->generate('get-report')
 ]);

@@ -1,7 +1,7 @@
 {
-  "name": "rsystfip/rsystfip",
+  "name": "rojasricor/rsystfip",
   "description": "Scheduling system for ITFIP Instituto Tolimense de Formación Técnica Profesional",
-  "type": "project",
+  "type": "rest-full-api",
   "require": {
     "aura/router": "^3.2",
     "laminas/laminas-diactoros": "^2.17"
@@ -12,7 +12,7 @@
   }],
   "autoload": {
     "psr-4": {
-      "RSystfip\\": "RSystfip/"
+      "app\\controllers\\": "app/controllers/"
     }
   }
 }

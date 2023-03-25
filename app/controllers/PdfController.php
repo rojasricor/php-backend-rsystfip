@@ -1,8 +1,8 @@
 <?php
 
-namespace RSystfip;
+namespace app\controllers;
 
-include_once 'fpdf/fpdf.php';
+include_once 'pdf/fpdf.php';
 
 use FPDF;
 
@@ -19,7 +19,7 @@ class PdfController extends FPDF
   function Header()
   {
     //Institutional logotype
-    $this->Image('img/admin_avatar.png', 8, 5, 25, 25, 'png', 'https://www.itfip.edu.co');
+    $this->Image('img/institutional_logotype.png', 8, 5, 25, 25, 'png', 'https://www.itfip.edu.co');
     //Arial bold 15
     $this->SetFont('Arial', '', 8);
     //Movernos a la derecha

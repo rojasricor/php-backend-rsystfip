@@ -127,7 +127,7 @@ if ($password !== $passwordConfirmation) {
 }
 
 include_once 'session_check.php';
-use RSystfip\UserController as uc;
+use app\controllers\UserController as uc;
 
 $id         = $role - 1;
 $roleExists = uc::getOneById($id);

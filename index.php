@@ -29,7 +29,7 @@ $map->get('get-events-calendar', '/api/get/events/scheduling', 'get_scheduled_sc
 $map->get('get-deans', '/api/get/staffdeans/itfip', 'get_staff_deans.php');
 $map->get('cancell-scheduling', '/api/cancell/scheduling', 'cancell_scheduling.php');
 $map->get('get-reports', '/api/get/reports', 'get_reports_by_date.php');
-$map->get('get-report', '/api/RSystfip-report-' . RSystfip\TimeController::todayDate(), 'report.php');
+$map->get('get-report', '/api/RSystfip-report-' . app\controllers\TimeController::todayDate(), 'report.php');
 $map->get('get-statistics', '/api/get/statistics', 'get_statistics_by_date.php');
 $map->get('get-statistics-inrange', '/api/get/statistics/inrange', 'get_most_agendated_by_date.php');
 $map->get('get-statistics-alltime', '/api/get/statistics/alltime', 'get_most_agendated_of_all_time.php');

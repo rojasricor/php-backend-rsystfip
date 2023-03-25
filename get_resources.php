@@ -9,9 +9,9 @@ $resource = $_GET['resource'];
 include_once 'session_check.php';
 
 if ($resource === 'categories') {
-	echo json_encode(RSystfip\ResourceController::getAllTypePersons());
+	echo json_encode(app\controllers\ResourceController::getAllTypePersons());
 } elseif ($resource === 'documents') {
-	echo json_encode(RSystfip\ResourceController::getAllDocuments());
+	echo json_encode(app\controllers\ResourceController::getAllDocuments());
 } elseif ($resource === 'faculties') {
-	echo json_encode(RSystfip\ResourceController::getAllFaculties());
+	echo json_encode(app\controllers\ResourceController::getAllFaculties());
 }

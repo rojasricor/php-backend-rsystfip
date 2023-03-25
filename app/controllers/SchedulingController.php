@@ -1,6 +1,6 @@
 <?php
 
-namespace RSystfip;
+namespace app\controllers;
 
 class SchedulingController
 {

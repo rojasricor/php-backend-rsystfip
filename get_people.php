@@ -1,4 +1,4 @@
 <?php
 
 include_once 'session_check.php';
-echo json_encode(RSystfip\PeopleController::getAll());
+echo json_encode(app\controllers\PeopleController::getAll());

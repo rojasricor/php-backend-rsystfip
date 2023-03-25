@@ -6,7 +6,7 @@ if (!isset($_GET['id']) || !isset($_GET['date'])) {
 }
 
 include_once 'session_check.php';
-$ok = RSystfip\SchedulingController::cancell($_GET['id'], $_GET['date']);
+$ok = app\controllers\SchedulingController::cancell($_GET['id'], $_GET['date']);
 
 if ($ok) {
   echo json_encode([

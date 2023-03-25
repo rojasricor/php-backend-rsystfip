@@ -6,4 +6,4 @@ if (!isset($_GET['date'])) {
 }
 
 include_once 'session_check.php';
-echo json_encode(RSystfip\PeopleDataController::getByDate($_GET['date']));
+echo json_encode(app\controllers\PeopleDataController::getByDate($_GET['date']));
