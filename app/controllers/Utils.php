@@ -11,7 +11,7 @@ class Utils
     if (defined('_ENV_CACHE')) {
       $vars = _ENV_CACHE;
     } else {
-      $file = 'env.php';
+      $file = 'app/private/env.php';
       if (!file_exists($file)) {
         throw new Exception("The environment file ($file) does not exists. Please create it");
       }
