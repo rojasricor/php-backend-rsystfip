@@ -30,12 +30,12 @@ $map->get('get-deans', '/api/get/staffdeans/itfip', 'get_staff_deans.php');
 $map->get('cancell-scheduling', '/api/cancell/scheduling', 'cancell_scheduling.php');
 $map->get('get-reports', '/api/get/reports', 'get_reports_by_date.php');
 $map->get('get-report', '/api/RSystfip-report-' . app\controllers\TimeController::todayDate(), 'report.php');
-$map->get('get-statistics-daily', '/api/get/statistics/daily', 'get_statistics_st:daily_by_date.php');
-$map->get('get-statistics-daily-inrange', '/api/get/statistics/daily/inrange', 'get_most_agendated_st:daily_by_date.php');
-$map->get('get-statistics-daily-alltime', '/api/get/statistics/daily/alltime', 'get_most_agendated_st:daily_of_all_time.php');
-$map->get('get-statistics-scheduled', '/api/get/statistics/scheduled', 'get_statistics_st:scheduled_by_date.php');
-$map->get('get-statistics-scheduled-inrange', '/api/get/statistics/scheduled/inrange', 'get_most_agendated_st:scheduled_by_date.php');
-$map->get('get-statistics-scheduled-alltime', '/api/get/statistics/scheduled/alltime', 'get_most_agendated_st:scheduled_of_all_time.php');
+$map->get('get-statistics-daily', '/api/get/statistics/daily', 'get_statistics_st_daily_by_date.php');
+$map->get('get-statistics-daily-inrange', '/api/get/statistics/daily/inrange', 'get_most_agendated_st_daily_by_date.php');
+$map->get('get-statistics-daily-alltime', '/api/get/statistics/daily/alltime', 'get_most_agendated_st_daily_of_all_time.php');
+$map->get('get-statistics-scheduled', '/api/get/statistics/scheduled', 'get_statistics_st_scheduled_by_date.php');
+$map->get('get-statistics-scheduled-inrange', '/api/get/statistics/scheduled/inrange', 'get_most_agendated_st_scheduled_by_date.php');
+$map->get('get-statistics-scheduled-alltime', '/api/get/statistics/scheduled/alltime', 'get_most_agendated_st_scheduled_of_all_time.php');
 $map->get('delete-user', '/api/delete/user', 'delete_user.php');
 
 $matcher = $router->getMatcher();
