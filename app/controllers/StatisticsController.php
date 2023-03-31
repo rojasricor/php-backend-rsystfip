@@ -58,6 +58,21 @@ class StatisticsController
     return $statement->fetchAll();
   }
 
+  static function getMostAgendatedByDate($start, $end)
+  {
+    $db = Database::get();
+    $statement = $db->prepare("SELECT person_type.person, COUNT(*) AS counts FROM people_schedule INNER JOIN registered_people ON registered_people.id = people_schedule.person_id, person_type WHERE date_filter >= ? AND date_filter <= ? AND person_type.id = registered_people.person_type GROUP BY person_type, person_type.person ORDER BY counts DESC LIMIT 10");
+    $statement->execute([$start, $end]);
+    return $statement->fetchAll();
+  }
+
+  static function getMostAgendatedOfAllTime()
+  {
+    $db = Database::get();
+    $statement = $db->query("SELECT person_type.person, COUNT(*) AS counts, MIN(people_schedule.date_filter) as init FROM people_schedule INNER JOIN registered_people ON registered_people.id = people_schedule.person_id, person_type WHERE person_type.id = registered_people.person_type GROUP BY person_type, person_type.person ORDER BY counts DESC LIMIT 10");
+    return $statement->fetchAll();
+  }
+
   static function getMostAgendatedDailyOfAllTime()
   {
     $db = Database::get();
