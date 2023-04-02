@@ -30,8 +30,9 @@ $map->get('get-people', '/api/get/people', __APP__ . 'get_people.php');
 $map->get('get-events-calendar', '/api/get/events/scheduling', __APP__ . 'get_scheduled_scheduling.php');
 $map->get('get-deans', '/api/get/staffdeans/itfip', __APP__ . 'get_staff_deans.php');
 $map->get('cancell-scheduling', '/api/cancell/scheduling', __APP__ . 'cancell_scheduling.php');
-$map->get('get-reports', '/api/get/reports', __APP__ . 'get_reports_by_date.php');
-$map->get('get-report', '/api/RSystfip-report-' . app\controllers\TimeController::todayDate(), __APP__ . 'report.php');
+$map->get('get-reports', '/api/get/reports/date', __APP__ . 'get_reports_by_date.php');
+$map->get('get-reports-count-by-date', '/api/get/reports/count/date', __APP__ . 'get_reports_count_by_date.php');
+$map->get('get-reports-count-all', '/api/get/reports/count/all', __APP__ . 'get_reports_count_of_all_time.php');
 $map->get('get-statistics-daily', '/api/get/statistics/daily', __APP__ . 'get_statistics_st_daily_by_date.php');
 $map->get('get-statistics-daily-inrange', '/api/get/statistics/daily/inrange', __APP__ . 'get_most_agendated_st_daily_by_date.php');
 $map->get('get-statistics-daily-alltime', '/api/get/statistics/daily/alltime', __APP__ . 'get_most_agendated_st_daily_of_all_time.php');
@@ -42,7 +43,6 @@ $map->get('delete-user', '/api/delete/user', __APP__ . 'delete_user.php');
 
 $matcher = $router->getMatcher();
 $route   = $matcher->match($request);
-$url     = $router->getGenerator();
 
 !$route ? $file = __APP__ . '404.php' : $file = $route->handler;
 require $_SERVER['DOCUMENT_ROOT'] . '/' . $file;
