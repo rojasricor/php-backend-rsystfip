@@ -17,32 +17,32 @@ $router = new Aura\Router\RouterContainer();
 $map = $router->getMap();
 
 $map->post('auth', '/api/auth', __APP__ . 'auth.php');
-$map->post('save-reg', '/api/save/reg', __APP__ . 'reg_save.php');
-$map->post('save-user', '/api/save/user', __APP__ . 'save_user.php');
+$map->post('save-person', '/api/person', __APP__ . 'save_person.php');
+$map->post('save-user', '/api/user', __APP__ . 'save_user.php');
 
-$map->put('update-reg', '/api/update/reg', __APP__ . 'reg_update.php');
-$map->put('update-password', '/api/update/password', __APP__ . 'update_password.php');
+$map->put('update-person', '/api/person', __APP__ . 'update_person.php');
+$map->put('update-password', '/api/password', __APP__ . 'update_password.php');
 
-$map->patch('cancell-scheduling', '/api/cancell/scheduling', __APP__ . 'cancell_scheduling.php');
+$map->patch('cancell-person', '/api/person', __APP__ . 'cancell_person.php');
 
-$map->delete('delete-user', '/api/delete/user', __APP__ . 'delete_user.php');
+$map->delete('delete-user', '/api/user', __APP__ . 'delete_user.php');
 
-$map->get('get-resources', '/api/get/resources', __APP__ . 'get_resources.php');
-$map->get('get-dashboard', '/api/get/users/manage', __APP__ . 'get_users_dashboard.php');
-$map->get('get-one-user', '/api/get/users/one', __APP__ . 'get_user_by_id.php');
-$map->get('get-one-person', '/api/get/person/one', __APP__ . 'get_person_by_id.php');
-$map->get('get-people', '/api/get/people', __APP__ . 'get_people.php');
-$map->get('get-events-calendar', '/api/get/events/scheduling', __APP__ . 'get_scheduled_scheduling.php');
-$map->get('get-deans', '/api/get/staffdeans/itfip', __APP__ . 'get_staff_deans.php');
-$map->get('get-reports', '/api/get/reports/date', __APP__ . 'get_reports_by_date.php');
-$map->get('get-reports-count-by-date', '/api/get/reports/count/date', __APP__ . 'get_reports_count_by_date.php');
-$map->get('get-reports-count-all', '/api/get/reports/count/all', __APP__ . 'get_reports_count_of_all_time.php');
-$map->get('get-statistics-daily', '/api/get/statistics/daily', __APP__ . 'get_statistics_st_daily_by_date.php');
-$map->get('get-statistics-daily-inrange', '/api/get/statistics/daily/inrange', __APP__ . 'get_most_agendated_st_daily_by_date.php');
-$map->get('get-statistics-daily-alltime', '/api/get/statistics/daily/alltime', __APP__ . 'get_most_agendated_st_daily_of_all_time.php');
-$map->get('get-statistics-scheduled', '/api/get/statistics/scheduled', __APP__ . 'get_statistics_st_scheduled_by_date.php');
-$map->get('get-statistics-scheduled-inrange', '/api/get/statistics/scheduled/inrange', __APP__ . 'get_most_agendated_st_scheduled_by_date.php');
-$map->get('get-statistics-scheduled-alltime', '/api/get/statistics/scheduled/alltime', __APP__ . 'get_most_agendated_st_scheduled_of_all_time.php');
+$map->get('get-resource', '/api/resource', __APP__ . 'get_resource.php');
+$map->get('get-users', '/api/users', __APP__ . 'get_users.php');
+$map->get('get-user', '/api/user', __APP__ . 'get_user.php');
+$map->get('get-person', '/api/person', __APP__ . 'get_person.php');
+$map->get('get-people', '/api/people', __APP__ . 'get_people.php');
+$map->get('get-scheduling', '/api/scheduling', __APP__ . 'get_scheduling.php');
+$map->get('get-deans', '/api/deans', __APP__ . 'get_deans.php');
+$map->get('get-reports', '/api/reports', __APP__ . 'get_reports.php');
+$map->get('get-reports-count', '/api/reports/count', __APP__ . 'get_reports_count.php');
+$map->get('get-reports-counts', '/api/reports/counts', __APP__ . 'get_reports_counts.php');
+$map->get('get-statistics-daily', '/api/statistics/daily', __APP__ . 'get_statistics_daily.php');
+$map->get('get-statistics-daily-inrange', '/api/statistics/daily/inrange', __APP__ . 'get_mostagendated_daily_inrange.php');
+$map->get('get-statistics-daily-alltime', '/api/statistics/daily/alltime', __APP__ . 'get_mostagendated_daily_alltime.php');
+$map->get('get-statistics-scheduled', '/api/statistics/scheduled', __APP__ . 'get_statistics_scheduled.php');
+$map->get('get-statistics-scheduled-inrange', '/api/statistics/scheduled/inrange', __APP__ . 'get_mostagendated_scheduled_inrange.php');
+$map->get('get-statistics-scheduled-alltime', '/api/statistics/scheduled/alltime', __APP__ . 'get_mostagendated_scheduled_alltime.php');
 
 $matcher = $router->getMatcher();
 $route   = $matcher->match($request);

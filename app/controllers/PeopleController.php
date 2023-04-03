@@ -21,7 +21,7 @@ class PeopleController
     $start ? $start : $start = TimeController::todayDate();
     $end ? $end : $end = TimeController::todayDate();
     $time = TimeController::nowHour();
-    return PeopleDataController::saveAuthomatic($lastId, $date, $start, $end, $time, $status, $color);
+    return PeopleDataController::save($lastId, $date, $start, $end, $time, $status, $color);
   }
 
   static function saveStaffDeans($cc, $name, $facultie)
