@@ -4,9 +4,9 @@ namespace App\controllers;
 
 use Exception;
 
-class Utils
+class Env
 {
-  static function getEnv($key)
+  static function get($key)
   {
     if (defined('_ENV_CACHE')) {
       $vars = _ENV_CACHE;

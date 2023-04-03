@@ -1,4 +1,4 @@
 <?php
 
 include_once 'session_check.php';
-echo json_encode(App\controllers\StatisticsController::getMostAgendatedOfAllTime());
+echo json_encode(App\controllers\StatisticsController::getReportsCounts());

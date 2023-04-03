@@ -8,10 +8,10 @@ class Database
 {
   static function get()
   {
-    $pass = Utils::getEnv('MYSQL_PSW');
-    $user = Utils::getEnv('MYSQL_USER');
-    $dnam = Utils::getEnv('MYSQL_DB');
-    $host = Utils::getEnv('MYSQL_HOST');
+    $pass = Env::get('MYSQL_PSW');
+    $user = Env::get('MYSQL_USER');
+    $dnam = Env::get('MYSQL_DB');
+    $host = Env::get('MYSQL_HOST');
     $dbas = new PDO("mysql:host=$host;dbname=$dnam", $user, $pass);
     $dbas->query('set names utf8;');
     $dbas->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);

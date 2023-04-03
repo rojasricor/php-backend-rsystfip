@@ -38,10 +38,10 @@ $map->get('get-reports', '/api/reports', __APP__ . 'get_reports.php');
 $map->get('get-reports-count', '/api/reports/count', __APP__ . 'get_reports_count.php');
 $map->get('get-reports-counts', '/api/reports/counts', __APP__ . 'get_reports_counts.php');
 $map->get('get-statistics-daily', '/api/statistics/daily', __APP__ . 'get_statistics_daily.php');
-$map->get('get-statistics-daily-inrange', '/api/statistics/daily/inrange', __APP__ . 'get_mostagendated_daily_inrange.php');
+$map->get('get-statistics-daily-onrange', '/api/statistics/daily/onrange', __APP__ . 'get_mostagendated_daily_onrange.php');
 $map->get('get-statistics-daily-alltime', '/api/statistics/daily/alltime', __APP__ . 'get_mostagendated_daily_alltime.php');
 $map->get('get-statistics-scheduled', '/api/statistics/scheduled', __APP__ . 'get_statistics_scheduled.php');
-$map->get('get-statistics-scheduled-inrange', '/api/statistics/scheduled/inrange', __APP__ . 'get_mostagendated_scheduled_inrange.php');
+$map->get('get-statistics-scheduled-onrange', '/api/statistics/scheduled/onrange', __APP__ . 'get_mostagendated_scheduled_onrange.php');
 $map->get('get-statistics-scheduled-alltime', '/api/statistics/scheduled/alltime', __APP__ . 'get_mostagendated_scheduled_alltime.php');
 
 $matcher = $router->getMatcher();

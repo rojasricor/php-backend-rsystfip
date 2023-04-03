@@ -4,24 +4,24 @@ namespace App\controllers;
 
 class ResourceController
 {
-  static function getAllDocuments()
+  static function getDocuments()
   {
     $db = Database::get();
-    $statement = $db->query("SELECT id, description FROM document");
+    $statement = $db->query("SELECT id, description FROM documents");
     return $statement->fetchAll();
   }
 
-  static function getAllFaculties()
+  static function getFaculties()
   {
     $db = Database::get();
     $statement = $db->query("SELECT * FROM faculties");
     return $statement->fetchAll();
   }
 
-  static function getAllTypePersons()
+  static function getCategories()
   {
     $db = Database::get();
-    $statement = $db->query("SELECT * FROM person_type");
+    $statement = $db->query("SELECT * FROM categories");
     return $statement->fetchAll();
   }
 }

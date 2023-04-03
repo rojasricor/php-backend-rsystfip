@@ -6,4 +6,4 @@ if (!isset($_GET['start']) || !isset($_GET['end'])) {
 }
 
 include_once 'session_check.php';
-echo json_encode(App\controllers\StatisticsController::getPeopleWithPeopleCount($_GET['start'], $_GET['end']));
+echo json_encode(App\controllers\StatisticsController::getReports($_GET['start'], $_GET['end']));

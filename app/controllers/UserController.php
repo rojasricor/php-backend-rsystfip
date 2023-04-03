@@ -4,17 +4,17 @@ namespace App\controllers;
 
 class UserController
 {
-  static function getUsersDashboard()
+  static function getAll()
   {
     $db = Database::get();
-    $statement = $db->query("SELECT id, email FROM rsystfip_users");
+    $statement = $db->query("SELECT id, email FROM users");
     return $statement->fetchAll();
   }
 
   static function getOneById($id)
   {
     $db = Database::get();
-    $statement = $db->prepare("SELECT id, email, password FROM rsystfip_users WHERE id = ?");
+    $statement = $db->prepare("SELECT id, email, password FROM users WHERE id = ?");
     $statement->execute([$id]);
     return $statement->fetchObject();
   }
@@ -22,7 +22,7 @@ class UserController
   static function getOneByEmail($email)
   {
     $db = Database::get();
-    $statement = $db->prepare("SELECT id, name, password, role, permissions FROM rsystfip_users WHERE email = ?");
+    $statement = $db->prepare("SELECT id, name, password, role, permissions FROM users WHERE email = ?");
     $statement->execute([$email]);
     return $statement->fetchObject();
   }
@@ -38,7 +38,7 @@ class UserController
   {
     $hashedPassword = Security::hashPassword($password);
     $db = Database::get();
-    $statement = $db->prepare("INSERT INTO rsystfip_users VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
+    $statement = $db->prepare("INSERT INTO users VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
     return $statement->execute([$id, $name, $lastname, $doctype, $document, $phone, $email,
     $hashedPassword, $cargo, $permissions]);
   }
@@ -46,7 +46,7 @@ class UserController
   static function delete($id)
   {
     $db = Database::get();
-    $statement = $db->prepare("DELETE FROM rsystfip_users WHERE id = ?");
+    $statement = $db->prepare("DELETE FROM users WHERE id = ?");
     return $statement->execute([$id]);
   }
 
@@ -54,7 +54,7 @@ class UserController
   {
     $hashedPassword = Security::hashPassword($password);
     $db = Database::get();
-    $statement = $db->prepare("UPDATE rsystfip_users SET password = ? WHERE id = ?");
+    $statement = $db->prepare("UPDATE users SET password = ? WHERE id = ?");
     $statement->execute([$hashedPassword, $id]);
   }
 

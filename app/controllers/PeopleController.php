@@ -7,14 +7,14 @@ class PeopleController
   static function save($name, $tipo, $numero, $asunt)
   {
     $db = Database::get();
-    $statement = $db->prepare("INSERT INTO registered_people(name, id_doc, num_doc, text_asunt) VALUES (?, ?, ?, ?)");
+    $statement = $db->prepare("INSERT INTO people(name, id_doc, num_doc, text_asunt) VALUES (?, ?, ?, ?)");
     return $statement->execute([$name, $tipo, $numero, $asunt]);
   }
 
   static function schedule($name, $tipo, $numero, $type_person, $facultad, $asunt, $color, $date, $start, $end, $status)
   {
     $db = Database::get();
-    $statement = $db->prepare("INSERT INTO registered_people VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $statement = $db->prepare("INSERT INTO people VALUES (?, ?, ?, ?, ?, ?, ?)");
     $statement->execute([NULL, $name, $tipo, $numero, $type_person, $facultad, $asunt]);
     $lastId = self::getLast()->id;
     $date ? $date : $date = TimeController::todayDate();
@@ -27,11 +27,11 @@ class PeopleController
   static function saveStaffDeans($cc, $name, $facultie)
   {
     $db = Database::get();
-    $statement = $db->prepare("SELECT cc FROM decanos_itfip WHERE cc = ?");
+    $statement = $db->prepare("SELECT cc FROM deans WHERE cc = ?");
     $statement->execute([$cc]);
     $deanExists = $statement->fetchObject();
     if (!$deanExists) {
-      $statement = $db->prepare("INSERT INTO decanos_itfip VALUES (?, ?, ?)");
+      $statement = $db->prepare("INSERT INTO deans VALUES (?, ?, ?)");
       return $statement->execute([$cc, $name, $facultie]);
     }
   }
@@ -39,14 +39,14 @@ class PeopleController
   static function getLast()
   {
     $db = Database::get();
-    $statement = $db->query("SELECT id FROM registered_people ORDER BY id DESC");
+    $statement = $db->query("SELECT id FROM people ORDER BY id DESC");
     return $statement->fetchObject();
   }
 
   static function getOneById($id)
   {
     $db = Database::get();
-    $statement = $db->prepare("SELECT * FROM registered_people WHERE id = ?");
+    $statement = $db->prepare("SELECT * FROM people WHERE id = ?");
     $statement->execute([$id]);
     return $statement->fetchObject();
   }
@@ -54,28 +54,28 @@ class PeopleController
   static function update($name, $tipo, $numero, $type_person, $facultad, $asunt, $id)
   {
     $db = Database::get();
-    $statement = $db->prepare("UPDATE registered_people SET name = ?, id_doc = ?, num_doc = ?, person_type = ?, facultad = ?, text_asunt = ?  WHERE id = ?");
+    $statement = $db->prepare("UPDATE people SET name = ?, id_doc = ?, num_doc = ?, person_type = ?, facultad = ?, text_asunt = ?  WHERE id = ?");
     return $statement->execute([$name, $tipo, $numero, $type_person, $facultad, $asunt, $id]);
   }
 
   static function getAll()
   {
     $db = Database::get();
-    $statement = $db->query("SELECT e.id, e.name, d.document as ty_doc, p.person, e.facultad, d.description, e.num_doc, f.name AS fac, e.text_asunt FROM registered_people e, document d, faculties f, person_type p WHERE e.id_doc = d.id AND e.facultad = f.id AND e.person_type = p.id ORDER BY id DESC");
+    $statement = $db->query("SELECT p.id, p.name, d.document as ty_doc, c.person, p.facultad, d.description, p.num_doc, f.name AS fac, p.text_asunt FROM people p, documents d, faculties f, categories c WHERE p.id_doc = d.id AND p.facultad = f.id AND p.person_type = c.id ORDER BY id DESC");
     return $statement->fetchAll();
   }
 
-  static function getStaffDeans()
+  static function getDeans()
   {
     $db = Database::get();
-    $statement = $db->query("SELECT * FROM decanos_itfip");
+    $statement = $db->query("SELECT * FROM deans");
     return $statement->fetchAll();
   }
 
   static function search($search)
   {
     $db = Database::get();
-    $statement = $db->prepare("SELECT e.id, e.name, d.document as ty_doc, p.person, e.facultad, d.description, e.num_doc, f.name AS fac, e.text_asunt FROM registered_people e, document d, faculties f, person_type p WHERE (e.id = ? OR e.num_doc = ? OR e.name LIKE ?) AND e.id_doc = d.id AND e.facultad = f.id AND e.person_type = p.id ORDER BY id ASC");
+    $statement = $db->prepare("SELECT p.id, p.name, d.document as ty_doc, c.person, p.facultad, d.description, p.num_doc, f.name AS fac, p.text_asunt FROM people p, documents d, faculties f, categories c WHERE (e.id = ? OR p.num_doc = ? OR p.name LIKE ?) AND p.id_doc = d.id AND p.facultad = f.id AND p.person_type = c.id ORDER BY id ASC");
     $statement->execute([$search, $search, "$search%"]);
     return $statement->fetchAll();
   }
