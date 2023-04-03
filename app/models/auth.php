@@ -39,7 +39,7 @@ if (strlen($password) > 30) {
 }
 
 include_once 'vendor/autoload.php';
-$userAuth = app\controllers\UserController::auth("$username@itfip.edu.co", $password);
+$userAuth = App\controllers\UserController::auth("$username@itfip.edu.co", $password);
 
 if ($userAuth) {
   echo json_encode([

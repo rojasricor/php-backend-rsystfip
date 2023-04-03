@@ -1,4 +1,4 @@
 <?php
 
 include_once 'vendor/autoload.php';
-// app\controllers\SessionController::redirectIfNotLoggedIn();
+// App\controllers\SessionController::redirectIfNotLoggedIn();

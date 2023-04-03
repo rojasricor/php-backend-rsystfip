@@ -99,7 +99,7 @@ if (is_numeric($asunt) || !is_string($asunt)) {
 }
 
 include_once 'session_check.php';
-use app\controllers\PeopleController as pc;
+use App\controllers\PeopleController as pc;
 
 if ($person === '4') {
   pc::saveStaffDeans($doc, $name, $facultie);

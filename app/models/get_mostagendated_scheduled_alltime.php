@@ -1,4 +1,4 @@
 <?php
 
 include_once 'session_check.php';
-echo json_encode(app\controllers\StatisticsController::getMostAgendatedScheduledOfAllTime());
+echo json_encode(App\controllers\StatisticsController::getMostAgendatedScheduledOfAllTime());

@@ -20,7 +20,7 @@ if ($newPassword !== $confirmNewPassword) {
 }
 
 include_once 'session_check.php';
-use app\controllers\UserController as uc;
+use App\controllers\UserController as uc;
 
 if (!uc::authById($id, $currentPassword)) {
   echo json_encode([

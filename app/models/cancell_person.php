@@ -11,7 +11,7 @@ $id = $payload->id;
 $date = $payload->date;
 
 include_once 'session_check.php';
-$ok = app\controllers\SchedulingController::cancell($id, $date);
+$ok = App\controllers\SchedulingController::cancell($id, $date);
 
 if ($ok) {
   echo json_encode([
