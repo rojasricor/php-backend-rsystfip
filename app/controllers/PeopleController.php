@@ -65,6 +65,13 @@ class PeopleController
     return $statement->fetchAll();
   }
 
+  static function getCancelled()
+  {
+    $db = Database::get();
+    $statement = $db->query("SELECT p.id, p.name, d.document as ty_doc, c.person, p.facultad, d.description, p.num_doc, f.name AS fac, p.text_asunt FROM people p, documents d, faculties f, categories c, cancelled l, scheduling s WHERE p.id_doc = d.id AND p.id = l.person_id AND s.status = 'cancelled' AND p.facultad = f.id AND p.person_type = c.id ORDER BY id DESC");
+    return $statement->fetchAll();
+  }
+
   static function getDeans()
   {
     $db = Database::get();

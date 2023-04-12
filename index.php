@@ -32,6 +32,7 @@ $map->get('get-users', '/api/users', __APP__ . 'get_users.php');
 $map->get('get-user', '/api/user', __APP__ . 'get_user.php');
 $map->get('get-person', '/api/person', __APP__ . 'get_person.php');
 $map->get('get-people', '/api/people', __APP__ . 'get_people.php');
+$map->get('get-cancelled', '/api/cancelled', __APP__ . 'get_cancelled.php');
 $map->get('get-scheduling', '/api/scheduling', __APP__ . 'get_scheduling.php');
 $map->get('get-deans', '/api/deans', __APP__ . 'get_deans.php');
 $map->get('get-reports', '/api/reports', __APP__ . 'get_reports.php');
