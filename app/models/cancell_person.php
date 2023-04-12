@@ -9,9 +9,9 @@ if (!$payload) {
 
 $id = $payload->id;
 $date = $payload->date;
-$cancell_asunt = $payload->cancell_asunt;
+$cancelled_asunt = $payload->cancelled_asunt;
 
-if (empty($cancell_asunt)) {
+if (empty($cancelled_asunt)) {
   echo json_encode([
     'error' => 'Complete el motivo de cancelamiento',
   ]);
@@ -19,7 +19,7 @@ if (empty($cancell_asunt)) {
 }
 
 include_once 'session_check.php';
-$ok = App\controllers\SchedulingController::cancell($id, $date, $cancell_asunt);
+$ok = App\controllers\SchedulingController::cancell($id, $date, $cancelled_asunt);
 
 if ($ok) {
   echo json_encode([
