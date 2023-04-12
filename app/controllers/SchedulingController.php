@@ -12,10 +12,12 @@ class SchedulingController
     return $statement->fetchAll();
   }
 
-  static function cancell($id, $date)
+  static function cancell($id, $date, $cancell_asunt)
   {
     $db = Database::get();
-    $statement = $db->prepare("UPDATE scheduling SET scheduling.status = 2 WHERE scheduling.person_id = ? AND start_date = ?");
-    return $statement->execute([$id, $date]);
+    $statement = $db->prepare("UPDATE scheduling SET scheduling.status = 3 WHERE scheduling.person_id = ? AND start_date = ?");
+    $statement->execute([$id, $date]);
+    $statement = $db->prepare("INSERT INTO cancelled(person_id, cancell_asunt) VALUES(?, ?)");
+    return $statement->execute([$id, $cancell_asunt]);
   }
 }
