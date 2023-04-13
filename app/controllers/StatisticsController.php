@@ -55,21 +55,21 @@ class StatisticsController
   static function getReportsCounts()
   {
     $db = Database::get();
-    $statement = $db->query("SELECT categories.person, COUNT(*) AS counts, MIN(scheduling.date_filter) as init FROM scheduling INNER JOIN people ON people.id = scheduling.person_id, categories WHERE categories.id = people.person_type GROUP BY person_type, categories.person ORDER BY counts DESC LIMIT 10");
+    $statement = $db->query("SELECT categories.person, COUNT(*) AS counts FROM scheduling INNER JOIN people ON people.id = scheduling.person_id, categories WHERE categories.id = people.person_type GROUP BY person_type, categories.person ORDER BY counts DESC LIMIT 10");
     return $statement->fetchAll();
   }
 
   static function getMostAgendatedDailyAlltime()
   {
     $db = Database::get();
-    $statement = $db->query("SELECT categories.person, COUNT(*) AS counts, MIN(scheduling.date_filter) as init FROM scheduling INNER JOIN people ON people.id = scheduling.person_id, categories WHERE scheduling.status = 'daily' AND categories.id = people.person_type GROUP BY person_type, categories.person ORDER BY counts DESC LIMIT 10");
+    $statement = $db->query("SELECT categories.person, COUNT(*) AS counts FROM scheduling INNER JOIN people ON people.id = scheduling.person_id, categories WHERE scheduling.status = 'daily' AND categories.id = people.person_type GROUP BY person_type, categories.person ORDER BY counts DESC LIMIT 10");
     return $statement->fetchAll();
   }
 
   static function getMostAgendatedScheduledAlltime()
   {
     $db = Database::get();
-    $statement = $db->query("SELECT categories.person, COUNT(*) AS counts, MIN(scheduling.date_filter) as init FROM scheduling INNER JOIN people ON people.id = scheduling.person_id, categories WHERE scheduling.status = 'scheduled' AND categories.id = people.person_type GROUP BY person_type, categories.person ORDER BY counts DESC LIMIT 10");
+    $statement = $db->query("SELECT categories.person, COUNT(*) AS counts FROM scheduling INNER JOIN people ON people.id = scheduling.person_id, categories WHERE scheduling.status = 'scheduled' AND categories.id = people.person_type GROUP BY person_type, categories.person ORDER BY counts DESC LIMIT 10");
     return $statement->fetchAll();
   }
 }
