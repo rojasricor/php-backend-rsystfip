@@ -48,5 +48,5 @@ $map->get('get-statistics-scheduled-alltime', '/api/statistics/scheduled/alltime
 $matcher = $router->getMatcher();
 $route   = $matcher->match($request);
 
-!$route ? $file = __APP__ . '404.php' : $file = $route->handler;
+!$route ? $file = __APP__ . 'notFound.php' : $file = $route->handler;
 require $_SERVER['DOCUMENT_ROOT'] . '/' . $file;
