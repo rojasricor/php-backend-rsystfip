@@ -1,4 +1,4 @@
 <?php
 
 include_once 'vendor/autoload.php';
-App\controllers\SessionController::logOut();
+App\Controllers\SessionController::logOut();

@@ -10,4 +10,4 @@ if (!$payload) {
 $role = $payload->role;
 
 include_once 'session_check.php';
-echo json_encode(App\controllers\UserController::delete($role));
+echo json_encode(App\Controllers\UserController::delete($role));

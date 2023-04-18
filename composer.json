@@ -12,7 +12,9 @@
   }],
   "autoload": {
     "psr-4": {
-      "App\\controllers\\": "app/controllers/"
+      "App\\Controllers\\": "app/controllers/",
+      "App\\Models\\": "app/models/",
+      "App\\Middleware\\": "app/middleware/"
     }
   }
 }

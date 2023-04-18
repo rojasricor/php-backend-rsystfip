@@ -127,7 +127,7 @@ if ($password !== $passwordConfirmation) {
 }
 
 include_once 'session_check.php';
-use App\controllers\UserController as uc;
+use App\Controllers\UserController as uc;
 
 $id         = $role - 1;
 $roleExists = uc::getOneById($id);

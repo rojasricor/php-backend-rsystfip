@@ -19,7 +19,7 @@ if (empty($cancelled_asunt)) {
 }
 
 include_once 'session_check.php';
-$ok = App\controllers\SchedulingController::cancell($id, $date, $cancelled_asunt);
+$ok = App\Controllers\SchedulingController::cancell($id, $date, $cancelled_asunt);
 
 if ($ok) {
   echo json_encode([

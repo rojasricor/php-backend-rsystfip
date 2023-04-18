@@ -6,4 +6,4 @@ if (!isset($_GET['start']) || !isset($_GET['end'])) {
 }
 
 include_once 'session_check.php';
-echo json_encode(App\controllers\StatisticsController::getStaticsScheduled($_GET['start'], $_GET['end']));
+echo json_encode(App\Controllers\StatisticsController::getStaticsScheduled($_GET['start'], $_GET['end']));

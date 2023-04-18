@@ -6,7 +6,7 @@ if (!isset($_GET['id'])) {
 }
 
 include_once 'session_check.php';
-$person = App\controllers\PeopleController::getOneById($_GET['id']);
+$person = App\Controllers\PeopleController::getOneById($_GET['id']);
 
 if (!$person) {
 	http_response_code(404);

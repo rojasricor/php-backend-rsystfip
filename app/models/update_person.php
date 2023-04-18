@@ -102,7 +102,7 @@ if (is_numeric($asunt) || !is_string($asunt)) {
 }
 
 include_once 'session_check.php';
-$ok = App\controllers\PeopleController::update($name, $doctype, $doc, $person, $facultie, $asunt, $id);
+$ok = App\Controllers\PeopleController::update($name, $doctype, $doc, $person, $facultie, $asunt, $id);
 
 if ($ok) {
   echo json_encode([
