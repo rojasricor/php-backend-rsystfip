@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Models;
 
 use date;
 
 date_default_timezone_set('America/Bogota');
 
-class TimeController
+class TimeModel
 {
   static function todayDate()
   {

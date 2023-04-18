@@ -1,52 +1,164 @@
 <?php
 
-require_once 'vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
-$request = Laminas\Diactoros\ServerRequestFactory::fromGlobals(
-  $_SERVER,
-  $_GET,
-  $_POST,
-  $_COOKIE,
-  $_FILES
+use Aura\Router\RouterContainer;
+use Laminas\Diactoros\ServerRequestFactory;
+use App\Middleware\CorsMiddleware;
+
+// Create an instance of route container
+$routerContainer = new RouterContainer();
+
+$map = $routerContainer->getMap();
+
+// Routes
+$map->post('auth', '/api/auth', [
+  'App\Controllers\AuthController',
+  'auth'
+]);
+
+$map->post('save.person', '/api/person', [
+  'App\Controllers\PeopleController',
+  'savePerson'
+]);
+
+$map->post('save.user', '/api/user', [
+  'App\Controllers\UserController',
+  'saveUser'
+]);
+
+$map->put('update.person', '/api/person', [
+  'App\Controllers\PeopleController',
+  'updatePerson'
+]);
+
+$map->put('update.password', '/api/password', [
+  'App\Controllers\UserController',
+  'updatePassword'
+]);
+
+$map->patch('cancell.person', '/api/person', [
+  'App\Controllers\PeopleController',
+  'cancellPerson'
+]);
+
+$map->delete('delete.user', '/api/user', [
+  'App\Controllers\UserController',
+  'deleteUser'
+]);
+
+$map->get('get.resource', '/api/resource',  [
+  'App\Controllers\ResourcesController',
+  'getResource'
+]);
+
+$map->get('get.users', '/api/users', [
+  'App\Controllers\UserController',
+  'getUsers'
+]);
+
+$map->get('get.user', '/api/user',  [
+  'App\Controllers\UserController',
+  'getUser'
+]);
+
+$map->get('get.people', '/api/people', [
+  'App\Controllers\PeopleController',
+  'getPeople'
+]);
+
+$map->get('get.person', '/api/person', [
+  'App\Controllers\PeopleController',
+  'getPerson'
+]);
+
+$map->get('get.cancelled', '/api/cancelled', [
+  'App\Controllers\PeopleController',
+  'getCancelled'
+]);
+
+$map->get('get.scheduling', '/api/scheduling',  [
+  'App\Controllers\SchedulingController',
+  'getScheduling'
+]);
+
+$map->get('get.deans', '/api/deans', [
+  'App\Controllers\PeopleController',
+  'getDeans'
+]);
+
+$map->get('get.reports', '/api/reports', [
+  'App\Controllers\StatisticsController',
+  'getReports'
+]);
+
+$map->get('get.reports.counts', '/api/reports/counts', [
+  'App\Controllers\StatisticsController',
+  'getReportsCounts'
+]);
+
+$map->get('get.reports.count', '/api/reports/count', [
+  'App\Controllers\StatisticsController',
+  'getReportsCount'
+]);
+
+$map->get('get.statistics.daily', '/api/statistics/daily', [
+  'App\Controllers\StatisticsController',
+  'getStatisticsDaily'
+]);
+
+$map->get('get.statistics.scheduled', '/api/statistics/scheduled', [
+  'App\Controllers\StatisticsController',
+  'getStatisticsScheduled'
+]);
+
+$map->get('get.statistics.daily.alltime', '/api/statistics/daily/alltime', [
+  'App\Controllers\StatisticsController',
+  'getMostAgendatedDailyAlltime'
+]);
+
+$map->get('get.statistics.scheduled.alltime', '/api/statistics/scheduled/alltime', [
+  'App\Controllers\StatisticsController',
+  'getMostAgendatedScheduledAlltime'
+]);
+
+$map->get('get.statistics.daily.onrange', '/api/statistics/daily/onrange', [
+  'App\Controllers\StatisticsController',
+  'getMostAgendatedDailyOnRange'
+]);
+
+$map->get('get.statistics.scheduled.onrange', '/api/statistics/scheduled/onrange', [
+  'App\Controllers\StatisticsController',
+  'getMostAgendatedScheduledOnRange'
+]);
+
+// Get the matching route of the globals variables
+$route = $routerContainer->getMatcher()->match(
+  ServerRequestFactory::fromGlobals(
+    $_SERVER,
+    $_GET,
+    $_POST,
+    $_COOKIE,
+    $_FILES
+  )
 );
 
-define('__APP__', 'app/models/');
+// Using Cors
+CorsMiddleware::useCors();
 
-$router = new Aura\Router\RouterContainer();
+// Execute the action of the matching route
+if ($route) {
+  // Get the handler of the route
+  $handler = $route->handler;
+  
+  // Separate the name of the class and the method
+  list($controller, $method) = $handler;
 
-$map = $router->getMap();
-
-$map->post('auth', '/api/auth', __APP__ . 'auth.php');
-$map->post('save-person', '/api/person', __APP__ . 'save_person.php');
-$map->post('save-user', '/api/user', __APP__ . 'save_user.php');
-
-$map->put('update-person', '/api/person', __APP__ . 'update_person.php');
-$map->put('update-password', '/api/password', __APP__ . 'update_password.php');
-
-$map->patch('cancell-person', '/api/person', __APP__ . 'cancell_person.php');
-
-$map->delete('delete-user', '/api/user', __APP__ . 'delete_user.php');
-
-$map->get('get-resource', '/api/resource', __APP__ . 'get_resource.php');
-$map->get('get-users', '/api/users', __APP__ . 'get_users.php');
-$map->get('get-user', '/api/user', __APP__ . 'get_user.php');
-$map->get('get-person', '/api/person', __APP__ . 'get_person.php');
-$map->get('get-people', '/api/people', __APP__ . 'get_people.php');
-$map->get('get-cancelled', '/api/cancelled', __APP__ . 'get_cancelled.php');
-$map->get('get-scheduling', '/api/scheduling', __APP__ . 'get_scheduling.php');
-$map->get('get-deans', '/api/deans', __APP__ . 'get_deans.php');
-$map->get('get-reports', '/api/reports', __APP__ . 'get_reports.php');
-$map->get('get-reports-count', '/api/reports/count', __APP__ . 'get_reports_count.php');
-$map->get('get-reports-counts', '/api/reports/counts', __APP__ . 'get_reports_counts.php');
-$map->get('get-statistics-daily', '/api/statistics/daily', __APP__ . 'get_statistics_daily.php');
-$map->get('get-statistics-daily-onrange', '/api/statistics/daily/onrange', __APP__ . 'get_mostagendated_daily_onrange.php');
-$map->get('get-statistics-daily-alltime', '/api/statistics/daily/alltime', __APP__ . 'get_mostagendated_daily_alltime.php');
-$map->get('get-statistics-scheduled', '/api/statistics/scheduled', __APP__ . 'get_statistics_scheduled.php');
-$map->get('get-statistics-scheduled-onrange', '/api/statistics/scheduled/onrange', __APP__ . 'get_mostagendated_scheduled_onrange.php');
-$map->get('get-statistics-scheduled-alltime', '/api/statistics/scheduled/alltime', __APP__ . 'get_mostagendated_scheduled_alltime.php');
-
-$matcher = $router->getMatcher();
-$route   = $matcher->match($request);
-
-!$route ? $file = __APP__ . 'notFound.php' : $file = $route->handler;
-require $_SERVER['DOCUMENT_ROOT'] . '/' . $file;
+  // Execute the static method of the controller class
+  $controller::$method();
+} else {
+  // Route not found
+  echo json_encode([
+    'error' => 'Error: Not Found 404'
+  ]);
+}

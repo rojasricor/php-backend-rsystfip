@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Models;
 
 use PDO;
 
-class Database
+class DatabaseModel
 {
   static function get()
   {
-    $pass = Env::get('MYSQL_PSW');
-    $user = Env::get('MYSQL_USER');
-    $dnam = Env::get('MYSQL_DB');
-    $host = Env::get('MYSQL_HOST');
+    $pass = EnvModel::get('MYSQL_PSW');
+    $user = EnvModel::get('MYSQL_USER');
+    $dnam = EnvModel::get('MYSQL_DB');
+    $host = EnvModel::get('MYSQL_HOST');
     $dbas = new PDO("mysql:host=$host;dbname=$dnam", $user, $pass);
     $dbas->query('set names utf8;');
     $dbas->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);

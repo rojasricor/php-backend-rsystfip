@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Models;
 
 use Exception;
 
-class Env
+class EnvModel
 {
   static function get($key)
   {
     if (defined('_ENV_CACHE')) {
       $vars = _ENV_CACHE;
     } else {
-      $file = 'app/env/env.php';
+      $file = 'app/env/.env';
       if (!file_exists($file)) {
         throw new Exception("The environment file ($file) does not exists. Please create it");
       }

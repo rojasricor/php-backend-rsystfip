@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Models;
 
-class Security
+class SecurityModel
 {
   static function hashPassword($password)
   {
