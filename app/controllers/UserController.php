@@ -71,7 +71,7 @@ class UserController
       $permissions = explode(',', $user->permissions);
       return [
         'id' => $user->id,
-        'role' =>  $user->role,
+        'role' => $user->role,
         'name' => $user->name,
         'email'=>$email,
         'permissions'=>$permissions
