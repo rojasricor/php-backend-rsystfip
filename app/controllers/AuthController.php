@@ -6,7 +6,7 @@ use App\Models\UserModel;
 
 class AuthController
 {
-  static function auth()
+  public static function auth()
   {
     $payload = json_decode(file_get_contents('php://input'));
 

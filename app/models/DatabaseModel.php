@@ -6,7 +6,7 @@ use PDO;
 
 class DatabaseModel
 {
-  static function get()
+  public static function get()
   {
     $pass = EnvModel::get('MYSQL_PSW');
     $user = EnvModel::get('MYSQL_USER');

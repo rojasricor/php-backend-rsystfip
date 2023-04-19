@@ -4,14 +4,14 @@ namespace App\Models;
 
 class UserModel
 {
-  static function getAll()
+  public static function getAll()
   {
     $db = DatabaseModel::get();
     $statement = $db->query("SELECT id, email FROM users");
     return $statement->fetchAll();
   }
 
-  static function getOneById($id)
+  public static function getOneById($id)
   {
     $db = DatabaseModel::get();
     $statement = $db->prepare("SELECT id, email, password FROM users WHERE id = ?");
@@ -19,7 +19,7 @@ class UserModel
     return $statement->fetchObject();
   }
 
-  static function getOneByEmail($email)
+  public static function getOneByEmail($email)
   {
     $db = DatabaseModel::get();
     $statement = $db->prepare("SELECT id, name, password, role, permissions FROM users WHERE email = ?");
@@ -27,14 +27,14 @@ class UserModel
     return $statement->fetchObject();
   }
 
-  static function definePermissionsByRole($role) {
+  public static function definePermissionsByRole($role) {
     $rector_permissions    = "schedule";
     $secretary_permissions = "$rector_permissions,add,reports,statistics";
     $admin_permissions     = "$secretary_permissions,admin";
     return $role === '2' ? $rector_permissions : $secretary_permissions;
   }
 
-  static function create($id, $cargo, $name, $lastname, $doctype, $document, $phone, $email, $password, $permissions)
+  public static function create($id, $cargo, $name, $lastname, $doctype, $document, $phone, $email, $password, $permissions)
   {
     $hashedPassword = SecurityModel::hashPassword($password);
     $db = DatabaseModel::get();
@@ -43,14 +43,14 @@ class UserModel
     $hashedPassword, $cargo, $permissions]);
   }
 
-  static function delete($id)
+  public static function delete($id)
   {
     $db = DatabaseModel::get();
     $statement = $db->prepare("DELETE FROM users WHERE id = ?");
     return $statement->execute([$id]);
   }
 
-  static function updatePassword($id, $password)
+  public static function updatePassword($id, $password)
   {
     $hashedPassword = SecurityModel::hashPassword($password);
     $db = DatabaseModel::get();
@@ -58,13 +58,13 @@ class UserModel
     $statement->execute([$hashedPassword, $id]);
   }
 
-  static function authById($id, $password)
+  public static function authById($id, $password)
   {
     $user = self::getOneById($id);
     return $user ? SecurityModel::verifyPassword($password, $user->password) : false;
   }
 
-  static function auth($email, $password)
+  public static function auth($email, $password)
   {
     $user = self::getOneByEmail($email);
     if ($user && SecurityModel::verifyPassword($password, $user->password)) {

@@ -6,7 +6,7 @@ use Exception;
 
 class EnvModel
 {
-  static function get($key)
+  public static function get($key)
   {
     if (defined('_ENV_CACHE')) {
       $vars = _ENV_CACHE;

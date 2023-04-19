@@ -4,7 +4,7 @@ namespace App\Models;
 
 class SchedulingModel
 {
-  static function getAll($start, $end)
+  public static function getAll($start, $end)
   {
     $db = DatabaseModel::get();
     $statement = $db->prepare("SELECT scheduling.person_id AS id, people.name AS title, scheduling.start_date AS start, scheduling.end_date AS end, scheduling.color AS color FROM scheduling INNER JOIN people ON people.id = scheduling.person_id WHERE start_date >= ? AND start_date <= ? AND status = 'scheduled'");
@@ -12,7 +12,7 @@ class SchedulingModel
     return $statement->fetchAll();
   }
 
-  static function cancell($id, $date, $cancelled_asunt)
+  public static function cancell($id, $date, $cancelled_asunt)
   {
     $db = DatabaseModel::get();
     $statement = $db->prepare("UPDATE scheduling SET scheduling.status = 'cancelled' WHERE scheduling.person_id = ? AND start_date = ?");

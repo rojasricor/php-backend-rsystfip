@@ -6,12 +6,12 @@ use App\Models\UserModel;
 
 class UserController
 {
-  static function getUsers()
+  public static function getUsers()
   {
     echo json_encode(UserModel::getAll());
   }
 
-  static function getUser()
+  public static function getUser()
   {
     if (!isset($_GET['role'])) {
       http_response_code(400);
@@ -28,7 +28,7 @@ class UserController
     echo json_encode($user);
   }
 
-  static function saveUser()
+  public static function saveUser()
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -185,7 +185,7 @@ class UserController
     }
   }
 
-  static function updatePassword()
+  public static function updatePassword()
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -219,7 +219,7 @@ class UserController
     ]);
   }
 
-  static function deleteUser()
+  public static function deleteUser()
   {
     $payload = json_decode(file_get_contents('php://input'));
 

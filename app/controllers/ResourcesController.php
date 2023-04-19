@@ -6,7 +6,7 @@ use App\Models\ResourcesModel;
 
 class ResourcesController
 {
-	static function getResource()
+	public static function getResource()
 	{
 		if (!isset($_GET['resource'])) {
 			http_response_code(400);

@@ -6,7 +6,7 @@ use App\Models\StatisticsModel;
 
 class StatisticsController
 {
-  static function getReports()
+  public static function getReports()
   {
     if (!isset($_GET['start']) || !isset($_GET['end'])) {
       http_response_code(400);
@@ -16,12 +16,12 @@ class StatisticsController
     echo json_encode(StatisticsModel::getReports($_GET['start'], $_GET['end']));
   }
 
-  static function getReportsCounts()
+  public static function getReportsCounts()
   {
     echo json_encode(StatisticsModel::getReportsCounts());
   }
 
-  static function getReportsCount()
+  public static function getReportsCount()
   {
     if (!isset($_GET['start']) || !isset($_GET['end'])) {
       http_response_code(400);
@@ -31,7 +31,7 @@ class StatisticsController
     echo json_encode(StatisticsModel::getReportsCount($_GET['start'], $_GET['end']));
   }
 
-  static function getStatisticsDaily()
+  public static function getStatisticsDaily()
   {
     if (!isset($_GET['start']) || !isset($_GET['end'])) {
       http_response_code(400);
@@ -41,7 +41,7 @@ class StatisticsController
     echo json_encode(StatisticsModel::getStaticsDaily($_GET['start'], $_GET['end']));
   }
 
-  static function getStatisticsScheduled()
+  public static function getStatisticsScheduled()
   {
     if (!isset($_GET['start']) || !isset($_GET['end'])) {
       http_response_code(400);
@@ -51,17 +51,17 @@ class StatisticsController
     echo json_encode(StatisticsModel::getStaticsScheduled($_GET['start'], $_GET['end']));
   }
 
-  static function getMostAgendatedDailyAlltime()
+  public static function getMostAgendatedDailyAlltime()
   {
     echo json_encode(StatisticsModel::getMostAgendatedDailyAlltime());
   }
 
-  static function getMostAgendatedScheduledAlltime()
+  public static function getMostAgendatedScheduledAlltime()
   {
     echo json_encode(StatisticsModel::getMostAgendatedScheduledAlltime());
   }
 
-  static function getMostAgendatedDailyOnRange()
+  public static function getMostAgendatedDailyOnRange()
   {
     if (!isset($_GET['start']) || !isset($_GET['end'])) {
       http_response_code(400);
@@ -71,7 +71,7 @@ class StatisticsController
     echo json_encode(StatisticsModel::getMostAgendatedDailyOnRange($_GET['start'], $_GET['end']));
   }
 
-  static function getMostAgendatedScheduledOnRange()
+  public static function getMostAgendatedScheduledOnRange()
   {
     if (!isset($_GET['start']) || !isset($_GET['end'])) {
       http_response_code(400);

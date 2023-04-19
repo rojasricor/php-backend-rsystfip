@@ -6,12 +6,12 @@ use App\Models\{PeopleModel, SchedulingModel};
 
 class PeopleController
 {
-  static function getPeople()
+  public static function getPeople()
   {
     echo json_encode(PeopleModel::getAll());
   }
 
-  static function getPerson()
+  public static function getPerson()
   {
     if (!isset($_GET['id'])) {
       http_response_code(400);
@@ -28,17 +28,17 @@ class PeopleController
     echo json_encode($person);    
   }
 
-  static function getCancelled()
+  public static function getCancelled()
   {
     echo json_encode(PeopleModel::getCancelled());
   }
 
-  static function getDeans()
+  public static function getDeans()
   {
     echo json_encode(PeopleModel::getDeans());
   }
 
-  static function savePerson()
+  public static function savePerson()
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -151,7 +151,7 @@ class PeopleController
     }
   }
 
-  static function updatePerson()
+  public static function updatePerson()
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -263,7 +263,7 @@ class PeopleController
     }
   }
 
-  static function cancellPerson()
+  public static function cancellPerson()
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -283,7 +283,6 @@ class PeopleController
       return;
     }
 
-    include_once 'session_check.php';
     $ok = SchedulingModel::cancell($id, $date, $cancelled_asunt);
 
     if ($ok) {
