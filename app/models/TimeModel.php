@@ -4,12 +4,12 @@ namespace App\Models;
 
 class TimeModel
 {
-  public static function todayDate()
+  public function todayDate()
   {
     return date('Y-m-d');
   }
 
-  public static function nowHour()
+  public function nowHour()
   {
     return date('h:i:s');
   }

@@ -6,7 +6,13 @@ use App\Models\UserModel;
 
 class AuthController
 {
-  public static function auth()
+  private $userModel;
+
+  public function __construct() {
+    $this->userModel = new UserModel();
+  }
+
+  public function auth()
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -45,9 +51,8 @@ class AuthController
       ]);
       return;
     }
-
-    $userModel = new UserModel();
-    $userAuth = $userModel->auth("$username@itfip.edu.co", $password);
+    
+    $userAuth = $this->userModel->auth("$username@itfip.edu.co", $password);
     
     if ($userAuth) {
       echo json_encode([

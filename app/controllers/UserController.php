@@ -6,21 +6,25 @@ use App\Models\UserModel;
 
 class UserController
 {
-  public static function getUsers()
+  private $userModel;
+  
+  public function __construct() {
+    $this->userModel = new UserModel();
+  }
+  
+  public function getUsers()
   {
-    $userModel = new UserModel();
-    echo json_encode($userModel->getAll());
+    echo json_encode($this->userModel->getAll());
   }
 
-  public static function getUser()
+  public function getUser()
   {
     if (!isset($_GET['role'])) {
       http_response_code(400);
       exit('bad request');
     }
     
-    $userModel = new UserModel();
-    $user = $userModel->getOneById($_GET['role']);
+    $user = $this->userModel->getOneById($_GET['role']);
     
     if (!$user) {
       http_response_code(404);
@@ -30,7 +34,7 @@ class UserController
     echo json_encode($user);
   }
 
-  public static function saveUser()
+  public function saveUser()
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -159,8 +163,7 @@ class UserController
     }
 
     $id = $role - 1;
-    $userModel = new UserModel();
-    $roleExists = $userModel->getOneById($id);
+    $roleExists = $this->userModel->getOneById($id);
 
     if ($roleExists) {
       echo json_encode([
@@ -169,7 +172,7 @@ class UserController
       return;
     }
 
-    $emailExists = $userModel->getOneByEmail($email);
+    $emailExists = $this->userModel->getOneByEmail($email);
 
     if ($emailExists) {
       echo json_encode([
@@ -178,8 +181,8 @@ class UserController
       return;
     }
 
-    $permissions = $userModel->definePermissionsByRole($role);
-    $ok = $userModel->create($id, $role, $name, $lastname, $documentType, $document, $telephone, $email, $password, $permissions);
+    $permissions = $this->userModel->definePermissionsByRole($role);
+    $ok = $this->userModel->create($id, $role, $name, $lastname, $documentType, $document, $telephone, $email, $password, $permissions);
 
     if ($ok) {
       echo json_encode([
@@ -188,7 +191,7 @@ class UserController
     }
   }
 
-  public static function updatePassword()
+  public function updatePassword()
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -209,22 +212,20 @@ class UserController
       return;
     }
 
-    $userModel = new UserModel();
-
-    if (!$userModel->authById($id, $currentPassword)) {
+    if (!$this->userModel->authById($id, $currentPassword)) {
       echo json_encode([
         'error' => 'La contraseña antigua es incorrecta',
       ]);
       return;
     }
 
-    $userModel->updatePassword($id, $newPassword);
+    $this->userModel->updatePassword($id, $newPassword);
     echo json_encode([
       'ok' => 'Contraseña cambiada exitosamente',
     ]);
   }
 
-  public static function deleteUser()
+  public function deleteUser()
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -235,6 +236,6 @@ class UserController
 
     $role = $payload->role;
 
-    echo json_encode($userModel->delete($role));
+    echo json_encode($this->userModel->delete($role));
   }
 }

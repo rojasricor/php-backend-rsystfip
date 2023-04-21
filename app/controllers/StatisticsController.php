@@ -6,87 +6,84 @@ use App\Models\StatisticsModel;
 
 class StatisticsController
 {
-  public static function getReports()
+  private $statisticsModel;
+  
+  public function __construct() {
+    $this->statisticsModel = new StatisticsModel();
+  }
+
+  public function getReports()
   {
     if (!isset($_GET['start']) || !isset($_GET['end'])) {
       http_response_code(400);
       exit('bad request');
     }
     
-    $statisticsModel = new StatisticsModel();
-    echo json_encode($statisticsModel->getReports($_GET['start'], $_GET['end']));
+    echo json_encode($this->statisticsModel->getReports($_GET['start'], $_GET['end']));
   }
 
-  public static function getReportsCounts()
+  public function getReportsCounts()
   {
-    $statisticsModel = new StatisticsModel();
-    echo json_encode($statisticsModel->getReportsCounts());
+    echo json_encode($this->statisticsModel->getReportsCounts());
   }
 
-  public static function getReportsCount()
+  public function getReportsCount()
   {
     if (!isset($_GET['start']) || !isset($_GET['end'])) {
       http_response_code(400);
       exit('bad request');
     }
     
-    $statisticsModel = new StatisticsModel();
-    echo json_encode($statisticsModel->getReportsCount($_GET['start'], $_GET['end']));
+    echo json_encode($this->statisticsModel->getReportsCount($_GET['start'], $_GET['end']));
   }
 
-  public static function getStatisticsDaily()
+  public function getStatisticsDaily()
   {
     if (!isset($_GET['start']) || !isset($_GET['end'])) {
       http_response_code(400);
       exit('bad request');
     }
     
-    $statisticsModel = new StatisticsModel();
-    echo json_encode($statisticsModel->getStaticsDaily($_GET['start'], $_GET['end']));
+    echo json_encode($this->statisticsModel->getStaticsDaily($_GET['start'], $_GET['end']));
   }
 
-  public static function getStatisticsScheduled()
+  public function getStatisticsScheduled()
   {
     if (!isset($_GET['start']) || !isset($_GET['end'])) {
       http_response_code(400);
       exit('bad request');
     }
     
-    $statisticsModel = new StatisticsModel();
-    echo json_encode($statisticsModel->getStaticsScheduled($_GET['start'], $_GET['end']));
+    echo json_encode($this->statisticsModel->getStaticsScheduled($_GET['start'], $_GET['end']));
   }
 
-  public static function getMostAgendatedDailyAlltime()
+  public function getMostAgendatedDailyAlltime()
   {
-    $statisticsModel = new StatisticsModel();
-    echo json_encode($statisticsModel->getMostAgendatedDailyAlltime());
+    echo json_encode($this->statisticsModel->getMostAgendatedDailyAlltime());
   }
 
-  public static function getMostAgendatedScheduledAlltime()
+  public function getMostAgendatedScheduledAlltime()
   {
-    $statisticsModel = new StatisticsModel();
-    echo json_encode($statisticsModel->getMostAgendatedScheduledAlltime());
+    echo json_encode($this->statisticsModel->getMostAgendatedScheduledAlltime());
   }
 
-  public static function getMostAgendatedDailyOnRange()
+  public function getMostAgendatedDailyOnRange()
   {
     if (!isset($_GET['start']) || !isset($_GET['end'])) {
       http_response_code(400);
       exit('bad request');
     }
     
-    $statisticsModel = new StatisticsModel();
-    echo json_encode($statisticsModel->getMostAgendatedDailyOnRange($_GET['start'], $_GET['end']));
+    echo json_encode($this->statisticsModel->getMostAgendatedDailyOnRange($_GET['start'], $_GET['end']));
   }
 
-  public static function getMostAgendatedScheduledOnRange()
+  public function getMostAgendatedScheduledOnRange()
   {
     if (!isset($_GET['start']) || !isset($_GET['end'])) {
       http_response_code(400);
       exit('bad request');
     }
     
-    $statisticsModel = new StatisticsModel();
-    echo json_encode($statisticsModel->getMostAgendatedScheduledOnRange($_GET['start'], $_GET['end']));
+    echo json_encode($this->statisticsModel->getMostAgendatedScheduledOnRange($_GET['start'], $_GET['end']));
   }
 }

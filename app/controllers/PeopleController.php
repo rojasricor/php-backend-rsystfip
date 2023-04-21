@@ -6,21 +6,25 @@ use App\Models\{ PeopleModel, SchedulingModel };
 
 class PeopleController
 {
-  public static function getPeople()
-  {
-    $peopleModel = new PeopleModel();
-    echo json_encode($peopleModel->getAll());
+  private $peopleModel;
+
+  public function __construct() {
+    $this->peopleModel = new PeopleModel();
   }
 
-  public static function getPerson()
+  public function getPeople()
+  {
+    echo json_encode($this->peopleModel->getAll());
+  }
+
+  public function getPerson()
   {
     if (!isset($_GET['id'])) {
       http_response_code(400);
       exit('bad request');
     }
     
-    $peopleModel = new PeopleModel();
-    $person = $peopleModel->getOneById($_GET['id']);
+    $person = $this->peopleModel->getOneById($_GET['id']);
     
     if (!$person) {
       http_response_code(404);
@@ -30,19 +34,17 @@ class PeopleController
     echo json_encode($person);    
   }
 
-  public static function getCancelled()
+  public function getCancelled()
   {
-    $peopleModel = new PeopleModel();
-    echo json_encode($peopleModel->getCancelled());
+    echo json_encode($this->peopleModel->getCancelled());
   }
 
-  public static function getDeans()
+  public function getDeans()
   {
-    $peopleModel = new PeopleModel();
-    echo json_encode($peopleModel->getDeans());
+    echo json_encode($this->peopleModel->getDeans());
   }
 
-  public static function savePerson()
+  public function savePerson()
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -142,13 +144,12 @@ class PeopleController
       return;
     }
 
-    $peopleModel = new PeopleModel();
 
     if ($person === '4') {
-      $peopleModel->saveStaffDeans($doc, $name, $facultie);
+      $this->peopleModel->saveStaffDeans($doc, $name, $facultie);
     }
 
-    $ok = $peopleModel->schedule($name, $doctype, $doc, $person, $facultie, $asunt, $color, $date, $start, $end, $status);
+    $ok = $this->peopleModel->schedule($name, $doctype, $doc, $person, $facultie, $asunt, $color, $date, $start, $end, $status);
 
     if ($ok) {
       echo json_encode([
@@ -157,7 +158,7 @@ class PeopleController
     }
   }
 
-  public static function updatePerson()
+  public function updatePerson()
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -260,8 +261,7 @@ class PeopleController
       return;
     }
 
-    $peopleModel = new PeopleModel();
-    $ok = $peopleModel->update($name, $doctype, $doc, $person, $facultie, $asunt, $id);
+    $ok = $this->peopleModel->update($name, $doctype, $doc, $person, $facultie, $asunt, $id);
 
     if ($ok) {
       echo json_encode([
@@ -270,7 +270,7 @@ class PeopleController
     }
   }
 
-  public static function cancellPerson()
+  public function cancellPerson()
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -291,7 +291,7 @@ class PeopleController
     }
 
     $schedulingModel = new SchedulingModel();
-    $ok = $schedulingModel->cancell($id, $date, $cancelled_asunt);
+    $ok = $this->schedulingModel->cancell($id, $date, $cancelled_asunt);
 
     if ($ok) {
       echo json_encode([

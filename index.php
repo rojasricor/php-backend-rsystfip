@@ -154,8 +154,11 @@ if ($route) {
   // Separate the name of the class and the method
   list($controller, $method) = $handler;
 
-  // Execute the static method of the controller class
-  $controller::$method();
+  // Create an instance of the controller class
+  $controllerInstance = new $controller();
+
+  // Execute the method of the controller class
+  $controllerInstance->$method();
 } else {
   // Route not found
   echo json_encode([
