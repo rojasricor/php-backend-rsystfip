@@ -2,71 +2,65 @@
 
 namespace App\Models;
 
-class UserModel
+class UserModel extends BaseModel
 {
-  public static function getAll()
+  public function getAll()
   {
-    $db = DatabaseModel::get();
-    $statement = $db->query("SELECT id, email FROM users");
+    $statement = $this->db->query("SELECT id, email FROM users");
     return $statement->fetchAll();
   }
 
-  public static function getOneById($id)
+  public function getOneById($id)
   {
-    $db = DatabaseModel::get();
-    $statement = $db->prepare("SELECT id, email, password FROM users WHERE id = ?");
+    $statement = $this->db->prepare("SELECT id, email, password FROM users WHERE id = ?");
     $statement->execute([$id]);
     return $statement->fetchObject();
   }
 
-  public static function getOneByEmail($email)
+  public function getOneByEmail($email)
   {
-    $db = DatabaseModel::get();
-    $statement = $db->prepare("SELECT id, name, password, role, permissions FROM users WHERE email = ?");
+    $statement = $this->db->prepare("SELECT id, name, password, role, permissions FROM users WHERE email = ?");
     $statement->execute([$email]);
     return $statement->fetchObject();
   }
 
-  public static function definePermissionsByRole($role) {
+  public function definePermissionsByRole($role) {
     $rector_permissions    = "schedule";
     $secretary_permissions = "$rector_permissions,add,reports,statistics";
     $admin_permissions     = "$secretary_permissions,admin";
     return $role === '2' ? $rector_permissions : $secretary_permissions;
   }
 
-  public static function create($id, $cargo, $name, $lastname, $doctype, $document, $phone, $email, $password, $permissions)
+  public function create($id, $cargo, $name, $lastname, $doctype, $document, $phone, $email, $password, $permissions)
   {
     $hashedPassword = SecurityModel::hashPassword($password);
-    $db = DatabaseModel::get();
-    $statement = $db->prepare("INSERT INTO users VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
+    $statement = $this->db->prepare("INSERT INTO users VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
     return $statement->execute([$id, $name, $lastname, $doctype, $document, $phone, $email,
     $hashedPassword, $cargo, $permissions]);
   }
 
-  public static function delete($id)
+  public function delete($id)
   {
-    $db = DatabaseModel::get();
-    $statement = $db->prepare("DELETE FROM users WHERE id = ?");
+    $statement = $this->db->prepare("DELETE FROM users WHERE id = ?");
     return $statement->execute([$id]);
   }
 
-  public static function updatePassword($id, $password)
+  public function updatePassword($id, $password)
   {
     $hashedPassword = SecurityModel::hashPassword($password);
-    $db = DatabaseModel::get();
-    $statement = $db->prepare("UPDATE users SET password = ? WHERE id = ?");
+    $statement = $this->db->prepare("UPDATE users SET password = ? WHERE id = ?");
     $statement->execute([$hashedPassword, $id]);
   }
 
-  public static function authById($id, $password)
+  public function authById($id, $password)
   {
-    $user = self::getOneById($id);
+    $user = $this->getOneById($id);
     return $user ? SecurityModel::verifyPassword($password, $user->password) : false;
   }
 
-  public static function auth($email, $password)
+  public function auth($email, $password)
   {
-    $user = self::getOneByEmail($email);
+    $user = $this->getOneByEmail($email);
     if ($user && SecurityModel::verifyPassword($password, $user->password)) {
       $permissions = explode(',', $user->permissions);
       return [

@@ -13,6 +13,7 @@ class SchedulingController
       exit('bad request');
     }
     
-    echo json_encode(SchedulingModel::getAll($_GET['start'], $_GET['end']));
+    $schedulingModel = new SchedulingModel();
+    echo json_encode($schedulingModel->getAll($_GET['start'], $_GET['end']));
   }
 }

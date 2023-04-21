@@ -46,8 +46,9 @@ class AuthController
       return;
     }
 
-    $userAuth = UserModel::auth("$username@itfip.edu.co", $password);
-
+    $userModel = new UserModel();
+    $userAuth = $userModel->auth("$username@itfip.edu.co", $password);
+    
     if ($userAuth) {
       echo json_encode([
         'auth' => true,

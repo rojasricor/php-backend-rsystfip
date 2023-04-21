@@ -2,26 +2,23 @@
 
 namespace App\Models;
 
-class ResourcesModel
+class ResourcesModel extends BaseModel
 {
-  public static function getDocuments()
+  public function getDocuments()
   {
-    $db = DatabaseModel::get();
-    $statement = $db->query("SELECT id, description FROM documents");
+    $statement = $this->db->query("SELECT id, description FROM documents");
     return $statement->fetchAll();
   }
 
-  public static function getFaculties()
+  public function getFaculties()
   {
-    $db = DatabaseModel::get();
-    $statement = $db->query("SELECT * FROM faculties");
+    $statement = $this->db->query("SELECT * FROM faculties");
     return $statement->fetchAll();
   }
 
-  public static function getCategories()
+  public function getCategories()
   {
-    $db = DatabaseModel::get();
-    $statement = $db->query("SELECT * FROM categories");
+    $statement = $this->db->query("SELECT * FROM categories");
     return $statement->fetchAll();
   }
 }

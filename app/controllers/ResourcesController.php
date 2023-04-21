@@ -14,13 +14,14 @@ class ResourcesController
 		}
 		
 		$resource = $_GET['resource'];
+		$resourcesModel = new ResourcesModel();
 		
 		if ($resource === 'categories') {
-			echo json_encode(ResourcesModel::getCategories());
+			echo json_encode($resourcesModel->getCategories());
 		} elseif ($resource === 'documents') {
-			echo json_encode(ResourcesModel::getDocuments());
+			echo json_encode($resourcesModel->getDocuments());
 		} elseif ($resource === 'faculties') {
-			echo json_encode(ResourcesModel::getFaculties());
+			echo json_encode($resourcesModel->getFaculties());
 		}		
 	}
 }

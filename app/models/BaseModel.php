@@ -4,15 +4,22 @@ namespace App\Models;
 
 use PDO;
 
-class DatabaseModel
+class BaseModel
 {
-  public static function get()
+  protected $db;
+
+  public function __construct() {
+    $this->db = $this->createConnection();
+  }
+  
+  public function createConnection()
   {
-    $dsn = "mysql:host=". EnvModel::get('HOST') . ";dbname=" . EnvModel::get('DATABASE');
+    $env = new EnvModel();
+    $dsn = "mysql:host=". $env->get('HOST') . ";dbname=" . $env->get('DATABASE');
     $options = array(
       PDO::MYSQL_ATTR_SSL_CA => "/etc/ssl/certs/ca-certificates.crt"
     );
-    $pdo = new PDO($dsn, EnvModel::get('USERNAME'), EnvModel::get('PASSWORD'), $options);
+    $pdo = new PDO($dsn, $env->get('USERNAME'), $env->get('PASSWORD'));
     $pdo->query('set names utf8;');
     $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

@@ -8,7 +8,8 @@ class PeopleController
 {
   public static function getPeople()
   {
-    echo json_encode(PeopleModel::getAll());
+    $peopleModel = new PeopleModel();
+    echo json_encode($peopleModel->getAll());
   }
 
   public static function getPerson()
@@ -18,7 +19,8 @@ class PeopleController
       exit('bad request');
     }
     
-    $person = PeopleModel::getOneById($_GET['id']);
+    $peopleModel = new PeopleModel();
+    $person = $peopleModel->getOneById($_GET['id']);
     
     if (!$person) {
       http_response_code(404);
@@ -30,12 +32,14 @@ class PeopleController
 
   public static function getCancelled()
   {
-    echo json_encode(PeopleModel::getCancelled());
+    $peopleModel = new PeopleModel();
+    echo json_encode($peopleModel->getCancelled());
   }
 
   public static function getDeans()
   {
-    echo json_encode(PeopleModel::getDeans());
+    $peopleModel = new PeopleModel();
+    echo json_encode($peopleModel->getDeans());
   }
 
   public static function savePerson()
@@ -138,11 +142,13 @@ class PeopleController
       return;
     }
 
+    $peopleModel = new PeopleModel();
+
     if ($person === '4') {
-      PeopleModel::saveStaffDeans($doc, $name, $facultie);
+      $peopleModel->saveStaffDeans($doc, $name, $facultie);
     }
 
-    $ok = PeopleModel::schedule($name, $doctype, $doc, $person, $facultie, $asunt, $color, $date, $start, $end, $status);
+    $ok = $peopleModel->schedule($name, $doctype, $doc, $person, $facultie, $asunt, $color, $date, $start, $end, $status);
 
     if ($ok) {
       echo json_encode([
@@ -254,7 +260,8 @@ class PeopleController
       return;
     }
 
-    $ok = PeopleModel::update($name, $doctype, $doc, $person, $facultie, $asunt, $id);
+    $peopleModel = new PeopleModel();
+    $ok = $peopleModel->update($name, $doctype, $doc, $person, $facultie, $asunt, $id);
 
     if ($ok) {
       echo json_encode([
@@ -283,7 +290,8 @@ class PeopleController
       return;
     }
 
-    $ok = SchedulingModel::cancell($id, $date, $cancelled_asunt);
+    $schedulingModel = new SchedulingModel();
+    $ok = $schedulingModel->cancell($id, $date, $cancelled_asunt);
 
     if ($ok) {
       echo json_encode([

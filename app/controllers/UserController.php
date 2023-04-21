@@ -8,7 +8,8 @@ class UserController
 {
   public static function getUsers()
   {
-    echo json_encode(UserModel::getAll());
+    $userModel = new UserModel();
+    echo json_encode($userModel->getAll());
   }
 
   public static function getUser()
@@ -18,7 +19,8 @@ class UserController
       exit('bad request');
     }
     
-    $user = UserModel::getOneById($_GET['role']);
+    $userModel = new UserModel();
+    $user = $userModel->getOneById($_GET['role']);
     
     if (!$user) {
       http_response_code(404);
@@ -156,8 +158,9 @@ class UserController
       return;
     }
 
-    $id         = $role - 1;
-    $roleExists = UserModel::getOneById($id);
+    $id = $role - 1;
+    $userModel = new UserModel();
+    $roleExists = $userModel->getOneById($id);
 
     if ($roleExists) {
       echo json_encode([
@@ -166,7 +169,7 @@ class UserController
       return;
     }
 
-    $emailExists = UserModel::getOneByEmail($email);
+    $emailExists = $userModel->getOneByEmail($email);
 
     if ($emailExists) {
       echo json_encode([
@@ -175,8 +178,8 @@ class UserController
       return;
     }
 
-    $permissions = UserModel::definePermissionsByRole($role);
-    $ok = UserModel::create($id, $role, $name, $lastname, $documentType, $document, $telephone, $email, $password, $permissions);
+    $permissions = $userModel->definePermissionsByRole($role);
+    $ok = $userModel->create($id, $role, $name, $lastname, $documentType, $document, $telephone, $email, $password, $permissions);
 
     if ($ok) {
       echo json_encode([
@@ -206,14 +209,16 @@ class UserController
       return;
     }
 
-    if (!UserModel::authById($id, $currentPassword)) {
+    $userModel = new UserModel();
+
+    if (!$userModel->authById($id, $currentPassword)) {
       echo json_encode([
         'error' => 'La contraseña antigua es incorrecta',
       ]);
       return;
     }
 
-    UserModel::updatePassword($id, $newPassword);
+    $userModel->updatePassword($id, $newPassword);
     echo json_encode([
       'ok' => 'Contraseña cambiada exitosamente',
     ]);
@@ -230,6 +235,6 @@ class UserController
 
     $role = $payload->role;
 
-    echo json_encode(UserModel::delete($role));
+    echo json_encode($userModel->delete($role));
   }
 }

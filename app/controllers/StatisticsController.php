@@ -13,12 +13,14 @@ class StatisticsController
       exit('bad request');
     }
     
-    echo json_encode(StatisticsModel::getReports($_GET['start'], $_GET['end']));
+    $statisticsModel = new StatisticsModel();
+    echo json_encode($statisticsModel->getReports($_GET['start'], $_GET['end']));
   }
 
   public static function getReportsCounts()
   {
-    echo json_encode(StatisticsModel::getReportsCounts());
+    $statisticsModel = new StatisticsModel();
+    echo json_encode($statisticsModel->getReportsCounts());
   }
 
   public static function getReportsCount()
@@ -28,7 +30,8 @@ class StatisticsController
       exit('bad request');
     }
     
-    echo json_encode(StatisticsModel::getReportsCount($_GET['start'], $_GET['end']));
+    $statisticsModel = new StatisticsModel();
+    echo json_encode($statisticsModel->getReportsCount($_GET['start'], $_GET['end']));
   }
 
   public static function getStatisticsDaily()
@@ -38,7 +41,8 @@ class StatisticsController
       exit('bad request');
     }
     
-    echo json_encode(StatisticsModel::getStaticsDaily($_GET['start'], $_GET['end']));
+    $statisticsModel = new StatisticsModel();
+    echo json_encode($statisticsModel->getStaticsDaily($_GET['start'], $_GET['end']));
   }
 
   public static function getStatisticsScheduled()
@@ -48,17 +52,20 @@ class StatisticsController
       exit('bad request');
     }
     
-    echo json_encode(StatisticsModel::getStaticsScheduled($_GET['start'], $_GET['end']));
+    $statisticsModel = new StatisticsModel();
+    echo json_encode($statisticsModel->getStaticsScheduled($_GET['start'], $_GET['end']));
   }
 
   public static function getMostAgendatedDailyAlltime()
   {
-    echo json_encode(StatisticsModel::getMostAgendatedDailyAlltime());
+    $statisticsModel = new StatisticsModel();
+    echo json_encode($statisticsModel->getMostAgendatedDailyAlltime());
   }
 
   public static function getMostAgendatedScheduledAlltime()
   {
-    echo json_encode(StatisticsModel::getMostAgendatedScheduledAlltime());
+    $statisticsModel = new StatisticsModel();
+    echo json_encode($statisticsModel->getMostAgendatedScheduledAlltime());
   }
 
   public static function getMostAgendatedDailyOnRange()
@@ -68,7 +75,8 @@ class StatisticsController
       exit('bad request');
     }
     
-    echo json_encode(StatisticsModel::getMostAgendatedDailyOnRange($_GET['start'], $_GET['end']));
+    $statisticsModel = new StatisticsModel();
+    echo json_encode($statisticsModel->getMostAgendatedDailyOnRange($_GET['start'], $_GET['end']));
   }
 
   public static function getMostAgendatedScheduledOnRange()
@@ -78,6 +86,7 @@ class StatisticsController
       exit('bad request');
     }
     
-    echo json_encode(StatisticsModel::getMostAgendatedScheduledOnRange($_GET['start'], $_GET['end']));
+    $statisticsModel = new StatisticsModel();
+    echo json_encode($statisticsModel->getMostAgendatedScheduledOnRange($_GET['start'], $_GET['end']));
   }
 }
