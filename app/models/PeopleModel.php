@@ -24,9 +24,9 @@ class PeopleModel extends BaseModel
     return $peopleDataModel->save($lastId, $date, $start, $end, $time, $status, $color);
   }
 
-  public function saveStaffDeans($cc, $name, $facultie)
+  public function saveDeans($cc, $name, $facultie)
   {
-    $statement = $this->db->prepare("SELECT cc FROM deans WHERE cc = ?");
+    $statement = $this->db->prepare("SELECT _id FROM deans WHERE _id = ?");
     $statement->execute([$cc]);
     $deanExists = $statement->fetchObject();
     if (!$deanExists) {
@@ -56,26 +56,19 @@ class PeopleModel extends BaseModel
 
   public function getAll()
   {
-    $statement = $this->db->query("SELECT p.id, p.name, d.document as ty_doc, c.person, p.facultad, d.description, p.num_doc, f.name AS fac, p.text_asunt FROM people p, documents d, faculties f, categories c WHERE p.id_doc = d.id AND p.facultad = f.id AND p.person_type = c.id ORDER BY id DESC");
+    $statement = $this->db->query("SELECT p.id, p.name, d.document as ty_doc, c.category, p.facultad, d.description, p.num_doc, f.name AS fac, p.text_asunt FROM people p, documents d, faculties f, categories c WHERE p.id_doc = d.id AND p.facultad = f.id AND p.person_type = c.id ORDER BY p.id DESC");
     return $statement->fetchAll();
   }
 
   public function getCancelled()
   {
-    $statement = $this->db->query("SELECT p.id, p.name, d.document as ty_doc, c.person, p.facultad, d.description, p.num_doc, f.name AS fac, l.cancelled_asunt FROM people p, documents d, faculties f, categories c, cancelled l, scheduling s WHERE p.id_doc = d.id AND p.id = l.person_id AND s.person_id = l.person_id AND s.status = 'cancelled' AND p.facultad = f.id AND p.person_type = c.id ORDER BY id DESC");
+    $statement = $this->db->query("SELECT p.id, p.name, d.document as ty_doc, c.category, p.facultad, d.description, p.num_doc, f.name AS fac, l.cancelled_asunt FROM people p, documents d, faculties f, categories c, cancelled l, scheduling s WHERE p.id_doc = d.id AND p.id = l.person_id AND s.person_id = l.person_id AND s.status = 'cancelled' AND p.facultad = f.id AND p.person_type = c.id ORDER BY p.id DESC");
     return $statement->fetchAll();
   }
 
   public function getDeans()
   {
     $statement = $this->db->query("SELECT * FROM deans");
-    return $statement->fetchAll();
-  }
-
-  public function search($search)
-  {
-    $statement = $this->db->prepare("SELECT p.id, p.name, d.document as ty_doc, c.person, p.facultad, d.description, p.num_doc, f.name AS fac, p.text_asunt FROM people p, documents d, faculties f, categories c WHERE (e.id = ? OR p.num_doc = ? OR p.name LIKE ?) AND p.id_doc = d.id AND p.facultad = f.id AND p.person_type = c.id ORDER BY id ASC");
-    $statement->execute([$search, $search, "$search%"]);
     return $statement->fetchAll();
   }
 }

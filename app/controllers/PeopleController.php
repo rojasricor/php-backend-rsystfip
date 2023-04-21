@@ -146,7 +146,7 @@ class PeopleController
 
 
     if ($person === '4') {
-      $this->peopleModel->saveStaffDeans($doc, $name, $facultie);
+      $this->peopleModel->saveDeans($doc, $name, $facultie);
     }
 
     $ok = $this->peopleModel->schedule($name, $doctype, $doc, $person, $facultie, $asunt, $color, $date, $start, $end, $status);
