@@ -1,3 +1,4 @@
 vendor
 robots.txt
 composer.phar
+.env
