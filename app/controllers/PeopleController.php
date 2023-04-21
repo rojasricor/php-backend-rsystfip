@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\{PeopleModel, SchedulingModel};
+use App\Models\{ PeopleModel, SchedulingModel };
 
 class PeopleController
 {
