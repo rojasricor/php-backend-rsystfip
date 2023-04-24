@@ -9,11 +9,11 @@ CREATE TABLE `cancelled` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Tabla que almacena las citas canceladas.';
 
 INSERT INTO `cancelled` (`person_id`, `date`, `cancelled_asunt`) VALUES
-(4, '2023-04-12 21:57:15', 'sssssssssss'),
-(5, '2023-04-12 22:08:55', '\n\n'),
+(4, '2023-04-12 21:57:15', 'No asiste'),
+(5, '2023-04-12 22:08:55', 'No asiste'),
 (6, '2023-04-12 22:22:34', 'No asiste'),
 (6, '2023-04-12 22:22:36', 'No asiste'),
-(7, '2023-04-12 22:25:09', 'sssssssss');
+(7, '2023-04-12 22:25:09', 'No asiste');
 
 CREATE TABLE `categories` (
   `id` tinyint(1) NOT NULL COMMENT 'Campo que guarda el id del tipo de persona (autoincremental).',
@@ -163,3 +163,4 @@ ALTER TABLE `faculties`
 ALTER TABLE `people`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Campo que guarda el id de las personas agendadas (autoincremental).', AUTO_INCREMENT=10;
 COMMIT;
+
