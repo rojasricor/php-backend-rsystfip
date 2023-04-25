@@ -19,7 +19,7 @@ class BaseModel
     $options = array(
       PDO::MYSQL_ATTR_SSL_CA => "/etc/ssl/certs/ca-certificates.crt"
     );
-    $pdo = new PDO($dsn, $env->get('USERNAME'), $env->get('PASSWORD'));
+    $pdo = new PDO($dsn, $env->get('USERNAME'), $env->get('PASSWORD'), $options);
     $pdo->query('set names utf8;');
     $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
