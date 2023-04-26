@@ -4,7 +4,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use Aura\Router\RouterContainer;
 use Laminas\Diactoros\ServerRequestFactory;
-use App\Middleware\CorsMiddleware;
+use App\Middlewares\CorsMiddleware;
 
 // Create an instance of route container
 $routerContainer = new RouterContainer();
