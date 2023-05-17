@@ -9,11 +9,11 @@ CREATE TABLE `cancelled` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Tabla que almacena las citas canceladas.';
 
 INSERT INTO `cancelled` (`person_id`, `date`, `cancelled_asunt`) VALUES
-(4, '2023-04-12 21:57:15', 'No asiste'),
-(5, '2023-04-12 22:08:55', 'No asiste'),
+(4, '2023-04-12 21:57:15', 'sssssssssss'),
+(5, '2023-04-12 22:08:55', '\n\n'),
 (6, '2023-04-12 22:22:34', 'No asiste'),
 (6, '2023-04-12 22:22:36', 'No asiste'),
-(7, '2023-04-12 22:25:09', 'No asiste');
+(7, '2023-04-12 22:25:09', 'sssssssss');
 
 CREATE TABLE `categories` (
   `id` tinyint(1) NOT NULL COMMENT 'Campo que guarda el id del tipo de persona (autoincremental).',
@@ -36,8 +36,7 @@ CREATE TABLE `deans` (
 INSERT INTO `deans` (`_id`, `dean`, `facultie_id`) VALUES
 ('1111122448', 'Holman Reyes Puentes', 2),
 ('1111122449', 'Cesar Julio Bravo Saavedra', 1),
-('1111122450', 'Luz Mery Vega Bustamante', 3),
-('473333333', 'Dolore Voluptatem Rerum Laboris Qu', 2);
+('1111122450', 'Luz Mery Vega Bustamante', 3);
 
 CREATE TABLE `documents` (
   `id` tinyint(1) NOT NULL COMMENT 'Campo que guarda el id del tipo de documento, (autoincremental).',
@@ -68,21 +67,23 @@ CREATE TABLE `people` (
   `name` varchar(50) NOT NULL COMMENT 'Campo que guarda el nombre completo de las personas agendadas.',
   `document_id` tinyint(1) NOT NULL COMMENT 'Campo que guarda el id del tipo de documento referenciado de la tabla document.',
   `document_number` char(11) NOT NULL COMMENT 'Campo que guarda el numero de documento de las personas agendadas.',
+  `telephone` char(10) NOT NULL COMMENT 'Campo que guarda el numero de telefono de contacto.',
+  `email` varchar(30) NOT NULL COMMENT 'Campo que guarda el correo electronico de contacto.',
   `category_id` tinyint(1) NOT NULL COMMENT 'Campo que guarda el id del tipo de persona referenciado de la tabla person_type.',
   `facultie_id` tinyint(1) NOT NULL DEFAULT 4 COMMENT 'Campo que guarda el id de la facultad a la que pertenece referenciado de la tabla faculties.',
   `come_asunt` varchar(150) NOT NULL COMMENT 'Campo que guarda el asunto, motivo o razon de la visita a la rectoria, para su posterior agendamiento.'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci COMMENT='Tabla que almacena todos los datos personales de las personas que han sido agendadas.';
 
-INSERT INTO `people` (`id`, `name`, `document_id`, `document_number`, `category_id`, `facultie_id`, `come_asunt`) VALUES
-(1, 'Et Libero Cumque Error Et Deleniti ', 1, '98838844', 2, 1, 'Numquam eiusmod et sint aliquid minus quis sint est omnis sunt quas et accusamus error sunt'),
-(2, 'Corporis Sit Vel Explicabo Culpa ', 5, '2127849455', 1, 3, 'Molestiae aut dolor ab provident'),
-(3, 'Et Possimus Incidunt Soluta Ut Qu', 1, '5033333333', 1, 1, 'Ex dolorum ut totam et qui enim eaque dicta est assumenda rerum atque sunt quia est quos'),
-(4, 'Et Rerum Distinctio Sit Corporis E', 2, '373737434', 5, 3, 'Voluptas sunt placeat vitae et quo sint quia reprehenderit corporis officiis eiusmod modi eveniet'),
-(5, 'Sapiente Magnam Libero Earum Cupida', 4, '4833333333', 3, 2, 'Aut et in laborum amet quas nihil pariatur consequuntur cupidatat aliqua qui culpa et expedita'),
-(6, 'Dolore Voluptatem Rerum Laboris Qu', 2, '473333333', 4, 2, 'Eos dolore deserunt ut cupiditate sit occaecat'),
-(7, 'Odit Ducimus Iure Rem Perspiciatis', 5, '3333333326', 2, 3, 'Distinctio distinctio aliquid voluptatum dolor in sit optio dolores error id voluptatem invento'),
-(8, 'Sed Sunt Nobis Esse Maiores Ut', 1, '9333333333', 1, 3, 'Aut molestiae aut quis sed fugiat iste quia consequatur harum eos inventore optio velit id nostr'),
-(9, 'Officiis Dolorem Ut Dolore Deleniti', 3, '55774774', 3, 2, 'Dolorem qui aperiam aut et');
+INSERT INTO `people` (`id`, `name`, `document_id`, `document_number`, `telephone`, `email`, `category_id`, `facultie_id`, `come_asunt`) VALUES
+(1, 'Et Libero Cumque Error Et Deleniti ', 1, '98838844', '', '', 2, 1, 'Numquam eiusmod et sint aliquid minus quis sint est omnis sunt quas et accusamus error sunt'),
+(2, 'Corporis Sit Vel Explicabo Culpa ', 5, '2127849455', '', '', 1, 3, 'Molestiae aut dolor ab provident'),
+(3, 'Et Possimus Incidunt Soluta Ut Qu', 1, '5033333333', '', '', 1, 1, 'Ex dolorum ut totam et qui enim eaque dicta est assumenda rerum atque sunt quia est quos'),
+(4, 'Et Rerum Distinctio Sit Corporis E', 2, '373737434', '', '', 5, 3, 'Voluptas sunt placeat vitae et quo sint quia reprehenderit corporis officiis eiusmod modi eveniet'),
+(5, 'Sapiente Magnam Libero Earum Cupida', 4, '4833333333', '', '', 3, 2, 'Aut et in laborum amet quas nihil pariatur consequuntur cupidatat aliqua qui culpa et expedita'),
+(6, 'Dolore Voluptatem Rerum Laboris Qu', 2, '473333333', '', '', 4, 2, 'Eos dolore deserunt ut cupiditate sit occaecat'),
+(7, 'Odit Ducimus Iure Rem Perspiciatis', 5, '3333333326', '', '', 2, 3, 'Distinctio distinctio aliquid voluptatum dolor in sit optio dolores error id voluptatem invento'),
+(8, 'Sed Sunt Nobis Esse Maiores Ut', 1, '9333333333', '', '', 1, 3, 'Aut molestiae aut quis sed fugiat iste quia consequatur harum eos inventore optio velit id nostr'),
+(9, 'Officiis Dolorem Ut Dolore Deleniti', 3, '55774774', '', '', 3, 2, 'Dolorem qui aperiam aut et');
 
 CREATE TABLE `scheduling` (
   `person_id` int(11) UNSIGNED NOT NULL COMMENT 'Campo que almacena el id de la persona agendada, llave foranea del campo id de la tabla registered people.',
@@ -121,7 +122,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `name`, `lastname`, `document_id`, `document_number`, `tel`, `email`, `password`, `role`, `permissions`) VALUES
 (1, 'Mario Fernando', 'Díaz Pava', 0, '7223309043', '3100000000', 'mdiaz@itfip.edu.co', '$2y$10$ulcGJ5S/NodjeQmPo1wTL.rISkGNJ5th9ejXf6kJqdwlm/8yAZxYm', 'rector', 'schedule'),
 (2, 'Luz Elena', 'Avila', 1, '11111111111', '3100000000', 'lavila@itfip.edu.co', '$2y$10$ISfxYUjrGFnjZAup3yeNY./5Vyj3X88LmxudLTN.lKKlMSuApH45W', 'secretaria', 'add,schedule,reports,statistics'),
-(3, 'Ricardo Andrés', 'Rojas Rico', 1, '1111122448', '3173926578', 'rrojas48@itfip.edu.co', '$2y$10$5bCqtRhLRr7CtWr24WZhROO9arUBt0JnXUU.X53JMOgSd2DhGeXMa', 'admin', 'admin,add,schedule,reports,statistics');
+(3, 'Ricardo Andrés', 'Rojas Rico', 1, '1111122448', '3173926578', 'rrojas48@itfip.edu.co', '$2y$10$LLOliaD5SOpQYv/ovweIQOrpoKxbO6ocSH./vXIXHatN/6nRws1pC', 'admin', 'admin,add,schedule,reports,statistics');
 
 
 ALTER TABLE `categories`
@@ -163,4 +164,3 @@ ALTER TABLE `faculties`
 ALTER TABLE `people`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Campo que guarda el id de las personas agendadas (autoincremental).', AUTO_INCREMENT=10;
 COMMIT;
-
