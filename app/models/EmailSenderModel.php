@@ -12,23 +12,24 @@ class EmailSenderModel
 {
   public function sendEmail($subject, $to, $content)
   {
-    $email = new Mail(); 
-    $email->setFrom("rsystfip@gmail.com", "RSystfip");
-    $email->setSubject($subject);
-    foreach ($to as $t) {
-      $email->addTo($t);
-    }
-    $email->addContent(
-      "text/html", "<strong>$content</strong>"
+    $email = new Mail();
+    $envModelInstance = new EnvModel();
+    $email->setFrom(
+      $envModelInstance->reader('FROM_EMAIL'),
+      $envModelInstance->reader('FROM_NAME')
     );
-    $sendgrid = new SendGrid();
+    $email->setSubject($subject);
+    $email->addTo($to);
+    $email->addContent("text/html", "<strong>$content</strong>");
+
+    $sendgridApiKey = $envModelInstance->reader('SENDGRID_API_KEY');
+    $sendgrid = new SendGrid($sendgridApiKey);
+
     try {
       $response = $sendgrid->send($email);
-      print $response->statusCode() . "\n";
-      print_r($response->headers());
-      print $response->body() . "\n";
+      return $response;
     } catch (Exception $e) {
-      echo 'Caught exception: '. $e->getMessage() ."\n";
+      echo json_encode($e->getMessage());
     }
   }
 }
