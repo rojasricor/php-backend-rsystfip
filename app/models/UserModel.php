@@ -34,9 +34,19 @@ class UserModel extends BaseModel
   public function create($id, $cargo, $name, $lastname, $doctype, $document, $phone, $email, $password, $permissions)
   {
     $hashedPassword = SecurityModel::hashPassword($password);
-    $statement = $this->db->prepare("INSERT INTO users VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
-    return $statement->execute([$id, $name, $lastname, $doctype, $document, $phone, $email,
-    $hashedPassword, $cargo, $permissions]);
+    $statement = $this->db->prepare("INSERT INTO users (id, name, lastname, document_id, document_number, tel, email, password, role, permissions) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
+    return $statement->execute([
+      $id,
+      $name,
+      $lastname,
+      $doctype,
+      $document,
+      $phone,
+      $email,
+      $hashedPassword,
+      $cargo,
+      $permissions
+    ]);
   }
 
   public function delete($id)

@@ -6,15 +6,14 @@ class PeopleModel extends BaseModel
 {
   public function save($name, $tipo, $numero, $asunt)
   {
-    $statement = $this->db->prepare("INSERT INTO people(name, document_id, document_number, come_asunt) VALUES (?, ?, ?, ?)");
+    $statement = $this->db->prepare("INSERT INTO people (name, document_id, document_number, come_asunt) VALUES (?, ?, ?, ?)");
     return $statement->execute([$name, $tipo, $numero, $asunt]);
   }
 
   public function schedule($name, $tipo, $numero, $type_person, $telCntct, $emailCtc, $facultie_id, $asunt, $color, $date, $start, $end, $status)
   {
-    $statement = $this->db->prepare("INSERT INTO people VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $statement = $this->db->prepare("INSERT INTO people (name, document_id, document_number, telephone, email, category_id, facultie_id, come_asunt) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
     $statement->execute([
-      NULL,
       $name,
       $tipo,
       $numero,
@@ -40,7 +39,7 @@ class PeopleModel extends BaseModel
     $statement->execute([$cc]);
     $deanExists = $statement->fetchObject();
     if (!$deanExists) {
-      $statement = $this->db->prepare("INSERT INTO deans VALUES (?, ?, ?)");
+      $statement = $this->db->prepare("INSERT INTO deans (_id, dean, facultie_id) VALUES (?, ?, ?)");
       return $statement->execute([$cc, $name, $facultie]);
     }
   }

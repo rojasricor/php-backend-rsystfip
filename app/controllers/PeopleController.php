@@ -88,6 +88,13 @@ class PeopleController
       return;
     }
 
+    if (!is_null($telCntct) && strlen($telCntct) !== 10) {
+      echo json_encode([
+        'error' => 'El número de teléfono de contacto debe tener 10 caracteres',
+      ]);
+      return;
+    }
+
     if ($doctype === 'unset' || empty($doctype)) {
       echo json_encode([
         'error' => 'Debe seleccionar el tipo de documento',
