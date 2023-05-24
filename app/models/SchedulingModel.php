@@ -11,11 +11,17 @@ class SchedulingModel extends BaseModel
     return $statement->fetchAll();
   }
 
+  public function findCiteById($id) {
+    $statement = $this->db->prepare("SELECT people.name, people.telephone AS tel, people.email AS email FROM scheduling INNER JOIN people ON people.id = scheduling.person_id WHERE scheduling.person_id = ?");
+    $statement->execute([$id]);
+    return $statement->fetchObject();
+  }
+
   public function cancell($id, $date, $cancelled_asunt)
   {
-    $statement = $this->db->prepare("UPDATE scheduling SET scheduling.status = 'cancelled' WHERE scheduling.person_id = ? AND start_date = ?");
+    $statement = $this->db->prepare("UPDATE scheduling SET scheduling.status = 'cancelled' WHERE scheduling.person_id = ? AND scheduling.start_date = ?");
     $statement->execute([$id, $date]);
-    $statement = $db->prepare("INSERT INTO cancelled(person_id, cancelled_asunt) VALUES(?, ?)");
+    $statement = $this->db->prepare("INSERT INTO cancelled(person_id, cancelled_asunt) VALUES(?, ?)");
     return $statement->execute([$id, $cancelled_asunt]);
   }
 }

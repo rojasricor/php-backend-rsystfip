@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\{ PeopleModel, SchedulingModel };
+use App\Models\{ PeopleModel, SchedulingModel, EmailSenderModel };
 
 class PeopleController
 {
@@ -57,6 +57,8 @@ class PeopleController
     $name     = ucwords(strtolower($payload->name));
     $doctype  = $payload->doctype;
     $doc      = $payload->doc;
+    $telCntct = $payload->telContact;
+    $emailCtc = $payload->emailContact;
     $facultie = $payload->facultie;
     $asunt    = ucfirst(strtolower($payload->asunt));
     $color    = $payload->color;
@@ -149,7 +151,7 @@ class PeopleController
       $this->peopleModel->saveDeans($doc, $name, $facultie);
     }
 
-    $ok = $this->peopleModel->schedule($name, $doctype, $doc, $person, $facultie, $asunt, $color, $date, $start, $end, $status);
+    $ok = $this->peopleModel->schedule($name, $doctype, $doc, $person, $telCntct, $emailCtc, $facultie, $asunt, $color, $date, $start, $end, $status);
 
     if ($ok) {
       echo json_encode([
@@ -291,13 +293,25 @@ class PeopleController
     }
 
     $schedulingModel = new SchedulingModel();
-    $ok = $this->schedulingModel->cancell($id, $date, $cancelled_asunt);
+    $citeDataFound = $schedulingModel->findCiteById($id);
+    $ok = $schedulingModel->cancell($id, $date, $cancelled_asunt);
 
-    if ($ok) {
-      echo json_encode([
-        'ok' => 'Cita cancelada exitosamente',
-      ]);
-      return;
+    if ($citeDataFound && $ok) {
+      $emailSenderModel = new EmailSenderModel();
+      $message = "<strong>" . $citeDataFound->name . "</strong>" . " se ha cancelado la cita programada para el día " . "<code>$date</code>" . ". El motivo de cancelación es: " . $cancelled_asunt . ".<br><br>Si tiene alguna duda o comentario, por favor comuníquese con nosotros.<br><br>Saludos,<br>Rectoría ITFIP - RSystfip.";
+
+      $cancelledCite = $emailSenderModel->sendEmail(
+        "Cita cancelada Rectoria ITFIP - RSystfip",
+        $citeDataFound->email,
+        $message
+      );
+    
+      if ($cancelledCite) {
+        echo json_encode([
+          'ok' => 'Cita cancelada exitosamente',
+        ]);
+        return;
+      }
     }
 
     echo json_encode([

@@ -10,10 +10,20 @@ class PeopleModel extends BaseModel
     return $statement->execute([$name, $tipo, $numero, $asunt]);
   }
 
-  public function schedule($name, $tipo, $numero, $type_person, $facultie_id, $asunt, $color, $date, $start, $end, $status)
+  public function schedule($name, $tipo, $numero, $type_person, $telCntct, $emailCtc, $facultie_id, $asunt, $color, $date, $start, $end, $status)
   {
-    $statement = $this->db->prepare("INSERT INTO people VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $statement->execute([NULL, $name, $tipo, $numero, $type_person, $facultie_id, $asunt]);
+    $statement = $this->db->prepare("INSERT INTO people VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $statement->execute([
+      NULL,
+      $name,
+      $tipo,
+      $numero,
+      $telCntct,
+      $emailCtc,
+      $type_person,
+      $facultie_id,
+      $asunt
+    ]);
     $lastId = $this->getLast()->id;
     $timeModel = new TimeModel();
     $date ? $date : $date = $timeModel->todayDate();
@@ -30,7 +40,7 @@ class PeopleModel extends BaseModel
     $statement->execute([$cc]);
     $deanExists = $statement->fetchObject();
     if (!$deanExists) {
-      $statement = $db->prepare("INSERT INTO deans VALUES (?, ?, ?)");
+      $statement = $this->db->prepare("INSERT INTO deans VALUES (?, ?, ?)");
       return $statement->execute([$cc, $name, $facultie]);
     }
   }
@@ -51,7 +61,15 @@ class PeopleModel extends BaseModel
   public function update($name, $tipo, $numero, $type_person, $facultie_id, $asunt, $id)
   {
     $statement = $this->db->prepare("UPDATE people SET name = ?, document_id = ?, document_number = ?, category_id = ?, facultie_id = ?, come_asunt = ?  WHERE id = ?");
-    return $statement->execute([$name, $tipo, $numero, $type_person, $facultie_id, $asunt, $id]);
+    return $statement->execute([
+      $name,
+      $tipo,
+      $numero,
+      $type_person,
+      $facultie_id,
+      $asunt,
+      $id
+    ]);
   }
 
   public function getAll()

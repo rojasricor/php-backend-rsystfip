@@ -15,14 +15,14 @@ class EmailSenderModel
     $email = new Mail();
     $envModelInstance = new EnvModel();
     $email->setFrom(
-      $envModelInstance->reader('FROM_EMAIL'),
-      $envModelInstance->reader('FROM_NAME')
+      $envModelInstance->get('FROM_EMAIL'),
+      $envModelInstance->get('FROM_NAME')
     );
     $email->setSubject($subject);
     $email->addTo($to);
-    $email->addContent("text/html", "<strong>$content</strong>");
+    $email->addContent("text/html", $content);
 
-    $sendgridApiKey = $envModelInstance->reader('SENDGRID_API_KEY');
+    $sendgridApiKey = $envModelInstance->get('SENDGRID_API_KEY');
     $sendgrid = new SendGrid($sendgridApiKey);
 
     try {
