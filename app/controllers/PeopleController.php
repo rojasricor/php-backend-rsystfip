@@ -298,7 +298,7 @@ class PeopleController
 
     if ($citeDataFound && $ok) {
       $emailSenderModel = new EmailSenderModel();
-      $message = "<strong>" . $citeDataFound->name . "</strong>" . " se ha cancelado la cita programada para el día " . "<code>$date</code>" . ". El motivo de cancelación es: " . $cancelled_asunt . ".<br><br>Si tiene alguna duda o comentario, por favor comuníquese con nosotros.<br><br>Saludos,<br>Rectoría ITFIP - RSystfip.<br><br><img src='https://www.redttu.edu.co/es/wp-content/uploads/2015/12/27.png'>";
+      $message = "<strong>" . $citeDataFound->name . "</strong>" . " se ha cancelado la cita programada para el día " . "<code>$date</code>" . ". El motivo de cancelación es: " . $cancelled_asunt . ".<br><br>Si tiene alguna duda o comentario, por favor comuníquese con nosotros.<br><br>Saludos,<br>Rectoría ITFIP - RSystfip.<br><br><img src='https://repositorio.itfip.edu.co/themes/Mirage2/images/logo_wh.png'>";
 
       $cancelledCite = $emailSenderModel->sendEmail(
         "Cita cancelada Rectoria ITFIP - RSystfip",
