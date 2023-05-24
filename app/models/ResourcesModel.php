@@ -12,13 +12,13 @@ class ResourcesModel extends BaseModel
 
   public function getFaculties()
   {
-    $statement = $this->db->query("SELECT * FROM faculties");
+    $statement = $this->db->query("SELECT id, facultie FROM faculties");
     return $statement->fetchAll();
   }
 
   public function getCategories()
   {
-    $statement = $this->db->query("SELECT * FROM categories");
+    $statement = $this->db->query("SELECT id, category FROM categories");
     return $statement->fetchAll();
   }
 }

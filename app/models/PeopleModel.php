@@ -52,7 +52,7 @@ class PeopleModel extends BaseModel
 
   public function getOneById($id)
   {
-    $statement = $this->db->prepare("SELECT * FROM people WHERE id = ?");
+    $statement = $this->db->prepare("SELECT id, name, document_id, document_number, telephone, email, category_id, facultie_id, come_asunt FROM people WHERE id = ?");
     $statement->execute([$id]);
     return $statement->fetchObject();
   }
@@ -85,7 +85,7 @@ class PeopleModel extends BaseModel
 
   public function getDeans()
   {
-    $statement = $this->db->query("SELECT * FROM deans");
+    $statement = $this->db->query("SELECT _id, dean, facultie_id FROM deans");
     return $statement->fetchAll();
   }
 }
