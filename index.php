@@ -17,6 +17,21 @@ $map->post('auth', '/api/auth', [
   'auth'
 ]);
 
+$map->post('auth.recover.password', '/api/auth/recover/password', [
+  'App\Controllers\AuthController',
+  'recoverPassword'
+]);
+
+$map->post('verify.resetToken', '/api/auth/verify/resetToken', [
+  'App\Controllers\AuthController',
+  'verifyResetToken'
+]);
+
+$map->delete('delete.resetToken', '/api/auth/delete/resetToken', [
+  'App\Controllers\AuthController',
+  'deleteResetToken'
+]);
+
 $map->post('save.person', '/api/person', [
   'App\Controllers\PeopleController',
   'savePerson'
@@ -35,6 +50,11 @@ $map->put('update.person', '/api/person', [
 $map->put('update.password', '/api/password', [
   'App\Controllers\UserController',
   'updatePassword'
+]);
+
+$map->put('update.password.forget', '/api/recover/password', [
+  'App\Controllers\UserController',
+  'updateAndRecoverPassword'
 ]);
 
 $map->patch('cancell.person', '/api/person', [

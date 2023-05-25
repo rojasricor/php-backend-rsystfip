@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use DateTime;
+
 class UserModel extends BaseModel
 {
   public function getAll()
@@ -55,11 +57,64 @@ class UserModel extends BaseModel
     return $statement->execute([$id]);
   }
 
-  public function updatePassword($id, $password)
+  public function updatePasswordById($id, $password)
   {
     $hashedPassword = SecurityModel::hashPassword($password);
     $statement = $this->db->prepare("UPDATE users SET password = ? WHERE id = ?");
     $statement->execute([$hashedPassword, $id]);
+  }
+
+  public function saveTokenResetPassword($token, $expirationTime, $email)
+  {
+    $statement = $this->db->prepare("UPDATE users SET reset_token = ?, reset_token_expiration = ? WHERE email = ?");
+    return $statement->execute([$token, $expirationTime, $email]);
+  }
+
+  public function getDataResetToken($resetToken)
+  {
+    $statement = $this->db->prepare("SELECT email, reset_token_expiration FROM users WHERE reset_token = ?");
+    $statement->execute([$resetToken]);
+    return $statement->fetchObject();
+  }
+
+  public function deleteDataResetToken($resetToken)
+  {
+    $statement = $this->db->prepare("UPDATE users SET reset_token = NULL, reset_token_expiration = NULL WHERE reset_token = ?");
+    return $statement->execute([$resetToken]);
+  }
+
+  public function verifyValidTokenReset($resetToken, $email)
+  {
+    date_default_timezone_set('America/Bogota');
+    
+    $resetTokenExists = $this->getDataResetToken($resetToken);
+
+    if (!$resetTokenExists) {
+      return [
+        'error' => 'No has solicitado un cambio de contraseña, o acabas de cambiar tu contraseña con este link generado',
+      ];
+    }
+
+    if ($resetTokenExists->email !== $email) {
+      return [
+        'error' => 'El correo proporcionado no coincide con el correo del usuario',
+      ];
+    }
+
+    $resetTokenExpiration = $resetTokenExists->reset_token_expiration;
+
+    $expirationDateTime = new DateTime($resetTokenExpiration);
+    $currentDateTime    = new DateTime();
+    $tokenIsValid       = $currentDateTime <= $expirationDateTime;
+
+    return ['isValid' => $tokenIsValid];
+  }
+
+  public function updatePasswordByResetToken($resetToken, $password)
+  {
+    $hashedPassword = SecurityModel::hashPassword($password);
+    $statement = $this->db->prepare("UPDATE users SET password = ? WHERE reset_token = ?");
+    return $statement->execute([$hashedPassword, $resetToken]);
   }
 
   public function authById($id, $password)

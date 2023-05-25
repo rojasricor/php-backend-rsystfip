@@ -191,6 +191,60 @@ class UserController
     }
   }
 
+  public function updateAndRecoverPassword()
+  {
+    $payload = json_decode(file_get_contents('php://input'));
+
+    if (!$payload) {
+      http_response_code(400);
+      exit('bad request');
+    }
+
+    $email      = $payload->email;
+    $resetToken = $payload->resetToken;
+    $password   = $payload->password;
+    $password2  = $payload->password_confirm;
+
+    if ($password !== $password2) {
+      echo json_encode([
+        'error' => 'Las contraseñas no coinciden',
+      ]);
+      return;
+    }
+
+    if (strlen($password) < 8 || strlen($password2) < 8) {
+      echo json_encode([
+        'error' => 'La contraseña es insegura debe tener al menos 8 caracteres',
+      ]);
+      return;
+    }
+
+    $tokenIsValid = $this->userModel->verifyValidTokenReset($resetToken, $email);
+
+    if ($tokenIsValid['error'] ?? false) {
+      echo json_encode([
+        'tokenIsValid' => false,
+        'error' => $tokenIsValid['error'],
+      ]);
+      return;
+    }
+
+    $passwordChangedSuccessfully = $this->userModel->updatePasswordByResetToken($resetToken, $password);
+
+    if (!$passwordChangedSuccessfully) {
+      echo json_encode([
+        'error' => 'No se pudo cambiar la contraseña, intente nuevamente',
+      ]);
+      return;
+    }
+
+    $this->userModel->deleteDataResetToken($resetToken, $email);
+
+    echo json_encode([
+      'ok' => 'Contraseña cambiada exitosamente',
+    ]);
+  }
+
   public function updatePassword()
   {
     $payload = json_decode(file_get_contents('php://input'));
@@ -208,6 +262,13 @@ class UserController
     if ($newPassword !== $confirmNewPassword) {
       echo json_encode([
         'error' => 'La nueva contraseña no coincide con la confirmación',
+      ]);
+      return;
+    }
+
+    if (strlen($newPassword) < 8 || strlen($confirmNewPassword) < 8) {
+      echo json_encode([
+        'error' => 'La contraseña es insegura debe tener al menos 8 caracteres',
       ]);
       return;
     }
