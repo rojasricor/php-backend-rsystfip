@@ -10,26 +10,33 @@ use SendGrid\Mail\Mail;
 
 class EmailSenderModel
 {
-  public function sendEmail($subject, $to, $content)
+  protected Mail $email;
+
+  protected EnvModel $envModelInstance;
+  
+  public function __construct() {
+    $this->email = new Mail;
+    $this->envModelInstance = new EnvModel;
+  }
+
+  public function sendEmail(string $subject, string $to, string $content): bool
   {
-    $email = new Mail();
-    $envModelInstance = new EnvModel();
-    $email->setFrom(
-      $envModelInstance->get('FROM_EMAIL'),
-      $envModelInstance->get('FROM_NAME')
+    $this->email->setFrom(
+      $this->envModelInstance->reader('FROM_EMAIL'),
+      $this->envModelInstance->reader('FROM_NAME')
     );
-    $email->setSubject($subject);
-    $email->addTo($to);
-    $email->addContent("text/html", $content);
+    $this->email->setSubject($subject);
+    $this->email->addTo($to);
+    $this->email->addContent("text/html", $content);
 
-    $sendgridApiKey = $envModelInstance->get('SENDGRID_API_KEY');
+    $sendgridApiKey = $this->envModelInstance->reader('SENDGRID_API_KEY');
     $sendgrid = new SendGrid($sendgridApiKey);
-
+    
     try {
-      $response = $sendgrid->send($email);
-      return $response;
+      $response = $sendgrid->send($this->email);
+      return $response->statusCode() === 202;
     } catch (Exception $e) {
-      echo json_encode($e->getMessage());
+      throw new Exception($e->getMessage());
     }
   }
 }

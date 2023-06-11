@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 require_once __DIR__ . '/vendor/autoload.php';
 
 use Aura\Router\RouterContainer;
@@ -178,10 +180,10 @@ if ($route) {
   $controllerInstance = new $controller();
 
   // Execute the method of the controller class
-  $controllerInstance->$method();
-} else {
-  // Route not found
-  echo json_encode([
-    'error' => 'Error: Not Found 404'
-  ]);
-}
+  return $controllerInstance->$method();
+} 
+
+// Route not found
+echo json_encode([
+  'error' => 'Error: Not Found 404'
+]);

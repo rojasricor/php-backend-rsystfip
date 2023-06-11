@@ -6,7 +6,7 @@ use Exception;
 
 class EnvModel
 {
-  public function get($key)
+  public function get(string $key): string
   {
     if (defined('_ENV_CACHE')) {
       $vars = _ENV_CACHE;
@@ -20,8 +20,7 @@ class EnvModel
     }
     if (isset($vars[$key])) {
       return $vars[$key];
-    } else {
-      throw new Exception("The specified key ($key) does not exist in the environment file");
     }
+    throw new Exception("The specified key ($key) does not exist in the environment file");
   }
 }

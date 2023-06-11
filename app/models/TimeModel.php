@@ -2,17 +2,24 @@
 
 namespace App\Models;
 
+use Datetime;
+
 class TimeModel
 {
-  public function todayDate()
-  {
+  private Datetime $date;
+
+  public function __construct() {
     date_default_timezone_set('America/Bogota');
-    return date('Y-m-d');
+    $this->date = new Datetime;
   }
 
-  public function nowHour()
+  public function todayDate(): string
   {
-    date_default_timezone_set('America/Bogota');
-    return date('h:i:s');
+    return $this->date->format('Y-m-d');
+  }
+
+  public function nowHour(): string
+  {
+    return $this->date->format('h:i:s');
   }
 }
