@@ -280,7 +280,7 @@ class UserController
       return;
     }
 
-    $this->userModel->updatePassword($id, $newPassword);
+    $this->userModel->updatePasswordById($id, $newPassword);
     echo json_encode([
       'ok' => 'Contraseña cambiada exitosamente',
     ]);
