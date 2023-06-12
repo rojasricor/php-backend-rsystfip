@@ -1,6 +1,6 @@
 {
   "name": "rojasricor/rsystfip",
-  "description": "Scheduling system for ITFIP Instituto Tolimense de Formación Técnica Profesional",
+  "description": "Rest Api in PHP for Scheduling System RSystfip By Instituto Tolimense De Formación Técnica Profesional",
   "type": "restful-api",
   "require": {
     "aura/router": "^3.2",
