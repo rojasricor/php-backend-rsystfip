@@ -6,16 +6,16 @@ use PDO;
 
 class BaseModel
 {
-  protected PDO $db;
+  private EnvModel $env;
 
-  protected EnvModel $env;
+  protected PDO $db;
 
   public function __construct() {
     $this->env = new EnvModel;
     $this->db = $this->createConnection();
   }
   
-  public function createConnection(): PDO
+  private function createConnection(): PDO
   {
     $dsn = "mysql:host=". $this->env->get('HOST') . ";dbname=" . $this->env->get('DATABASE');
     $options = array(

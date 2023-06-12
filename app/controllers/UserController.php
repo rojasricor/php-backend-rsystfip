@@ -6,18 +6,18 @@ use App\Models\UserModel;
 
 class UserController
 {
-  private $userModel;
+  private UserModel $userModel;
   
   public function __construct() {
     $this->userModel = new UserModel();
   }
   
-  public function getUsers()
+  public function getUsers(): void
   {
     echo json_encode($this->userModel->getAll());
   }
 
-  public function getUser()
+  public function getUser(): void
   {
     if (!isset($_GET['role'])) {
       http_response_code(400);
@@ -34,7 +34,7 @@ class UserController
     echo json_encode($user);
   }
 
-  public function saveUser()
+  public function saveUser(): void
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -191,7 +191,7 @@ class UserController
     }
   }
 
-  public function updateAndRecoverPassword()
+  public function updateAndRecoverPassword(): void
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -245,7 +245,7 @@ class UserController
     ]);
   }
 
-  public function updatePassword()
+  public function updatePassword(): void
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -286,7 +286,7 @@ class UserController
     ]);
   }
 
-  public function deleteUser()
+  public function deleteUser(): void
   {
     $payload = json_decode(file_get_contents('php://input'));
 

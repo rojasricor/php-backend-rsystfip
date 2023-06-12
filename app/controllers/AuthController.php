@@ -2,17 +2,20 @@
 
 namespace App\Controllers;
 
-use App\Models\{ UserModel, EmailSenderModel };
+use App\Models\{
+  UserModel,
+  EmailSenderModel
+};
 
 class AuthController
 {
-  private $userModel;
+  private UserModel $userModel;
 
   public function __construct() {
-    $this->userModel = new UserModel();
+    $this->userModel = new UserModel;
   }
 
-  public function auth()
+  public function auth(): void
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -67,7 +70,7 @@ class AuthController
     ]);
   }
 
-  public function verifyResetToken()
+  public function verifyResetToken(): void
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -92,7 +95,7 @@ class AuthController
     echo json_encode(['tokenIsValid' => $tokenIsValid['isValid']]);
   }
 
-  public function deleteResetToken()
+  public function deleteResetToken(): void
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -106,7 +109,7 @@ class AuthController
     $this->userModel->deleteDataResetToken($resetToken);
   }
 
-  public function recoverPassword()
+  public function recoverPassword(): void
   {
     date_default_timezone_set('America/Bogota');
     
@@ -152,7 +155,7 @@ class AuthController
 
     $resetPasswordLink = "$APP_ROUTE/$email/$token";
 
-    $emailSenderModel = new EmailSenderModel();
+    $emailSenderModel = new EmailSenderModel;
     $message = 'Estimado usuario, hemos recibido una solicitud de cambio de contraseña para su cuenta. Si no ha sido usted, por favor ignore este correo electrónico.<br>Si es así, por favor ingrese al siguiente link para restablecer su contraseña:<br>' . $resetPasswordLink . '<br><strong>Este link expirará en 10 minutos.</strong><br><br>Saludos, <br>Equipo ITFIP - RSystfip';
 
     $linkSended = $emailSenderModel->sendEmail(

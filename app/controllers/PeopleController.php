@@ -2,22 +2,26 @@
 
 namespace App\Controllers;
 
-use App\Models\{ PeopleModel, SchedulingModel, EmailSenderModel };
+use App\Models\{
+  PeopleModel,
+  SchedulingModel,
+  EmailSenderModel
+};
 
 class PeopleController
 {
-  private $peopleModel;
+  private PeopleModel $peopleModel;
 
   public function __construct() {
-    $this->peopleModel = new PeopleModel();
+    $this->peopleModel = new PeopleModel;
   }
 
-  public function getPeople()
+  public function getPeople(): void
   {
     echo json_encode($this->peopleModel->getAll());
   }
 
-  public function getPerson()
+  public function getPerson(): void
   {
     if (!isset($_GET['id'])) {
       http_response_code(400);
@@ -34,17 +38,17 @@ class PeopleController
     echo json_encode($person);    
   }
 
-  public function getCancelled()
+  public function getCancelled(): void
   {
     echo json_encode($this->peopleModel->getCancelled());
   }
 
-  public function getDeans()
+  public function getDeans(): void
   {
     echo json_encode($this->peopleModel->getDeans());
   }
 
-  public function savePerson()
+  public function savePerson(): void
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -167,7 +171,7 @@ class PeopleController
     }
   }
 
-  public function updatePerson()
+  public function updatePerson(): void
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -279,7 +283,7 @@ class PeopleController
     }
   }
 
-  public function cancellPerson()
+  public function cancellPerson(): void
   {
     $payload = json_decode(file_get_contents('php://input'));
 
@@ -299,12 +303,12 @@ class PeopleController
       return;
     }
 
-    $schedulingModel = new SchedulingModel();
+    $schedulingModel = new SchedulingModel;
     $citeDataFound = $schedulingModel->findCiteById($id);
     $ok = $schedulingModel->cancell($id, $date, $cancelled_asunt);
 
     if ($citeDataFound && $ok) {
-      $emailSenderModel = new EmailSenderModel();
+      $emailSenderModel = new EmailSenderModel;
       $message = "<strong>" . $citeDataFound->name . "</strong>" . " se ha cancelado la cita programada para el día " . "<code>$date</code>" . ". El motivo de cancelación es: " . $cancelled_asunt . ".<br><br>Si tiene alguna duda o comentario, por favor comuníquese con nosotros.<br><br>Saludos,<br>Rectoría ITFIP - RSystfip.<br><br><img src='https://repositorio.itfip.edu.co/themes/Mirage2/images/logo_wh.png'>";
 
       $cancelledCite = $emailSenderModel->sendEmail(

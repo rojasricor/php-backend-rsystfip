@@ -6,7 +6,13 @@ use App\Models\ResourcesModel;
 
 class ResourcesController
 {
-	public function getResource()
+	private ResourcesModel $resourcesModel;
+
+	public function __construct() {
+		$this->resourcesModel = new ResourcesModel;
+	}
+
+	public function getResource(): void
 	{
 		if (!isset($_GET['resource'])) {
 			http_response_code(400);
@@ -14,14 +20,13 @@ class ResourcesController
 		}
 		
 		$resource = $_GET['resource'];
-		$resourcesModel = new ResourcesModel();
 		
 		if ($resource === 'categories') {
-			echo json_encode($resourcesModel->getCategories());
+			echo json_encode($this->resourcesModel->getCategories());
 		} elseif ($resource === 'documents') {
-			echo json_encode($resourcesModel->getDocuments());
+			echo json_encode($this->resourcesModel->getDocuments());
 		} elseif ($resource === 'faculties') {
-			echo json_encode($resourcesModel->getFaculties());
+			echo json_encode($this->resourcesModel->getFaculties());
 		}		
 	}
 }

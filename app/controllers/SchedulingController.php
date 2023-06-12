@@ -6,14 +6,19 @@ use App\Models\SchedulingModel;
 
 class SchedulingController
 {
-  public function getScheduling()
+  private SchedulingModel $schedulingModel;
+
+  public function __construct() {
+    $this->schedulingModel = new SchedulingModel;
+  }
+
+  public function getScheduling(): void
   {
     if (!isset($_GET['start']) || !isset($_GET['end'])) {
       http_response_code(400);
       exit('bad request');
     }
     
-    $schedulingModel = new SchedulingModel();
-    echo json_encode($schedulingModel->getAll($_GET['start'], $_GET['end']));
+    echo json_encode($this->schedulingModel->getAll($_GET['start'], $_GET['end']));
   }
 }

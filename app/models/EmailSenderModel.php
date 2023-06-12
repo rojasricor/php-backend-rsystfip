@@ -10,16 +10,16 @@ use SendGrid\Mail\Mail;
 
 class EmailSenderModel
 {
-  protected Mail $email;
+  private Mail $email;
 
-  protected EnvModel $envModelInstance;
+  private EnvModel $envModelInstance;
   
   public function __construct() {
     $this->email = new Mail;
     $this->envModelInstance = new EnvModel;
   }
 
-  public function sendEmail(string $subject, string $to, string $content): bool
+  protected function sendEmail(string $subject, string $to, string $content): bool
   {
     $this->email->setFrom(
       $this->envModelInstance->reader('FROM_EMAIL'),

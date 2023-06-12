@@ -38,12 +38,12 @@ class PeopleModel extends BaseModel
       $asunt
     ]);
     $lastId = $this->getLast()->id;
-    $timeModel = new TimeModel();
+    $timeModel = new TimeModel;
     $date ? $date : $date = $timeModel->todayDate();
     $start ? $start : $start = $timeModel->todayDate();
     $end ? $end : $end = $timeModel->todayDate();
     $time = $timeModel->nowHour();
-    $peopleDataModel = new PeopleDataModel();
+    $peopleDataModel = new PeopleDataModel;
     return $peopleDataModel->save($lastId, $date, $start, $end, $time, $status, $color);
   }
 
