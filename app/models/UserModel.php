@@ -95,7 +95,7 @@ class UserModel extends BaseModel
     return $statement->execute([$resetToken]);
   }
 
-  public function verifyValidTokenReset(string $resetToken, string $email): object
+  public function verifyValidTokenReset(string $resetToken, string $email): array
   {
     date_default_timezone_set('America/Bogota');
     
@@ -148,5 +148,7 @@ class UserModel extends BaseModel
         'permissions'=>$permissions
       ];
     }
+
+    return [];
   }
 }
