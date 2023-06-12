@@ -181,7 +181,7 @@ class UserController
       return;
     }
 
-    $permissions = $this->userModel->definePermissionsByRole($role);
+    $permissions = $this->userModel->createPermissionsByRole($role);
     $ok = $this->userModel->create($id, $role, $name, $lastname, $documentType, $document, $telephone, $email, $password, $permissions);
 
     if ($ok) {

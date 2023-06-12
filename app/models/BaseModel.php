@@ -17,7 +17,7 @@ class BaseModel
   
   private function createConnection(): PDO
   {
-    $dsn = "mysql:host=". $this->env->get('HOST') . ";dbname=" . $this->env->get('DATABASE');
+    $dsn = "mysql:host=" . $this->env->get('HOST') . ";dbname=" . $this->env->get('DATABASE');
     $options = array(
       PDO::MYSQL_ATTR_SSL_CA => "/etc/ssl/certs/ca-certificates.crt"
     );

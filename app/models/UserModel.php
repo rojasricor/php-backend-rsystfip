@@ -26,7 +26,7 @@ class UserModel extends BaseModel
     return $statement->fetchObject();
   }
 
-  public function definePermissionsByRole(string $role): string
+  public function createPermissionsByRole(string $role): string
   {
     $rector_permissions    = "schedule";
     $secretary_permissions = "$rector_permissions,add,reports,statistics";
