@@ -4,6 +4,8 @@ namespace App\Models;
 
 use DateTime;
 
+use Firebase\JWT\JWT;
+
 class UserModel extends BaseModel
 {
   public function getAll(): array
@@ -135,17 +137,33 @@ class UserModel extends BaseModel
     return $user ? SecurityModel::verifyPassword($password, $user->password) : false;
   }
 
+  public function generateTokenJWT(string $_id): string
+  {
+    $payload = [
+      'iat' => time(),
+      'exp' => time() + (60 * 60),
+      'id' => $_id
+    ];
+
+    return JWT::encode($payload, 'rsystfip', 'HS256');
+  }
+
   public function auth(string $email, string $password): array
   {
     $user = $this->getOneByEmail($email);
     if ($user && SecurityModel::verifyPassword($password, $user->password)) {
       $permissions = explode(',', $user->permissions);
+
+      $token = $this->generateTokenJWT($user->id);
+      header('Authorization: Bearer ' . $token);
+      
       return [
         'id' => $user->id,
         'role' => $user->role,
         'name' => $user->name,
         'email'=>$email,
-        'permissions'=>$permissions
+        'permissions'=>$permissions,
+        'token' => $token
       ];
     }
 

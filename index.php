@@ -20,17 +20,17 @@ $map->post('auth', '/api/auth', [
 ]);
 
 $map->post('auth.recover.password', '/api/auth/recover/password', [
-  'App\Controllers\AuthController',
+  'App\Controllers\UserController',
   'recoverPassword'
 ]);
 
 $map->post('verify.resetToken', '/api/auth/verify/resetToken', [
-  'App\Controllers\AuthController',
+  'App\Controllers\UserController',
   'verifyResetToken'
 ]);
 
 $map->delete('delete.resetToken', '/api/auth/delete/resetToken', [
-  'App\Controllers\AuthController',
+  'App\Controllers\UserController',
   'deleteResetToken'
 ]);
 
