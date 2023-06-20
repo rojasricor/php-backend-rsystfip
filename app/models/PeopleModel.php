@@ -95,13 +95,13 @@ class PeopleModel extends BaseModel
 
   public function getAll(): array
   {
-    $statement = $this->db->query("SELECT p.id, p.name, d.document AS ty_doc, c.category, p.facultie_id, d.description, p.document_number, f.facultie, p.come_asunt FROM people p, documents d, faculties f, categories c WHERE p.document_id = d.id AND p.facultie_id = f.id AND p.category_id = c.id ORDER BY p.id DESC");
+    $statement = $this->db->query("SELECT p.id, p.name, d.document AS ty_doc, c.category, p.facultie_id, d.description, p.document_number, f.facultie, p.come_asunt FROM people p INNER JOIN documents d ON p.document_id = d.id INNER JOIN faculties f ON p.facultie_id = f.id INNER JOIN categories c ON p.category_id = c.id ORDER BY p.id DESC");
     return $statement->fetchAll();
   }
 
   public function getCancelled(): array
   {
-    $statement = $this->db->query("SELECT p.id, p.name, d.document AS ty_doc, c.category, p.facultie_id, d.description, p.document_number, f.facultie, l.cancelled_asunt FROM people p, documents d, faculties f, categories c, cancelled l, scheduling s WHERE p.document_id = d.id AND p.id = l.person_id AND s.person_id = l.person_id AND s.status = 'cancelled' AND p.facultie_id = f.id AND p.category_id = c.id ORDER BY p.id DESC");
+    $statement = $this->db->query("SELECT p.id, p.name, d.document AS ty_doc, c.category, p.facultie_id, d.description, p.document_number, f.facultie, l.cancelled_asunt FROM people p INNER JOIN documents d ON p.document_id = d.id INNER JOIN faculties f ON p.facultie_id = f.id INNER JOIN categories c ON p.category_id = c.id INNER JOIN cancelled l ON p.id = l.person_id INNER JOIN scheduling s ON s.person_id = l.person_id WHERE s.status = 'cancelled' ORDER BY p.id DESC");
     return $statement->fetchAll();
   }
 
