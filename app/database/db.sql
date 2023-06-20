@@ -17,7 +17,16 @@ INSERT INTO `cancelled` (`person_id`, `date`, `cancelled_asunt`) VALUES
 (8, '2023-05-23 21:03:45', 'Pues cagamos en el ITFIP'),
 (9, '2023-05-23 21:08:08', 'Vamos a echar pvp, NO.'),
 (10, '2023-05-23 21:09:16', 'Me voy a dormir'),
-(11, '2023-05-23 21:12:34', 'ajaj3333333333333');
+(11, '2023-05-23 21:12:34', 'ajaj3333333333333'),
+(18, '2023-06-11 08:40:59', 'adsadasad'),
+(18, '2023-06-11 08:41:00', 'adsadasad'),
+(18, '2023-06-11 08:41:00', 'adsadasad'),
+(15, '2023-06-11 08:41:06', 'ssssssssssssssss'),
+(13, '2023-06-11 08:42:05', 'sssssssssssssss'),
+(14, '2023-06-11 08:44:46', 'Hola mundo ratas jsjjsj'),
+(14, '2023-06-11 08:45:09', 'Hola mundo ratas jsjjsj'),
+(14, '2023-06-11 08:46:09', 'Hola mundo ratas jsjjsj'),
+(14, '2023-06-11 08:46:10', 'Hola mundo ratas jsjjsj');
 
 CREATE TABLE `categories` (
   `id` tinyint(1) NOT NULL COMMENT 'Campo que guarda el id del tipo de persona (autoincremental).',
@@ -40,7 +49,8 @@ CREATE TABLE `deans` (
 INSERT INTO `deans` (`_id`, `dean`, `facultie_id`) VALUES
 ('1111122448', 'Holman Reyes Puentes', 2),
 ('1111122449', 'Cesar Julio Bravo Saavedra', 1),
-('1111122450', 'Luz Mery Vega Bustamante', 3);
+('1111122450', 'Luz Mery Vega Bustamante', 3),
+('65701167', 'Ignacia Ramirez', 1);
 
 CREATE TABLE `documents` (
   `id` tinyint(1) NOT NULL COMMENT 'Campo que guarda el id del tipo de documento, (autoincremental).',
@@ -79,7 +89,7 @@ CREATE TABLE `people` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci COMMENT='Tabla que almacena todos los datos personales de las personas que han sido agendadas.';
 
 INSERT INTO `people` (`id`, `name`, `document_id`, `document_number`, `telephone`, `email`, `category_id`, `facultie_id`, `come_asunt`) VALUES
-(1, 'Ricardo Andrés Rojas Rico', 1, '1111122448', NULL, NULL, 2, 2, 'Programar sistema de agendamientos visita rectoría itfip'),
+(1, 'Ricardo Andrés Rojas Ricardito', 1, '1111122448', NULL, NULL, 2, 2, 'Programar sistema de agendamientos visita rectoría itfip'),
 (2, 'José Manuel Mendoza Vásquez', 1, '1005773423', '3186329851', 'jmendoza23@itfip.edu.co', 2, 2, 'Programar sistema de agendamiento visitas rectoría itfip'),
 (3, 'Quis Rem Non Et Voluptatum Consequa', 1, '27747644', NULL, NULL, 5, 4, 'Est consequuntur labore sed voluptatum aut magnam odio beatae et ducimus quaerat at similique exer'),
 (4, 'Ricardo Andrés Rojas Rico', 1, '1111122448', '3173926578', 'rojasricor@gmail.com', 1, 2, 'Saludos'),
@@ -92,7 +102,20 @@ INSERT INTO `people` (`id`, `name`, `document_id`, `document_number`, `telephone
 (11, 'Holman Reyes Puentes', 1, '1111122448', '97', 'rrojas48@itfip.edu.co', 2, 2, 'Consectetur est excepturi deleniti lorem ullamco rem veritatis ratione sint ea asperiores et sunt p'),
 (12, 'Nulla Reiciendis Cupidatat Exercita', 5, '65701167', NULL, NULL, 2, 2, 'Earum dolorum illo tempor facilis fugiat provident unde suscipit'),
 (13, 'Holman Reyes Puentes', 1, '1111122448', '44', 'rrojas48@itfip.edu.co', 2, 2, 'Nostrum omnis dolore error aliquam molestias quia non consequatur itaque'),
-(14, 'Minim Do Laudantium Ullamco Non Ne', 1, '65701167', '3173926578', 'rojasricor@gmail.com', 2, 4, 'Quis fugiat fugit unde occaecat aliquip omnis magnam mollit quo sed est veritatis tempora sint sit');
+(14, 'Minim Do Laudantium Ullamco Non Ne', 1, '65701167', '3173926578', 'rojasricor@gmail.com', 2, 4, 'Quis fugiat fugit unde occaecat aliquip omnis magnam mollit quo sed est veritatis tempora sint sit'),
+(15, 'Delectus Veniam Eum Numquam A Dol', 3, '65701167', '3173926578', 'kosuroz@mailinator.com', 5, 1, 'Quia non enim consequat omnis nihil qui nam'),
+(16, 'Patricia Klein', 5, '65701167', NULL, NULL, 3, 3, 'Dolore amet consequuntur aut voluptatem dolores ab facere possimus quibusdam omnis et sit asperna'),
+(17, 'Raymond Monroe', 1, '3173926578', NULL, NULL, 2, 2, 'Accusantium consequat possimus ratione eum delectus fugit'),
+(18, 'Ferris Meyer', 5, '65701167', '3173926578', 'bysugopel@mailinator.com', 3, 3, 'Dolorum aut labore id illo laudantium inventore eveniet et est aut at adipisicing rerum deleniti q'),
+(19, 'Macey Mcbride', 1, '65701168', NULL, NULL, 5, 3, 'Vitae deserunt ipsum saepe molestiae officia tempore est accusamus'),
+(20, 'Kylynn Valdez', 4, '65701167', NULL, NULL, 3, 3, 'Perferendis magni in ducimus non fuga impedit id commodo minim iste est qui quidem sit sunt laud'),
+(21, 'Amos Shaw', 1, '65701167', '3173926578', 'siviwo@mailinator.com', 3, 2, 'Ut possimus quia dolor quia voluptatum voluptatibus rerum quibusdam sit'),
+(22, 'Daniel Lopez', 4, '65701167', NULL, NULL, 5, 3, 'Dolore quasi fugiat sit qui sunt sunt repellendus excepturi quisquam quia officiis sit maxime in'),
+(23, 'Orlando Stanton', 5, '65701167', NULL, NULL, 5, 1, 'Consequuntur voluptatem fugiat ut mollit ut adipisci labore qui do in omnis consectetur sunt qui e'),
+(24, 'Ignacia Ramirez', 1, '65701167', '3173926578', 'juzixehek@mailinator.com', 4, 1, 'Dolorum delectus consequuntur quibusdam enim doloremque omnis ratione tempor consequatur aut rerum '),
+(25, 'Ignacia Ramirez', 1, '65701167', '3173926578', 'vasyxejof@mailinator.com', 2, 1, 'Laboriosam ut id voluptates magna odio dignissimos modi eu et voluptates perspiciatis vel soluta'),
+(26, 'Jescie Mcintyre', 2, '65701167', NULL, NULL, 2, 4, 'Quibusdam omnis maiores vitae aliquid minim dolores eum molestias in nihil tenetur nobis sunt magnam'),
+(27, 'Castor Rosales', 2, '65701167', '3173926578', 'cezofosod@mailinator.com', 1, 2, 'Repudiandae aliquid nihil vero perferendis ex sit cum excepteur voluptas tempor dolor iste aspernat');
 
 CREATE TABLE `scheduling` (
   `person_id` int(11) UNSIGNED NOT NULL COMMENT 'Campo que almacena el id de la persona agendada, llave foranea del campo id de la tabla registered people.',
@@ -117,8 +140,21 @@ INSERT INTO `scheduling` (`person_id`, `date_filter`, `start_date`, `end_date`, 
 (10, '2023-05-24', '2023-05-24 07:00:00', '2023-05-24 07:30:00', '04:09:03', 'cancelled', '#b633d1'),
 (11, '2023-05-24', '2023-05-24 08:00:00', '2023-05-24 08:30:00', '04:12:25', 'cancelled', '#1e81f6'),
 (12, '2023-05-24', '2023-05-24 10:47:28', '2023-05-24 10:47:28', '05:47:36', 'daily', '#388cdc'),
-(13, '2023-05-24', '2023-05-24 13:00:00', '2023-05-24 15:00:00', '05:54:32', 'scheduled', '#695dc8'),
-(14, '2023-05-24', '2023-05-24 12:00:00', '2023-05-24 12:30:00', '05:59:32', 'scheduled', '#263555');
+(13, '2023-05-24', '2023-05-24 13:00:00', '2023-05-24 15:00:00', '05:54:32', 'cancelled', '#695dc8'),
+(14, '2023-05-24', '2023-05-24 12:00:00', '2023-05-24 12:30:00', '05:59:32', 'cancelled', '#263555'),
+(15, '2023-06-09', '2023-06-09 20:00:00', '2023-06-09 21:30:00', '06:56:10', 'cancelled', '#a0531f'),
+(16, '2023-06-10', '2023-06-10 14:37:46', '2023-06-10 14:37:46', '02:38:18', 'daily', '#388cdc'),
+(17, '2023-06-10', '2023-06-10 14:52:35', '2023-06-10 14:52:35', '02:52:53', 'daily', '#388cdc'),
+(18, '2023-06-10', '2023-06-10 17:30:00', '2023-06-10 20:30:00', '02:53:17', 'cancelled', '#4c524b'),
+(19, '2023-06-10', '2023-06-10 15:01:57', '2023-06-10 15:01:57', '03:02:15', 'daily', '#388cdc'),
+(20, '2023-06-11', '2023-06-11 09:47:27', '2023-06-11 09:47:27', '09:48:23', 'daily', '#388cdc'),
+(21, '2023-06-11', '2023-06-11 11:00:00', '2023-06-11 16:00:00', '09:49:01', 'scheduled', '#93d8cc'),
+(22, '2023-06-11', '2023-06-11 10:07:23', '2023-06-11 10:07:23', '10:07:46', 'daily', '#388cdc'),
+(23, '2023-06-11', '2023-06-11 10:07:23', '2023-06-11 10:07:23', '10:08:17', 'daily', '#388cdc'),
+(24, '2023-06-11', '2023-06-11 17:30:00', '2023-06-11 20:30:00', '10:08:54', 'scheduled', '#b71986'),
+(25, '2023-06-11', '2023-06-11 21:00:00', '2023-06-11 21:30:00', '10:10:44', 'scheduled', '#c8822d'),
+(26, '2023-06-11', '2023-06-11 10:11:31', '2023-06-11 10:11:31', '10:12:09', 'daily', '#388cdc'),
+(27, '2023-06-12', '2023-06-12 06:30:00', '2023-06-12 07:00:00', '10:12:49', 'scheduled', '#be1daa');
 
 CREATE TABLE `users` (
   `id` tinyint(1) NOT NULL COMMENT 'Campo que guarda el id de los usuarios del aplicativo, con acceso permitido (unique).',
@@ -136,9 +172,8 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci COMMENT='Tabla que almacena los usuarios del aplicativo, y sus respectivos usuarios y password de acceso al aplicativo.';
 
 INSERT INTO `users` (`id`, `name`, `lastname`, `document_id`, `document_number`, `tel`, `email`, `password`, `role`, `permissions`, `reset_token`, `reset_token_expiration`) VALUES
-(1, 'Mario Fernando', 'Díaz Pava', 1, '7223309043', '3100000000', 'mdiaz@itfip.edu.co', '$2y$10$ulcGJ5S/NodjeQmPo1wTL.rISkGNJ5th9ejXf6kJqdwlm/8yAZxYm', 'rector', 'schedule', NULL, NULL),
-(2, 'Luz Elena', 'Avila', 1, '11111111111', '3100000000', 'lavila@itfip.edu.co', '$2y$10$ISfxYUjrGFnjZAup3yeNY./5Vyj3X88LmxudLTN.lKKlMSuApH45W', 'secretaria', 'add,schedule,reports,statistics', NULL, NULL),
-(3, 'Ricardo Andrés', 'Rojas Rico', 1, '1111122448', '3173926578', 'rrojas48@itfip.edu.co', '$2y$10$qrN3WiaEnd2SaI9Wi23tZuDfGrUNZ1evJ89XfxPdyoPbqmXjTEsY.', 'admin', 'admin,add,schedule,reports,statistics', NULL, NULL);
+(1, 'Mario Fernando', 'Díaz Pava', 1, '7223309043', '3100000000', 'mdiaz@itfip.edu.co', '$2y$10$nVt.zHvx75MsrsZzwj642OiQy2/LP5YH6Hzz8ns/YdKhjQBGI2weG', 'rector', 'schedule', NULL, NULL),
+(3, 'Ricardo Andrés', 'Rojas Rico', 1, '1111122448', '3173926578', 'rrojas48@itfip.edu.co', '$2y$10$nVt.zHvx75MsrsZzwj642OiQy2/LP5YH6Hzz8ns/YdKhjQBGI2weG', 'admin', 'admin,add,schedule,reports,statistics', '7e462685b194083f3070ee4601705925', '2023-06-11 11:02:24');
 
 
 ALTER TABLE `categories`
@@ -178,5 +213,5 @@ ALTER TABLE `faculties`
   MODIFY `id` tinyint(1) NOT NULL AUTO_INCREMENT COMMENT 'Campo que guarda el id de la facultad, (autoincremental).', AUTO_INCREMENT=5;
 
 ALTER TABLE `people`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Campo que guarda el id de las personas agendadas (autoincremental).', AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Campo que guarda el id de las personas agendadas (autoincremental).', AUTO_INCREMENT=28;
 COMMIT;
