@@ -6,7 +6,7 @@ class StatisticsModel extends BaseModel
 {
   public function getReports(string $start, string $end): array
   {
-    $statement = $this->db->prepare("SELECT people.name, scheduling.start_date AS date, scheduling.modification AS time, SUM(CASE WHEN status = 'scheduled' THEN 1 ELSE 0 END) AS scheduling_count, SUM(CASE WHEN status = 'daily' THEN 1 ELSE 0 END) AS daily_count, categories.category, categories.id as id_person FROM scheduling INNER JOIN people ON people.id = scheduling.person_id, categories WHERE date_filter >= ? AND date_filter <= ? AND categories.id = people.category_id GROUP BY scheduling.person_id");
+    $statement = $this->db->prepare("SELECT people.name, scheduling.start_date AS date, scheduling.modification AS time, SUM(CASE WHEN status = 'scheduled' THEN 1 ELSE 0 END) AS scheduling_count, SUM(CASE WHEN status = 'daily' THEN 1 ELSE 0 END) AS daily_count, categories.category, categories.id AS id_person FROM scheduling INNER JOIN people ON people.id = scheduling.person_id, categories WHERE date_filter >= ? AND date_filter <= ? AND categories.id = people.category_id GROUP BY scheduling.person_id");
     $statement->execute([$start, $end]);
     return $statement->fetchAll();
   }

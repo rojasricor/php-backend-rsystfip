@@ -183,7 +183,8 @@ if ($route) {
   return $controllerInstance->$method();
 } 
 
-$defaultMessagge = ['error' => 'Error: Not Found 404'];
+// Default message when endpoint not found
+$defaultMessagge = ['error' => 'Endpoint not found'];
 
 // Route not found
 echo json_encode($defaultMessagge);
