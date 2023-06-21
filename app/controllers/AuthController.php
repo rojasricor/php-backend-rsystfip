@@ -26,10 +26,8 @@ class AuthController
 
     $v = new Validator((array) $payload);
     $v->rule('required', ['username', 'password'])
-      ->rule('lengthMin', 'username', 1)
-      ->rule('lengthMax', 'username', 255)
-      ->rule('lengthMin', 'password', 8)
-      ->rule('lengthMax', 'password', 30);
+      ->rule('lengthBetween', 'username', 5, 255)
+      ->rule('lengthBetween', 'password', 8, 30);
 
     if (!$v->validate()) {
       echo json_encode([
