@@ -10,17 +10,15 @@ class BaseModel
 
   protected PDO $db;
 
-  public function __construct() {
+  public function __construct()
+  {
     $this->env = new EnvModel;
     $this->db = $this->createConnection();
   }
   
   private function createConnection(): PDO
   {
-    $dsn = "mysql:host=" . $this->env->get('HOST') . ";dbname=" . $this->env->get('DATABASE');
-    $options = [
-      PDO::MYSQL_ATTR_SSL_CA => "/etc/ssl/certs/ca-certificates.crt"
-    ];
+    $dsn = 'mysql:host=' . $this->env->get('HOST') . ';dbname=' . $this->env->get('DATABASE');
     $pdo = new PDO($dsn, $this->env->get('USERNAME'), $this->env->get('PASSWORD'));
     $pdo->query('set names utf8;');
     $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);

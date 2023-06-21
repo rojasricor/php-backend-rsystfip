@@ -8,7 +8,8 @@ class TimeModel
 {
   private Datetime $date;
 
-  public function __construct() {
+  public function __construct()
+  {
     date_default_timezone_set('America/Bogota');
     $this->date = new Datetime;
   }

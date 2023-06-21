@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use Valitron\Validator;
+
 use App\Models\{
   UserModel,
   EmailSenderModel
@@ -11,7 +13,8 @@ class UserController
 {
   private UserModel $userModel;
   
-  public function __construct() {
+  public function __construct()
+  {
     $this->userModel = new UserModel();
   }
   

@@ -8,7 +8,8 @@ class StatisticsController
 {
   private StatisticsModel $statisticsModel;
   
-  public function __construct() {
+  public function __construct()
+  {
     $this->statisticsModel = new StatisticsModel();
   }
 

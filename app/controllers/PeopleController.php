@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use Valitron\Validator;
+
 use App\Models\{
   PeopleModel,
   SchedulingModel,
@@ -12,7 +14,8 @@ class PeopleController
 {
   private PeopleModel $peopleModel;
 
-  public function __construct() {
+  public function __construct()
+  {
     $this->peopleModel = new PeopleModel;
   }
 

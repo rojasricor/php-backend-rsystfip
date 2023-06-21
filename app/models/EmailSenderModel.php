@@ -14,22 +14,23 @@ class EmailSenderModel
 
   private EnvModel $envModelInstance;
   
-  public function __construct() {
+  public function __construct()
+  {
     $this->email = new Mail;
     $this->envModelInstance = new EnvModel;
   }
 
-  protected function sendEmail(string $subject, string $to, string $content): bool
+  public function sendEmail(string $subject, string $to, string $content): bool
   {
     $this->email->setFrom(
-      $this->envModelInstance->reader('FROM_EMAIL'),
-      $this->envModelInstance->reader('FROM_NAME')
+      $this->envModelInstance->get('FROM_EMAIL'),
+      $this->envModelInstance->get('FROM_NAME')
     );
     $this->email->setSubject($subject);
     $this->email->addTo($to);
     $this->email->addContent("text/html", $content);
 
-    $sendgridApiKey = $this->envModelInstance->reader('SENDGRID_API_KEY');
+    $sendgridApiKey = $this->envModelInstance->get('SENDGRID_API_KEY');
     $sendgrid = new SendGrid($sendgridApiKey);
     
     try {

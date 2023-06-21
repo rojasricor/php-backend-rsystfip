@@ -8,7 +8,8 @@ class ResourcesController
 {
 	private ResourcesModel $resourcesModel;
 
-	public function __construct() {
+	public function __construct()
+	{
 		$this->resourcesModel = new ResourcesModel;
 	}
 

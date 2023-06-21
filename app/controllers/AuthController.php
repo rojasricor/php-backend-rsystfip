@@ -2,13 +2,16 @@
 
 namespace App\Controllers;
 
+use Valitron\Validator;
+
 use App\Models\UserModel;
 
 class AuthController
 {
   private UserModel $userModel;
 
-  public function __construct() {
+  public function __construct()
+  {
     $this->userModel = new UserModel;
   }
 
@@ -18,52 +21,35 @@ class AuthController
 
     if (!$payload) {
       http_response_code(400);
-      exit('bad request');
+      exit('Bad request');
     }
 
-    $username = $payload->username;
-    $password = $payload->password;
+    $v = new Validator((array) $payload);
+    $v->rule('required', ['username', 'password'])
+      ->rule('lengthMin', 'username', 1)
+      ->rule('lengthMax', 'username', 255)
+      ->rule('lengthMin', 'password', 8)
+      ->rule('lengthMax', 'password', 30);
 
-    if (empty($username)) {
-      echo json_encode([
-        'error' => 'Complete el usuario',
-      ]);
-      return;
-    }
+    if ($v->validate()) {
+      $userAuth = $this->userModel->auth($payload->username . '@itfip.edu.co', $payload->password);
 
-    if (empty($password)) {
-      echo json_encode([
-        'error' => 'Complete la contraseña',
-      ]);
-      return;
-    }
+      if ($userAuth) {
+        echo json_encode([
+          'auth' => true,
+          'user' => $userAuth
+        ]);
+        return;
+      }
 
-    if (strlen($password) < 8) {
       echo json_encode([
-        'error' => 'Contraseña demasiado corta',
-      ]);
-      return;
-    }
-
-    if (strlen($password) > 30) {
-      echo json_encode([
-        'error' => 'Contraseña inválida',
-      ]);
-      return;
-    }
-    
-    $userAuth = $this->userModel->auth("$username@itfip.edu.co", $password);
-    
-    if ($userAuth) {
-      echo json_encode([
-        'auth' => true,
-        'user' => $userAuth
+        'errors' => ['auth' => 'Usuario o contraseña incorrectos'],
       ]);
       return;
     }
 
     echo json_encode([
-      'error' => 'Credenciales incorrectas',
+      'errors' => $v->errors()
     ]);
   }
 }

@@ -8,7 +8,8 @@ class SchedulingController
 {
   private SchedulingModel $schedulingModel;
 
-  public function __construct() {
+  public function __construct()
+  {
     $this->schedulingModel = new SchedulingModel;
   }
 
