@@ -31,25 +31,25 @@ class AuthController
       ->rule('lengthMin', 'password', 8)
       ->rule('lengthMax', 'password', 30);
 
-    if ($v->validate()) {
-      $userAuth = $this->userModel->auth($payload->username . '@itfip.edu.co', $payload->password);
-
-      if ($userAuth) {
-        echo json_encode([
-          'auth' => true,
-          'user' => $userAuth
-        ]);
-        return;
-      }
-
+    if (!$v->validate()) {
       echo json_encode([
-        'errors' => ['auth' => 'Usuario o contraseña incorrectos'],
+        'errors' => $v->errors()
+      ]);
+      return;
+    }
+
+    $userAuth = $this->userModel->auth($payload->username . '@itfip.edu.co', $payload->password);
+
+    if ($userAuth) {
+      echo json_encode([
+        'auth' => true,
+        'user' => $userAuth
       ]);
       return;
     }
 
     echo json_encode([
-      'errors' => $v->errors()
+      'errors' => ['auth' => 'Usuario o contraseña incorrectos'],
     ]);
   }
 }
