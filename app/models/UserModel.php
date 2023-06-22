@@ -137,13 +137,12 @@ class UserModel extends BaseModel
     return $user ? SecurityModel::verifyPassword($password, $user->password) : false;
   }
 
-  public function generateTokenJWT(string $_id): string
+  public function generateTokenJWT(array $dataToJoin, int $time): string
   {
-    $payload = [
+    $payload = array_merge([
       'iat' => time(),
-      'exp' => time() + (60 * 60),
-      'id' => $_id
-    ];
+      'exp' => time() + $time
+    ], $dataToJoin);
 
     return JWT::encode($payload, $this->env->get('SECRET_KEY'), 'HS256');
   }
@@ -154,7 +153,12 @@ class UserModel extends BaseModel
     if ($user && SecurityModel::verifyPassword($password, $user->password)) {
       $permissions = explode(',', $user->permissions);
 
-      $token = $this->generateTokenJWT($user->id);
+      $token = $this->generateTokenJWT([
+        'id' => $user->id,
+        'email' => $email,
+        'role' => $user->role,
+        'permissions' => $permissions
+      ], (7 * 24 * 60 * 60));
       header('Authorization: Bearer ' . $token);
       
       return [
@@ -162,8 +166,7 @@ class UserModel extends BaseModel
         'role' => $user->role,
         'name' => $user->name,
         'email'=>$email,
-        'permissions'=>$permissions,
-        'token' => $token
+        'permissions'=>$permissions
       ];
     }
 
