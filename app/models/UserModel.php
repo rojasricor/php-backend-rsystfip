@@ -10,7 +10,7 @@ class UserModel extends BaseModel
 {
   public function getAll(): array
   {
-    $statement = $this->db->query("SELECT id, email FROM users");
+    $statement = $this->db->query("SELECT id, name, lastname, tel, email, role FROM users");
     return $statement->fetchAll();
   }
 
@@ -75,7 +75,7 @@ class UserModel extends BaseModel
   {
     $hashedPassword = SecurityModel::hashPassword($password);
     $statement = $this->db->prepare("UPDATE users SET password = ? WHERE id = ?");
-    $statement->execute([$hashedPassword, $id]);
+    return $statement->execute([$hashedPassword, $id]);
   }
 
   public function saveTokenResetPassword(string $token, string $expirationTime, string $email): bool

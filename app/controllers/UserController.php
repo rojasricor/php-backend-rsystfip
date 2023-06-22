@@ -49,6 +49,33 @@ class UserController
       exit('bad request');
     }
 
+    $v = new Validator((array) $payload);
+    $v->rule('required', [
+      'role',
+      'name',
+      'lastname',
+      'docType',
+      'doc',
+      'tel',
+      'email',
+      'password',
+      'passwordConfirmation'
+    ])->rule('notIn', 'role', ['unset'])
+      ->rule('notIn', 'docType', ['unset'])
+      ->rule('lengthBetween', 'doc', 8, 10)
+      ->rule('email', 'email')
+      ->rule('length', 'tel', 10)
+      ->rule('lengthBetween', 'password', 8, 30)
+      ->rule('lengthBetween', 'passwordConfirmation', 8, 30)
+      ->rule('equals', 'password', 'passwordConfirmation');
+
+    if (!$v->validate()) {
+      echo json_encode([
+        'errors' => $v->errors()
+      ]);
+      return;
+    }
+
     $role                 = $payload->role;
     $name                 = ucwords(strtolower($payload->name));
     $lastname             = ucwords(strtolower($payload->lastname));
@@ -59,112 +86,13 @@ class UserController
     $password             = $payload->password;
     $passwordConfirmation = $payload->passwordConfirmation;
 
-    if ($role !== '2' && $role !== '3') {
-      echo json_encode([
-        'error' => 'Selecciona el cargo del nuevo usuario',
-      ]);
-      return;
-    }
-
-    if (empty($name)) {
-      echo json_encode(['error' => 'Complete el campo nombre']);
-      return;
-    }
-
-    if (!ctype_alpha($name) && ctype_space($name)) {
-      echo json_encode(['error' => 'El nombre no debe contener letras']);
-      return;
-    }
-
-    if (is_numeric($name)) {
-      echo json_encode(['error' => 'El nombre no puede ser numérico']);
-      return;
-    }
-
-    if (empty($lastname)) {
-      echo json_encode(['error' => 'Complete el campo apellido']);
-      return;
-    }
-
-    if (!ctype_alpha($lastname) && ctype_space($lastname)) {
-      echo json_encode(['error' => 'El apellido no debe contener letras']);
-      return;
-    }
-
-    if (is_numeric($lastname)) {
-      echo json_encode(['error' => 'El apellido no puede ser numérico']);
-      return;
-    }
-
-    if ($documentType === 'unset' || empty($documentType)) {
-      echo json_encode([
-        'error' => 'Selecciona el tipo de documento',
-      ]);
-      return;
-    }
-
-    if (!is_numeric($document) || empty($document)) {
-      echo json_encode(['error' => 'Ingrese el número de documento']);
-      return;
-    }
-
-    if (strlen($document) < 8 || strlen($document) > 10) {
-      echo json_encode(['error' => 'El número de documento debe tener entre 8 y 10 caracteres']);
-      return;
-    }
-
-    if (empty($email)) {
-      echo json_encode(['error' => 'Ingrese el correo institucional']);
-      return;
-    }
-
-    if (is_numeric($email)) {
-      echo json_encode(['error' => 'El correo institucional no puede ser sólo números']);
-      return;
-    }
-
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      echo json_encode(['error' => 'La dirección de correo electrónico no es válida']);
-      return;
-    }
-
     $domainRequired   = 'itfip.edu.co';
     $domainToValidate = explode('@', $email)[1];
 
     if ($domainToValidate !== $domainRequired) {
-      echo json_encode(['error' => 'El correo proporcionado no es del dominio ' . $domainRequired]);
-      return;
-    }
-
-    if (!is_numeric($telephone) || empty($telephone)) {
-      echo json_encode(['error' => 'Ingrese el número de teléfono']);
-      return;
-    }
-
-    if (strlen($telephone) !== 10) {
-      echo json_encode(['error' => 'El número de celular debe tener 10 dígitos, si usted no es de Colombia ingrese 10 veces 1 para continuar']);
-      return;
-    }
-
-    if (empty($password)) {
-      echo json_encode(['error' => 'Complete campo contraseña']);
-      return;
-    }
-
-    if (empty($passwordConfirmation)) {
-      echo json_encode(['error' => 'Complete campo confirmación de contraseña']);
-      return;
-    }
-
-    if (strlen($password) < 8 || strlen($passwordConfirmation) < 8) {
-      echo json_encode(['error' => 'La contraseña es insegura debe tener al menos 8 caracteres']);
-      return;
-    }
-
-    if ($password !== $passwordConfirmation) {
-      echo json_encode([
-        'error' => 'Las contraseñas no coinciden, password != passwordConfirmation',
-      ]);
+      echo json_encode(['errors' => [
+        'error' => 'El correo proporcionado no es del dominio ' . $domainRequired
+      ]]);
       return;
     }
 
@@ -173,7 +101,9 @@ class UserController
 
     if ($roleExists) {
       echo json_encode([
-        'error' => 'El cargo seleccionado ya ha sido asignado a otro usuario',
+        'errors' => [
+          'error' => 'El cargo seleccionado ya ha sido asignado a otro usuario'
+        ]
       ]);
       return;
     }
@@ -182,7 +112,9 @@ class UserController
 
     if ($emailExists) {
       echo json_encode([
-        'error' => 'El correo proporcionado ya esta registrado en nombre de otro usuario',
+        'errors' => [
+          'error' => 'El correo proporcionado ya esta registrado en nombre de otro usuario'
+        ]
       ]);
       return;
     }
@@ -206,45 +138,51 @@ class UserController
       exit('bad request');
     }
 
+    $v = new Validator((array) $payload);
+    $v->rule('required', [
+      'email',
+      'resetToken',
+      'password',
+      'password_confirm'
+    ])->rule('equals', 'password', 'password_confirm')
+      ->rule('lengthBetween', 'password', 8, 30)
+      ->rule('lengthBetween', 'password_confirm', 8, 30);
+
+    if (!$v->validate()) {
+      echo json_encode([
+        'errors' => $v->errors()
+      ]);
+      return;
+    }
+
     $email      = $payload->email;
     $resetToken = $payload->resetToken;
     $password   = $payload->password;
     $password2  = $payload->password_confirm;
-
-    if ($password !== $password2) {
-      echo json_encode([
-        'error' => 'Las contraseñas no coinciden',
-      ]);
-      return;
-    }
-
-    if (strlen($password) < 8 || strlen($password2) < 8) {
-      echo json_encode([
-        'error' => 'La contraseña es insegura debe tener al menos 8 caracteres',
-      ]);
-      return;
-    }
 
     $tokenIsValid = $this->userModel->verifyValidTokenReset($resetToken, $email);
 
     if ($tokenIsValid['error'] ?? false) {
       echo json_encode([
         'tokenIsValid' => false,
-        'error' => $tokenIsValid['error'],
+        'errors' => [
+          'error' => $tokenIsValid['error']
+        ]
       ]);
       return;
     }
 
     $passwordChangedSuccessfully = $this->userModel->updatePasswordByResetToken($resetToken, $password);
+    $ok = $this->userModel->deleteDataResetToken($resetToken, $email);
 
-    if (!$passwordChangedSuccessfully) {
+    if (!$passwordChangedSuccessfully || !$ok) {
       echo json_encode([
-        'error' => 'No se pudo cambiar la contraseña, intente nuevamente',
+        'errors' => [
+          'error' => 'No se pudo cambiar la contraseña, intente nuevamente'
+        ]
       ]);
       return;
     }
-
-    $this->userModel->deleteDataResetToken($resetToken, $email);
 
     echo json_encode([
       'ok' => 'Contraseña cambiada exitosamente',
@@ -301,21 +239,27 @@ class UserController
       exit('bad request');
     }
 
-    $email = $payload->email;
-    $APP_ROUTE = $payload->APP_ROUTE;
+    $v = new Validator((array) $payload);
+    $v->rule('required', ['email', 'APP_ROUTE'])
+      ->rule('email', 'email');
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if (!$v->validate()) {
       echo json_encode([
-        'error' => 'El correo electrónico no es válido',
+        'errors' => $v->errors()
       ]);
       return;
     }
+
+    $email = $payload->email;
+    $APP_ROUTE = $payload->APP_ROUTE;
 
     $emailIsRegistered = $this->userModel->getOneByEmail($email);
 
     if (!$emailIsRegistered) {
       echo json_encode([
-        'error' => 'El correo electrónico no está registrado',
+        'errors' => [
+          'error' => 'El correo electrónico no está registrado'
+        ]
       ]);
       return;
     }
@@ -329,12 +273,14 @@ class UserController
 
     if (!$tokenResetSaved) {
       echo json_encode([
-         'error' => 'Error al guardar el token de recuperación de contraseña',
+        'errors' => [
+          'error' => 'Error al guardar el token de recuperación de contraseña'
+        ]
       ]);
       return;
     }
 
-    $resetPasswordLink = "$APP_ROUTE/$email/$token";
+    $resetPasswordLink = $APP_ROUTE . '/' . $email . '/' . $token;
 
     $emailSenderModel = new EmailSenderModel;
     $message = 'Estimado usuario, hemos recibido una solicitud de cambio de contraseña para su cuenta. Si no ha sido usted, por favor ignore este correo electrónico.<br>Si es así, por favor ingrese al siguiente link para restablecer su contraseña:<br>' . $resetPasswordLink . '<br><strong>Este link expirará en 10 minutos.</strong><br><br>Saludos, <br>Equipo ITFIP - RSystfip';
@@ -361,33 +307,48 @@ class UserController
       exit('bad request');
     }
 
-    $id                 = $payload->id;
-    $currentPassword    = $payload->current_password;
-    $newPassword        = $payload->new_password;
-    $confirmNewPassword = $payload->new_password_confirm;
+    $v = new Validator((array) $payload);
+    $v->rule('required', [
+      'id',
+      'current_password',
+      'new_password',
+      'new_password_confirm'
+    ])->rule('equals', 'new_password', 'new_password_confirm')
+      ->rule('lengthBetween', 'new_password', 8, 30)
+      ->rule('lengthBetween', 'new_password_confirm', 8, 30);
 
-    if ($newPassword !== $confirmNewPassword) {
+    if (!$v->validate()) {
       echo json_encode([
-        'error' => 'La nueva contraseña no coincide con la confirmación',
+        'errors' => $v->errors()
       ]);
       return;
     }
 
-    if (strlen($newPassword) < 8 || strlen($confirmNewPassword) < 8) {
-      echo json_encode([
-        'error' => 'La contraseña es insegura debe tener al menos 8 caracteres',
-      ]);
-      return;
-    }
+    $id = $payload->id;
+    $currentPassword = $payload->current_password;
+    $newPassword = $payload->new_password;
+    $password2 = $payload->new_password_confirm;
 
     if (!$this->userModel->authById($id, $currentPassword)) {
       echo json_encode([
-        'error' => 'La contraseña antigua es incorrecta',
+        'errors' => [
+          'auth' => 'La contraseña antigua es incorrecta'
+        ],
       ]);
       return;
     }
 
-    $this->userModel->updatePasswordById($id, $newPassword);
+    $ok = $this->userModel->updatePasswordById($id, $newPassword);
+
+    if (!$ok) {
+      echo json_encode([
+        'errors' => [
+          'error' => 'No se pudo cambiar la contraseña, intente nuevamente.'
+        ]
+      ]);
+      return;
+    }
+
     echo json_encode([
       'ok' => 'Contraseña cambiada exitosamente',
     ]);

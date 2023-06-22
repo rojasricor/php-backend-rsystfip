@@ -74,92 +74,38 @@ class PeopleController
     $end      = $payload->end;
     $status   = $payload->status;
 
-    if ($person === 'unset' || empty($person)) {
+    $v = new Validator((array) $payload);
+    $fieldsRequired = [
+      'person',
+      'name',
+      'doctype',
+      'doc',
+      'facultie',
+      'asunt',
+      'color',
+      'date',
+      'start',
+      'end',
+      'status'
+    ];
+    $status === 'scheduled' && array_push($fieldsRequired, 'telContact', 'emailContact');
+
+    $v->rule('required', $fieldsRequired)
+      ->rule('lengthBetween', 'doc', 8, 10)
+      ->rule('email', 'emailContact')
+      ->rule('length', 'telContact', 10)
+      ->rule('lengthBetween', 'asunt', 10, 150)
+      ->rule('notIn', 'person', ['unset'])
+      ->rule('numeric', 'doc')
+      ->rule('numeric', 'telContact')
+      ->rule('notIn', 'doctype', ['unset']);
+
+    if (!$v->validate()) {
       echo json_encode([
-        'error' => 'Seleccione el tipo de persona a agendar',
+        'errors' => $v->errors()
       ]);
       return;
     }
-
-    if (!is_numeric($doc) || empty($doc)) {
-      echo json_encode([
-        'error' => 'Ingrese el número de documento o cédula',
-      ]);
-      return;
-    }
-
-    if (strlen($doc) < 8 || strlen($doc) > 10) {
-      echo json_encode([
-        'error' => 'El número de documento debe tener mas de 8 y menos de 10 caracteres',
-      ]);
-      return;
-    }
-
-    if (!is_null($telCntct) && strlen($telCntct) !== 10) {
-      echo json_encode([
-        'error' => 'El número de teléfono de contacto debe tener 10 caracteres',
-      ]);
-      return;
-    }
-
-    if ($doctype === 'unset' || empty($doctype)) {
-      echo json_encode([
-        'error' => 'Debe seleccionar el tipo de documento',
-      ]);
-      return;
-    }
-
-    if (empty($name)) {
-      echo json_encode([
-        'error' => 'Complete el campo nombre',
-      ]);
-      return;
-    }
-
-    if (!ctype_alpha($name) && ctype_space($name)) {
-      echo json_encode([
-        'error' => 'El nombre sólo puede contener letras',
-      ]);
-      return;
-    }
-
-    if (is_numeric($name)) {
-      echo json_encode([
-        'error' => 'El nombre no puede ser numérico',
-      ]);
-      return;
-    }
-
-    if ($person !== '5' && ($facultie === 'unset' || empty($facultie))) {
-      echo json_encode([
-        'error' => 'Debe seleccionar la facultad a la que pertenece',
-      ]);
-      return;
-    }
-
-    $facultie === 'unset' && $facultie = '4';
-
-    if (empty($asunt)) {
-      echo json_encode([
-        'error' => 'Ingrese el motivo de la visita a la Rectoría - ITFIP (sólo texto)',
-      ]);
-      return;
-    }
-
-    if (!ctype_alpha($asunt) && ctype_space($asunt)) {
-      echo json_encode([
-        'error' => 'El asunto sólo puede contener letras',
-      ]);
-      return;
-    }
-
-    if (is_numeric($asunt) || !is_string($asunt)) {
-      echo json_encode([
-        'error' => 'El asunto no puede ser numérico',
-      ]);
-      return;
-    }
-
 
     if ($person === '4') {
       $this->peopleModel->saveDeans($doc, $name, $facultie);
@@ -183,6 +129,27 @@ class PeopleController
       exit('bad request');
     }
 
+    $v = new Validator((array) $payload);
+    $v->rule('required', [
+      'id',
+      'person',
+      'name',
+      'doctype',
+      'doc',
+      'facultie',
+      'asunt'
+    ])->rule('notIn', 'person', ['unset'])
+      ->rule('lengthBetween', 'doc', 8, 10)
+      ->rule('notIn', 'doctype', ['unset'])
+      ->rule('lengthBetween', 'asunt', 10, 150);
+
+    if (!$v->validate()) {
+      echo json_encode([
+        'errors' => $v->errors()
+      ]);
+      return;
+    }
+
     $id       = $payload->id;
     $person   = $payload->person;
     $name     = ucwords(strtolower($payload->name));
@@ -191,99 +158,20 @@ class PeopleController
     $facultie = $payload->facultie;
     $asunt    = ucfirst(strtolower($payload->asunt));
 
-    if (empty($id) || !is_numeric($id)) {
-      echo json_encode([
-        'error' => 'Estas intentando hacer algo? ojo con eso.',
-      ]);
-      return;
-    }
-
-    if ($person === 'unset' || empty($person)) {
-      echo json_encode([
-        'error' => 'Seleccione el tipo de persona a agendar',
-      ]);
-      return;
-    }
-
-    if (!is_numeric($doc) || empty($doc)) {
-      echo json_encode([
-        'error' => 'Ingrese el número de documento o cédula',
-      ]);
-      return;
-    }
-
-    if (strlen($doc) < 8 || strlen($doc) > 10) {
-      echo json_encode([
-        'error' => 'El número de documento debe tener mas de 8 y menos de 10 caracteres',
-      ]);
-      return;
-    }
-
-    if ($doctype === 'unset' || empty($doctype)) {
-      echo json_encode([
-        'error' => 'Debe seleccionar el tipo de documento',
-      ]);
-      return;
-    }
-
-    if (empty($name)) {
-      echo json_encode([
-        'error' => 'Complete el campo nombre',
-      ]);
-      return;
-    }
-
-    if (!ctype_alpha($name) && ctype_space($name)) {
-      echo json_encode([
-        'error' => 'El nombre sólo puede contener letras',
-      ]);
-      return;
-    }
-
-    if (is_numeric($name)) {
-      echo json_encode([
-        'error' => 'El nombre no puede ser numérico',
-      ]);
-      return;
-    }
-
-    if ($person !== '5' && ($facultie === 'unset' || empty($facultie))) {
-      echo json_encode([
-        'error' => 'Debe seleccionar la facultad a la que pertenece',
-      ]);
-      return;
-    }
-
-    $facultie === 'unset' && $facultie = '4';
-
-    if (empty($asunt)) {
-      echo json_encode([
-        'error' => 'Ingrese el motivo de la visita a la Rectoría - ITFIP (sólo texto)',
-      ]);
-      return;
-    }
-
-    if (!ctype_alpha($asunt) && ctype_space($asunt)) {
-      echo json_encode([
-        'error' => 'El asunto sólo puede contener letras',
-      ]);
-      return;
-    }
-
-    if (is_numeric($asunt) || !is_string($asunt)) {
-      echo json_encode([
-        'error' => 'El asunto no puede ser numérico',
-      ]);
-      return;
-    }
-
     $ok = $this->peopleModel->update($name, $doctype, $doc, $person, $facultie, $asunt, $id);
 
     if ($ok) {
       echo json_encode([
         'ok' => 'Persona actualizada exitosamente!',
       ]);
+      return;
     }
+
+    echo json_encode([
+      'errors' => [
+        'error' => 'No se pudo actualizar la persona, intente nuevamente.'
+      ]
+    ]);
   }
 
   public function cancellPerson(): void
@@ -295,16 +183,24 @@ class PeopleController
       exit('bad request');
     }
 
-    $id = $payload->id;
-    $date = $payload->date;
-    $cancelled_asunt = $payload->cancelled_asunt;
+    $v = new Validator((array) $payload);
+    $v->rule('required', [
+      'id',
+      'date',
+      'cancelled_asunt'
+    ])->rule('date', 'date')
+      ->rule('lengthBetween', 'cancelled_asunt', 10, 150);
 
-    if (empty($cancelled_asunt)) {
+    if (!$v->validate()) {
       echo json_encode([
-        'error' => 'Complete el motivo de cancelamiento',
+        'errors' => $v->errors()
       ]);
       return;
     }
+
+    $id = $payload->id;
+    $date = $payload->date;
+    $cancelled_asunt = $payload->cancelled_asunt;
 
     $schedulingModel = new SchedulingModel;
     $citeDataFound = $schedulingModel->findCiteById($id);
@@ -329,7 +225,9 @@ class PeopleController
     }
 
     echo json_encode([
-      'error' => 'Error al cancelar el agendamiento',
+      'errors' => [
+        'error' => 'No se pudo cancelar la cita, intente nuevamente.'
+      ],
     ]);
   }
 }

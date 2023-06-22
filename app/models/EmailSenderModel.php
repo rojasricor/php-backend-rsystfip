@@ -37,7 +37,12 @@ class EmailSenderModel
       $response = $sendgrid->send($this->email);
       return $response->statusCode() === 202;
     } catch (Exception $e) {
-      throw new Exception($e->getMessage());
+      echo json_encode([
+        'errors' => [
+          'error' => $e->getMessage()
+        ]
+      ]);
+      return false;
     }
   }
 }
