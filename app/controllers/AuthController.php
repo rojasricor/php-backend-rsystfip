@@ -50,4 +50,26 @@ class AuthController
       'errors' => ['auth' => 'Usuario o contraseña incorrectos'],
     ]);
   }
+
+  public function validateSession(): void
+  {
+    $headers = getallheaders();
+    $jwt = $headers['Authorization'] ?? '';
+
+    if (!$jwt) {
+      http_response_code(401);
+      exit('Not session provided');
+    }
+
+    $response = $this->userModel->verifyJWT($jwt);
+    $ok = $response['ok'] ?? false;
+
+    if ($ok) {
+      echo json_encode($response);
+      return;
+    }
+
+    http_response_code(401);
+    exit($response['message']);
+  }
 }

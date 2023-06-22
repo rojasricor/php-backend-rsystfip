@@ -4,7 +4,12 @@ namespace App\Models;
 
 use DateTime;
 
-use Firebase\JWT\JWT;
+use Firebase\JWT\{
+  JWT,
+  Key
+};
+
+use UnexpectedValueException;
 
 class UserModel extends BaseModel
 {
@@ -137,14 +142,36 @@ class UserModel extends BaseModel
     return $user ? SecurityModel::verifyPassword($password, $user->password) : false;
   }
 
-  public function generateTokenJWT(array $dataToJoin, int $time): string
+  public function generateTokenJWT(array $dataToJoin, int $exp): string
   {
     $payload = array_merge([
       'iat' => time(),
-      'exp' => time() + $time
+      'exp' => time() + $exp
     ], $dataToJoin);
 
-    return JWT::encode($payload, $this->env->get('SECRET_KEY'), 'HS256');
+    $secretKey = $this->env->get('SECRET_KEY');
+
+    return JWT::encode($payload, $secretKey, 'HS256');
+  }
+
+  public function verifyJWT(string $jwt): array
+  {
+    $secretKey = $this->env->get('SECRET_KEY');
+
+    try {
+      $decoded = JWT::decode($jwt, new Key($secretKey, 'HS256'));
+      return [
+        'ok' => [
+          'isValid' => true
+        ]
+      ];
+    } catch (UnexpectedValueException $e) {
+      $errorMessage = "Session invalid or expired";
+
+      return [
+        'message' => $errorMessage
+      ];
+    }
   }
 
   public function auth(string $email, string $password): array
@@ -152,21 +179,26 @@ class UserModel extends BaseModel
     $user = $this->getOneByEmail($email);
     if ($user && SecurityModel::verifyPassword($password, $user->password)) {
       $permissions = explode(',', $user->permissions);
+      $exp = (7 * 24 * 60 * 60); // time in seconds
 
       $token = $this->generateTokenJWT([
         'id' => $user->id,
         'email' => $email,
         'role' => $user->role,
-        'permissions' => $permissions
-      ], (7 * 24 * 60 * 60));
-      header('Authorization: Bearer ' . $token);
+        'permissions' => $permissions,
+        'iat' => time(),
+        'exp' => time() + $exp
+      ], $exp);
+      
+      header('Access-Control-Expose-Headers: Authorization');
+      header("Authorization: $token");
       
       return [
         'id' => $user->id,
         'role' => $user->role,
         'name' => $user->name,
-        'email'=>$email,
-        'permissions'=>$permissions
+        'email'=> $email,
+        'permissions'=> $permissions
       ];
     }
 
