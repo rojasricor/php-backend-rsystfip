@@ -145,7 +145,7 @@ class UserModel extends BaseModel
       'id' => $_id
     ];
 
-    return JWT::encode($payload, 'rsystfip', 'HS256');
+    return JWT::encode($payload, $this->env->get('SECRET_KEY'), 'HS256');
   }
 
   public function auth(string $email, string $password): array

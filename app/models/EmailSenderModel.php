@@ -8,7 +8,7 @@ use SendGrid;
 
 use SendGrid\Mail\Mail;
 
-class EmailSenderModel
+class EmailSenderModel extends BaseModel
 {
   private Mail $email;
 
@@ -16,21 +16,18 @@ class EmailSenderModel
   
   public function __construct()
   {
+    parent::__construct();
     $this->email = new Mail;
-    $this->envModelInstance = new EnvModel;
   }
 
   public function sendEmail(string $subject, string $to, string $content): bool
   {
-    $this->email->setFrom(
-      $this->envModelInstance->get('FROM_EMAIL'),
-      $this->envModelInstance->get('FROM_NAME')
-    );
+    $this->email->setFrom($this->env->get('FROM_EMAIL'), $this->env->get('FROM_NAME'));
     $this->email->setSubject($subject);
     $this->email->addTo($to);
     $this->email->addContent("text/html", $content);
 
-    $sendgridApiKey = $this->envModelInstance->get('SENDGRID_API_KEY');
+    $sendgridApiKey = $this->env->get('SENDGRID_API_KEY');
     $sendgrid = new SendGrid($sendgridApiKey);
     
     try {

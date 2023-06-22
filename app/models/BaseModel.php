@@ -6,7 +6,7 @@ use PDO;
 
 class BaseModel
 {
-  private EnvModel $env;
+  protected EnvModel $env;
 
   protected PDO $db;
 
