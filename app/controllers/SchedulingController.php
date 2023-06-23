@@ -22,4 +22,9 @@ class SchedulingController
     
     echo json_encode($this->schedulingModel->getAll($_GET['start'], $_GET['end']));
   }
+
+  public function getAllScheduling(): void
+  {
+    echo json_encode($this->schedulingModel->getAllScheduled());
+  }
 }

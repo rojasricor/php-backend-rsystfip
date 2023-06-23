@@ -4,7 +4,7 @@ namespace App\Middlewares;
 
 class CorsMiddleware
 {
-  public static function useCors(): void
+  public function __invoke(): void
   {
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS");

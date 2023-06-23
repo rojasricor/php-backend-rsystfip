@@ -7,7 +7,10 @@ require_once __DIR__ . '/vendor/autoload.php';
 use Aura\Router\RouterContainer;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\Response\JsonResponse;
-use App\Middlewares\CorsMiddleware;
+use App\Middlewares\{
+  CorsMiddleware,
+  JwtMiddleware
+};
 use App\Controllers\{
   AuthController,
   PeopleController,
@@ -118,6 +121,11 @@ $map->get('get.scheduling', '/api/scheduling',  [
   'getScheduling'
 ]);
 
+$map->get('get.scheduling.all', '/api/scheduling/all',  [
+  SchedulingController::class,
+  'getAllScheduling'
+]);
+
 $map->get('get.deans', '/api/deans', [
   PeopleController::class,
   'getDeans'
@@ -174,7 +182,7 @@ $route = $routerContainer->getMatcher()->match(
 );
 
 // Using Cors
-CorsMiddleware::useCors();
+(new CorsMiddleware)();
 
 // Execute the action of the matching route
 if ($route) {
@@ -183,6 +191,8 @@ if ($route) {
   
   // Separate the name of the class and the method
   list($controller, $method) = $handler;
+
+  (new JwtMiddleware)();
 
   // Create an instance of the controller class
   $controllerInstance = new $controller();

@@ -2,34 +2,33 @@
 
 namespace App\Middlewares;
 
-use App\Services\JwtService; // Importa la clase JwtService o cualquier clase que estés usando para trabajar con JWT
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Laminas\Diactoros\Response\JsonResponse;
+use App\Models\UserModel;
 
 class JwtMiddleware
 {
-  public function __invoke(Request $request, RequestHandler $handler)
+  private UserModel $userModel;
+
+  public function __construct()
   {
-    // Obtén el token de autorización del encabezado de la solicitud
-    $authorizationHeader = $request->getHeaderLine('Authorization');
+    $this->userModel = new UserModel;
+  }
 
-    // Verifica si el encabezado de autorización está presente y tiene el formato correcto
-    if ($authorizationHeader && preg_match('/Bearer\s(\S+)/', $authorizationHeader, $matches)) {
-      $token = $matches[1]; // Obtén el token de la coincidencia
+  public function __invoke()
+  {
+    $headers = getallheaders();
+    $jwt = $headers['Authorization'] ?? '';
 
-      // Verifica el token usando tu servicio de JWT (JwtService)
-      $jwtService = new JwtService(); // Reemplaza JwtService con el nombre de tu clase
-      $isValidToken = $jwtService->validateToken($token); // Implementa el método validateToken en tu servicio de JWT
-
-      if ($isValidToken) {
-        // Token válido, permite que la solicitud continúe al siguiente middleware o controlador
-        return $handler->handle($request);
-      }
+    if (!$jwt) {
+      http_response_code(401);
+      exit('Not session provided');
     }
 
-    // El token no es válido, devuelve una respuesta de error
-    $response = new JsonResponse(['error' => 'Invalid token'], 401);
-    return $response;
+    $response = $this->userModel->verifyJWT($jwt);
+    $ok = $response['ok'] ?? false;
+
+    if (!$ok) {
+      http_response_code(401);
+      exit($response['message']);
+    }
   }
 }

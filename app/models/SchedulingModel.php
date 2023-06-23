@@ -11,6 +11,12 @@ class SchedulingModel extends BaseModel
     return $statement->fetchAll();
   }
 
+  public function getAllScheduled(): array
+  {
+    $statement = $this->db->query("SELECT s.person_id AS id, p.name AS title, s.start_date AS start, s.end_date AS end, s.color AS color FROM scheduling s INNER JOIN people p ON p.id = s.person_id WHERE s.status = 'scheduled'");
+    return $statement->fetchAll();
+  }
+
   public function findCiteById(string $id): object | bool
   {
     $statement = $this->db->prepare("SELECT p.name, p.telephone AS tel, p.email AS email FROM scheduling s INNER JOIN people p ON p.id = s.person_id WHERE s.person_id = ?");
