@@ -29,6 +29,7 @@ class SchedulingModel extends BaseModel
     $statement = $this->db->prepare("UPDATE scheduling SET status = 'cancelled' WHERE person_id = ? AND start_date = ?");
     $statement->execute([$id, $date]);
     $statement = $this->db->prepare("INSERT INTO cancelled (person_id, cancelled_asunt) VALUES (?, ?)");
-    return $statement->execute([$id, $cancelled_asunt]);
+    $statement->execute([$id, $cancelled_asunt]);
+    return $statement->rowCount() > 0;
   }
 }

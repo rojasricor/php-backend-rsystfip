@@ -7,7 +7,8 @@ class PeopleModel extends BaseModel
   public function save(string $name, string $tipo, string $numero, string $asunt): bool
   {
     $statement = $this->db->prepare("INSERT INTO people (name, document_id, document_number, come_asunt) VALUES (?, ?, ?, ?)");
-    return $statement->execute([$name, $tipo, $numero, $asunt]);
+    $statement->execute([$name, $tipo, $numero, $asunt]);
+    return $statement->rowCount() > 0;
   }
 
   public function schedule(
@@ -54,7 +55,8 @@ class PeopleModel extends BaseModel
     $deanExists = $statement->fetchObject();
     if (!$deanExists) {
       $statement = $this->db->prepare("INSERT INTO deans (_id, dean, facultie_id) VALUES (?, ?, ?)");
-      return $statement->execute([$cc, $name, $facultie]);
+      $statement->execute([$cc, $name, $facultie]);
+      return $statement->rowCount() > 0;
     }
   }
 
@@ -82,7 +84,7 @@ class PeopleModel extends BaseModel
   ): bool
   {
     $statement = $this->db->prepare("UPDATE people SET name = ?, document_id = ?, document_number = ?, category_id = ?, facultie_id = ?, come_asunt = ?  WHERE id = ?");
-    return $statement->execute([
+    $statement->execute([
       $name,
       $tipo,
       $numero,
@@ -91,6 +93,7 @@ class PeopleModel extends BaseModel
       $asunt,
       $id
     ]);
+    return $statement->rowCount() > 0;
   }
 
   public function getAll(): array

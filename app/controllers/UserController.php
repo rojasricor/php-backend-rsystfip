@@ -363,8 +363,19 @@ class UserController
       exit('bad request');
     }
 
-    $role = $payload->role;
+    $roleId = $payload->roleId;
 
-    echo json_encode($this->userModel->delete($role));
+    $userDeleted = $this->userModel->delete($roleId);
+
+    if (!$userDeleted) {
+      echo json_encode([
+        'error' => 'Error al eliminar, intente nuevamente.'
+      ]);
+      return;
+    }
+
+    echo json_encode([
+      'ok' => 'Usuario eliminado exitosamente'
+    ]);
   }
 }

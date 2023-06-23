@@ -14,7 +14,7 @@ class PeopleDataModel extends BaseModel
   ): bool
   {
     $statement = $this->db->prepare("INSERT INTO scheduling (person_id, date_filter, start_date, end_date, modification, status, color) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    return $statement->execute([
+    $statement->execute([
       $id,
       $date,
       $start_date,
@@ -23,5 +23,6 @@ class PeopleDataModel extends BaseModel
       $status,
       $color
     ]);
+    return $statement->rowCount() > 0;
   }
 }

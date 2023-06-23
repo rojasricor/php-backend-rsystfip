@@ -21,7 +21,14 @@ class UserModel extends BaseModel
 
   public function getOneById(string $id): object | bool
   {
-    $statement = $this->db->prepare("SELECT id, email, password FROM users WHERE id = ?");
+    $statement = $this->db->prepare("SELECT id, email FROM users WHERE id = ?");
+    $statement->execute([$id]);
+    return $statement->fetchObject();
+  }
+
+  public function getOneByIdForAuth(string $id): object | bool
+  {
+    $statement = $this->db->prepare("SELECT id, email, password, role, permissions FROM users WHERE id = ?");
     $statement->execute([$id]);
     return $statement->fetchObject();
   }
@@ -35,6 +42,11 @@ class UserModel extends BaseModel
 
   public function createPermissionsByRole(string $role): string
   {
+    // schedule: rector, secretary, admin
+    // add: secretary, admin
+    // reports: secretary, admin
+    // statistics: secretary, admin
+    // admin: admin
     $rector_permissions    = "schedule";
     $secretary_permissions = "$rector_permissions,add,reports,statistics";
     $admin_permissions     = "$secretary_permissions,admin";
@@ -56,7 +68,7 @@ class UserModel extends BaseModel
   {
     $hashedPassword = SecurityModel::hashPassword($password);
     $statement = $this->db->prepare("INSERT INTO users (id, name, lastname, document_id, document_number, tel, email, password, role, permissions) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
-    return $statement->execute([
+    $statement->execute([
       $id,
       $name,
       $lastname,
@@ -68,25 +80,29 @@ class UserModel extends BaseModel
       $cargo,
       $permissions
     ]);
+    return $statement->rowCount() > 0;
   }
 
   public function delete(string $id): bool
   {
     $statement = $this->db->prepare("DELETE FROM users WHERE id = ?");
-    return $statement->execute([$id]);
+    $statement->execute([$id]);
+    return $statement->rowCount() > 0;
   }
 
   public function updatePasswordById(string $id, string $password): bool
   {
     $hashedPassword = SecurityModel::hashPassword($password);
     $statement = $this->db->prepare("UPDATE users SET password = ? WHERE id = ?");
-    return $statement->execute([$hashedPassword, $id]);
+    $statement->execute([$hashedPassword, $id]);
+    return $statement->rowCount() > 0;
   }
 
   public function saveTokenResetPassword(string $token, string $expirationTime, string $email): bool
   {
     $statement = $this->db->prepare("UPDATE users SET reset_token = ?, reset_token_expiration = ? WHERE email = ?");
-    return $statement->execute([$token, $expirationTime, $email]);
+    $statement->execute([$token, $expirationTime, $email]);
+    return $statement->rowCount() > 0;
   }
 
   public function getDataResetToken(string $resetToken): object | bool
@@ -99,7 +115,8 @@ class UserModel extends BaseModel
   public function deleteDataResetToken(string $resetToken): object | bool
   {
     $statement = $this->db->prepare("UPDATE users SET reset_token = NULL, reset_token_expiration = NULL WHERE reset_token = ?");
-    return $statement->execute([$resetToken]);
+    $statement->execute([$resetToken]);
+    return $statement->rowCount() > 0;
   }
 
   public function verifyValidTokenReset(string $resetToken, string $email): array
@@ -133,12 +150,13 @@ class UserModel extends BaseModel
   {
     $hashedPassword = SecurityModel::hashPassword($password);
     $statement = $this->db->prepare("UPDATE users SET password = ? WHERE reset_token = ?");
-    return $statement->execute([$hashedPassword, $resetToken]);
+    $statement->execute([$hashedPassword, $resetToken]);
+    return $statement->rowCount() > 0;
   }
 
   public function authById(string $id, string $password): bool
   {
-    $user = $this->getOneById($id);
+    $user = $this->getOneByIdForAuth($id);
     return $user ? SecurityModel::verifyPassword($password, $user->password) : false;
   }
 
@@ -162,7 +180,8 @@ class UserModel extends BaseModel
       $decoded = JWT::decode($jwt, new Key($secretKey, 'HS256'));
       return [
         'ok' => [
-          'isValid' => true
+          'isValid' => true,
+          'decoded' => (array) $decoded
         ]
       ];
     } catch (UnexpectedValueException $e) {

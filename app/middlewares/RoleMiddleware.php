@@ -4,13 +4,15 @@ namespace App\Middlewares;
 
 use App\Models\UserModel;
 
-class JwtMiddleware
+class RoleMiddleware
 {
   private UserModel $userModel;
+  private array $roles = [];
 
-  public function __construct()
+  public function __construct(array $roles)
   {
     $this->userModel = new UserModel;
+    $this->roles = $roles;
   }
 
   public function __invoke(): void
@@ -29,6 +31,11 @@ class JwtMiddleware
     if (!$ok) {
       http_response_code(401);
       exit($response['message']);
+    }
+
+    if (!in_array($response['ok']['decoded']['role'], $this->roles)) {
+      http_response_code(401);
+      exit('Unauthorized for do this action');
     }
   }
 }
