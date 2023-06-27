@@ -171,6 +171,17 @@ class UserController
       return;
     }
 
+    $newPasswordVerified = $this->userModel->authByEmail($email, $password);
+
+    if ($newPasswordVerified) {
+      echo json_encode([
+        'errors' => [
+          'error' => 'La nueva contraseña no puede ser igual a la anterior'
+        ]
+      ]);
+      return;
+    }
+
     $passwordChangedSuccessfully = $this->userModel->updatePasswordByResetToken($resetToken, $password);
     $ok = $this->userModel->deleteDataResetToken($resetToken, $email);
 
@@ -318,6 +329,7 @@ class UserController
       'new_password',
       'new_password_confirm'
     ])->rule('equals', 'new_password', 'new_password_confirm')
+      ->rule('different', 'new_password', 'current_password')
       ->rule('lengthBetween', 'new_password', 8, 30)
       ->rule('lengthBetween', 'new_password_confirm', 8, 30);
 
@@ -333,7 +345,9 @@ class UserController
     $newPassword = $payload->new_password;
     $password2 = $payload->new_password_confirm;
 
-    if (!$this->userModel->authById($id, $currentPassword)) {
+    $currentPasswordVerified = $this->userModel->authById($id, $currentPassword);
+
+    if (!$currentPasswordVerified) {
       echo json_encode([
         'errors' => [
           'auth' => 'La contraseña antigua es incorrecta'

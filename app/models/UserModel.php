@@ -145,6 +145,12 @@ class UserModel extends BaseModel
     return $user ? SecurityModel::verifyPassword($password, $user->password) : false;
   }
 
+  public function authByEmail(string $email, string $password): bool
+  {
+    $user = $this->getOneByEmail($email);
+    return $user ? SecurityModel::verifyPassword($password, $user->password) : false;
+  }
+
   public function generateTokenJWT(array $dataToJoin, int $exp): string
   {
     $payload = array_merge([
