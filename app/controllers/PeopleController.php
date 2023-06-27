@@ -88,7 +88,10 @@ class PeopleController
       'end',
       'status'
     ];
-    $status === 'scheduled' && array_push($fieldsRequired, 'telContact', 'emailContact');
+    
+    if ($status === 'scheduled') {
+      array_push($fieldsRequired, 'telContact', 'emailContact');
+    }
 
     $v->rule('required', $fieldsRequired)
       ->rule('lengthBetween', 'doc', 8, 10)
@@ -158,6 +161,17 @@ class PeopleController
     $facultie = $payload->facultie;
     $asunt    = ucfirst(strtolower($payload->asunt));
 
+    $personFound = $this->peopleModel->getOneById($id);
+
+    if (!$personFound) {
+      echo json_encode([
+        'errors' => [
+          'error' => 'La persona no existe, ha ocurrido un error'
+        ]
+      ]);
+      return; 
+    }
+
     $ok = $this->peopleModel->update($name, $doctype, $doc, $person, $facultie, $asunt, $id);
 
     if ($ok) {
@@ -169,7 +183,7 @@ class PeopleController
 
     echo json_encode([
       'errors' => [
-        'error' => 'No se pudo actualizar la persona, intente nuevamente.'
+        'error' => 'Nada que actualizar.'
       ]
     ]);
   }
