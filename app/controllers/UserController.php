@@ -119,8 +119,7 @@ class UserController
       return;
     }
 
-    $permissions = $this->userModel->createPermissionsByRole($role);
-    $ok = $this->userModel->create($id, $role, $name, $lastname, $documentType, $document, $telephone, $email, $password, $permissions);
+    $ok = $this->userModel->create($id, $role, $name, $lastname, $documentType, $document, $telephone, $email, $password);
 
     if ($ok) {
       echo json_encode([
@@ -291,11 +290,16 @@ class UserController
       $message
     );
 
-    if ($linkSended) {
+    if ($linkSended['response'] ?? false) {
       echo json_encode([
         'ok' => $emailIsRegistered->name . ", hemos enviado un email con instrucciones a su correo electrónico: $email!. Expira en 10 minutos.",
       ]);
+      return;
     }
+
+    echo json_encode([
+      'errors' => $linkSended['errors']
+    ]);
   }
 
   public function updatePassword(): void

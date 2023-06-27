@@ -204,24 +204,40 @@ class PeopleController
 
     $schedulingModel = new SchedulingModel;
     $citeDataFound = $schedulingModel->findCiteById($id);
+
+    if (!$citeDataFound) {
+      echo json_encode([
+        'errors' => [
+          'error' => 'La cita no existe, ha ocurrido un error'
+        ]
+      ]);
+      return;
+    }
+
+    $emailSenderModel = new EmailSenderModel;
+    $message = "<strong>" . $citeDataFound->name . "</strong>" . " se ha cancelado la cita programada para el día " . "<code>$date</code>" . ". El motivo de cancelación es: " . $cancelled_asunt . ".<br><br>Si tiene alguna duda o comentario, por favor comuníquese con nosotros.<br><br>Saludos,<br>Rectoría ITFIP - RSystfip.<br><br><img src='https://repositorio.itfip.edu.co/themes/Mirage2/images/logo_wh.png'>";
+
+    $cancelledCite = $emailSenderModel->sendEmail(
+      "Cita cancelada Rectoria ITFIP - RSystfip",
+      $citeDataFound->email,
+      $message
+    );
+
+    if ($cancelledCite['errors'] ?? false) {
+      echo json_encode([
+        'errors' => $cancelledCite['errors']
+      ]);
+      return;
+    }
+
+    // Cancelling cite
     $ok = $schedulingModel->cancell($id, $date, $cancelled_asunt);
 
-    if ($citeDataFound && $ok) {
-      $emailSenderModel = new EmailSenderModel;
-      $message = "<strong>" . $citeDataFound->name . "</strong>" . " se ha cancelado la cita programada para el día " . "<code>$date</code>" . ". El motivo de cancelación es: " . $cancelled_asunt . ".<br><br>Si tiene alguna duda o comentario, por favor comuníquese con nosotros.<br><br>Saludos,<br>Rectoría ITFIP - RSystfip.<br><br><img src='https://repositorio.itfip.edu.co/themes/Mirage2/images/logo_wh.png'>";
-
-      $cancelledCite = $emailSenderModel->sendEmail(
-        "Cita cancelada Rectoria ITFIP - RSystfip",
-        $citeDataFound->email,
-        $message
-      );
-    
-      if ($cancelledCite) {
-        echo json_encode([
-          'ok' => 'Cita cancelada exitosamente',
-        ]);
-        return;
-      }
+    if ($cancelledCite['response'] ?? false && $ok) {
+      echo json_encode([
+        'ok' => 'Cita cancelada exitosamente',
+      ]);
+      return;
     }
 
     echo json_encode([

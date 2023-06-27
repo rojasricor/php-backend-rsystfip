@@ -20,7 +20,7 @@ class EmailSenderModel extends BaseModel
     $this->email = new Mail;
   }
 
-  public function sendEmail(string $subject, string $to, string $content): bool
+  public function sendEmail(string $subject, string $to, string $content): array
   {
     $this->email->setFrom($this->env->get('FROM_EMAIL'), $this->env->get('FROM_NAME'));
     $this->email->setSubject($subject);
@@ -32,14 +32,13 @@ class EmailSenderModel extends BaseModel
     
     try {
       $response = $sendgrid->send($this->email);
-      return $response->statusCode() === 202;
+      return ['response' => $response->statusCode() === 202];
     } catch (Exception $e) {
-      echo json_encode([
+      return [
         'errors' => [
           'error' => $e->getMessage()
         ]
-      ]);
-      return false;
+      ];
     }
   }
 }

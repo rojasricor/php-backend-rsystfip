@@ -28,29 +28,16 @@ class UserModel extends BaseModel
 
   public function getOneByIdForAuth(string $id): object | bool
   {
-    $statement = $this->db->prepare("SELECT id, email, password, role, permissions FROM users WHERE id = ?");
+    $statement = $this->db->prepare("SELECT u.id, u.email, u.password, u.role, r.permissions FROM users u INNER JOIN roles r ON u.role = r._id WHERE u.id = ?");
     $statement->execute([$id]);
     return $statement->fetchObject();
   }
 
   public function getOneByEmail(string $email): object | bool
   {
-    $statement = $this->db->prepare("SELECT id, name, password, role, permissions FROM users WHERE email = ?");
+    $statement = $this->db->prepare("SELECT u.id, u.name, u.password, u.role, r.permissions FROM users u INNER JOIN roles r ON u.role = r._id WHERE u.email = ?");
     $statement->execute([$email]);
     return $statement->fetchObject();
-  }
-
-  public function createPermissionsByRole(string $role): string
-  {
-    // schedule: rector, secretary, admin
-    // add: secretary, admin
-    // reports: secretary, admin
-    // statistics: secretary, admin
-    // admin: admin
-    $rector_permissions    = "schedule";
-    $secretary_permissions = "$rector_permissions,add,reports,statistics";
-    $admin_permissions     = "$secretary_permissions,admin";
-    return $role === '2' ? $rector_permissions : $secretary_permissions;
   }
 
   public function create(
@@ -62,12 +49,11 @@ class UserModel extends BaseModel
     string $document,
     string $phone,
     string $email,
-    string $password,
-    string $permissions
+    string $password
   ): bool
   {
     $hashedPassword = SecurityModel::hashPassword($password);
-    $statement = $this->db->prepare("INSERT INTO users (id, name, lastname, document_id, document_number, tel, email, password, role, permissions) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
+    $statement = $this->db->prepare("INSERT INTO users (id, name, lastname, document_id, document_number, tel, email, password, role) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )");
     $statement->execute([
       $id,
       $name,
@@ -77,8 +63,7 @@ class UserModel extends BaseModel
       $phone,
       $email,
       $hashedPassword,
-      $cargo,
-      $permissions
+      $cargo
     ]);
     return $statement->rowCount() > 0;
   }
